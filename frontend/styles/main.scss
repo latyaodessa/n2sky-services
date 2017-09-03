@@ -1,0 +1,53 @@
+*, *:after, *:before {
+  box-sizing: border-box;
+}
+html {
+  font-size: 100%;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  font-family: 'Work Sans', Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%);
+  color: #777;
+}
+h1 {
+  position: relative;
+  font-weight: 600;
+  font-size: .9em;
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  overflow: hidden;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+
+.new-single-title{
+  line-height: 1.2em;
+  text-align: center;
+  padding-top: 0px;
+}
+
+.atb-text {
+  color: #fff;
+  padding: 25px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.atb-text {
+  background: rgba(0,0,0, 0.82);
+}
