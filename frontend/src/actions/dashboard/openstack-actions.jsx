@@ -9,7 +9,9 @@ import {
 	FETCH_OPENSTACK_PROJECT_BY_ID_FULFILLED,
 	FETCH_OPENSTACK_PROJECT_BY_ID_REJECTED,
 	FETCH_FLAVOR_FULFILLED,
-	FETCH_FLAVOR_REJECTED
+	FETCH_FLAVOR_REJECTED,
+	FETCH_SERVER_FULFILLED,
+	FETCH_SERVER_REJECTED
 } from "../../constants/dashboard/openstack-constants"
 
 export function getOpenstackProjects() {
@@ -46,4 +48,16 @@ export function getOpenstackFlavor(id) {
 				dispatch({type: FETCH_FLAVOR_REJECTED, payload: err})
 			})
 	}
+}
+
+	export function getOpenstackServers(id) {
+		return function (dispatch) {
+			axios.get(HOST + '/servers/' + id)
+				.then((res) => {
+					dispatch({type: FETCH_SERVER_FULFILLED, payload: res.data})
+				})
+				.catch((err) => {
+					dispatch({type: FETCH_SERVER_REJECTED, payload: err})
+				})
+		}
 }

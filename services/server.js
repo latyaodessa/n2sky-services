@@ -3,7 +3,8 @@ let express = require('express'),
     request = require('request'),
     Promise = require('promise'),
     OSWrap = require('openstack-wrapper'),
-    keystone = new OSWrap.Keystone('http://131.130.37.20/identity/v3');
+    keystone = new OSWrap.Keystone('http://131.130.37.20/identity/v3'),
+    monitoring = require('./monitoring/monitoring');
 
 let app = express();
 app.use(express.static(__dirname + "/../public"));
@@ -44,7 +45,7 @@ let getProjectToken = function getProjectToken(projectId) {
             })
         })
     });
-}
+};
 
 
 router.get('/projects', function (req, res) {
@@ -114,6 +115,41 @@ router.get('/projects/:id', function (req, res) {
             res.send(err);
         })
 });
+
+
+
+
+
+
+
+
+//// MONITORING
+
+
+router.get('/monitoring/:query/:minus/:type/:step', function (req, res) {
+
+    let monitoring_host = 'http://131.130.37.20:9090/api/v1/query_range?query=';
+    let formatted = monitoring.currentTimeStemp();
+    let minusMinutes = monitoring.currentStampMinusTime(req.params.minus, req.params.type);
+
+    let endpoint = monitoring_host + req.params.query + '&start=' + minusMinutes + '&end=' + formatted + '&step=' + req.params.step;
+
+
+    let options = {
+        url: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+
+
+    request(options, function (er, response, body) {
+        res.send(body);
+    })
+
+});
+
+
 
 
 app.listen(9091);

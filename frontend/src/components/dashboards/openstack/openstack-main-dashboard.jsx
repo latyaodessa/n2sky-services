@@ -20,6 +20,7 @@ export default class OpenStackMainDashboard extends React.Component {
 	}
 
 	addDashlets(projects) {
+		if(!projects.projects) return null;
 		return projects.projects.map(prj =>  <ProjectsDashlet key={prj.id} project={prj}/>);
 	}
 

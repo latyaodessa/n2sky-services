@@ -20,9 +20,13 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "node-sass": "^4.3.0",
     "react": "15.6.1",
+    "react-d3-basic": "^1.6.11",
     "react-dom": "15.4.2",
+    "react-moment": "^0.6.5",
     "sass-loader": "^6.0.2"
   },
   "devDependencies": {
