@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions"
 import Loader from './../../core/loader/loader'
 import ProjectsDashlet from './dashlets/projects-dashlet'
+import MonitoringDashlet from './dashlets/monitoring-dashlet'
 
 
 
@@ -29,6 +30,7 @@ export default class OpenStackMainDashboard extends React.Component {
 		return (
 			<div className="pure-g">
 				{this.props.fetched ? this.addDashlets(this.props.projects) : <Loader/>}
+				<MonitoringDashlet/>
 			</div>
 		)
 	}
