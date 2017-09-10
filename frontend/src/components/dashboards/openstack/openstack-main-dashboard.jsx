@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions"
+import {getMonitoringData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
 import ProjectsDashlet from './dashlets/projects-dashlet'
 import MonitoringDashlet from './dashlets/monitoring-dashlet'
@@ -9,8 +10,9 @@ import MonitoringDashlet from './dashlets/monitoring-dashlet'
 
 @connect((store) => {
 	return {
-		projects: store.openstackProjectsReducer.projects,
-		fetched: store.openstackProjectsReducer.fetched
+		monitoring: store.monitoring,
+		projects : store.openstackProjectsReducer.projects,
+		fetched : store.openstackProjectsReducer.fetched
 	}
 })
 export default class OpenStackMainDashboard extends React.Component {
@@ -18,6 +20,22 @@ export default class OpenStackMainDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getOpenstackProjects());
+		let metrics = [
+			{
+				metric : 'node_cpu',
+				delay : 1,
+				delaytype : 'minutes',
+				step : '10s'
+			},
+			{
+				metric : 'node_memory_active_bytes_total',
+				delay : 60,
+				delaytype : 'minutes',
+				step : '5m'
+			}
+		];
+		this.props.dispatch(getMonitoringData(metrics[0]));
+		this.props.dispatch(getMonitoringData(metrics[1]));
 	}
 
 	addDashlets(projects) {
@@ -28,9 +46,10 @@ export default class OpenStackMainDashboard extends React.Component {
 
 	render() {
 		return (
-			<div className="pure-g">
+			<div>
 				{this.props.fetched ? this.addDashlets(this.props.projects) : <Loader/>}
-				<MonitoringDashlet/>
+				{this.props.monitoring.node_cpu ? <MonitoringDashlet monitoring={this.props.monitoring.node_cpu}/> : <b>bb</b>}
+				{this.props.monitoring.node_memory_active_bytes_total ? <MonitoringDashlet monitoring={this.props.monitoring.node_memory_active_bytes_total}/> : <b>bb</b>}
 			</div>
 		)
 	}

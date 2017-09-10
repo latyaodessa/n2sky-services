@@ -1,21 +1,21 @@
 import axios from "axios"
 
-import {GET_PROJECTS} from "../../restclient/dashboard/openstack-rest-client"
-import {HOST} from "../../restclient/abstract-rest-client"
+import {MONITORING_API} from "../../restclient/abstract-rest-client"
 
 import {
-	FETCH_MONITOR_FULFILLED,
-	FETCH_SERVER_REJECTED
-} from "../../constants/dashboard/openstack-constants"
+	FETCH_MONITORING_DATA_FULFILLED,
+	FETCH_MONITORING_DATA_REJECTED
+} from "../../constants/dashboard/monitoring-constants"
 
-export function getMonitoringData() {
+export function getMonitoringData(m) {
 	return function (dispatch) {
-		axios.get(GET_PROJECTS)
-			.then((res) => {
-				dispatch({type: FETCH_MONITOR_FULFILLED, payload: res.data})
-			})
-			.catch((err) => {
-				dispatch({type: FETCH_SERVER_REJECTED, payload: err})
-			})
-	}
+		let monitoringEndpoint = [MONITORING_API, m.metric, m.delay, m.delaytype, m.step].join('/');
+		axios.get(monitoringEndpoint)
+				.then((res) => {
+					dispatch({type: m.metric + '/'+ FETCH_MONITORING_DATA_FULFILLED, payload: res.data})
+				})
+				.catch((err) => {
+					dispatch({type: m.metric + '/' + FETCH_MONITORING_DATA_REJECTED, payload: err})
+				})
+		}
 }

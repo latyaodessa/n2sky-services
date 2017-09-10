@@ -1,0 +1,1 @@
+[{"metric":"node_cpu","delay":1,"delaytype":"minutes","step":"10s"},{"metric":"node_memory_active_bytes_total","delay":60,"delaytype":"minutes","step":"5m"}]

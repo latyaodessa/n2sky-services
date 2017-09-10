@@ -15,7 +15,7 @@ loaders.push({
   exclude: ['node_modules']
 });
 
-module.exports = {
+module.exports = [{
   entry: [
     'react-hot-loader/patch',
     './src/index.jsx', // your app's entry point
@@ -27,7 +27,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.webpack.js', '.web.js','.js', '.jsx']
   },
   module: {
     loaders
@@ -62,4 +62,4 @@ module.exports = {
       }
     }),
   ]
-};
+}];
