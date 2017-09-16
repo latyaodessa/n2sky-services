@@ -1,47 +1,115 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import style from './style.scss'
-import { Line } from 'react-chartjs'
+import {Line} from 'react-chartjs'
+import {getMonitoringData} from '../../../../actions/dashboard/openstack-monitoring-actions'
+import { TimeSeries, TimeRange } from "pondjs";
+import { Charts, ChartContainer, ChartRow, YAxis, LineChart } from "react-timeseries-charts";
 
 
+
+@connect((store) => {
+	return {
+		monitoring: store.monitoring
+	}
+})
 export default class MonitoringDashlet extends React.Component {
 
 	state = {
-		data : {}
+		metricName: '',
+		metric: {},
+		data: null
 	};
 
 	constructor(props) {
 		super(props);
 
-		console.log(this.props.monitoring);
+		this.props.dispatch(getMonitoringData(this.props.conf)).then(() => {
+			this.setState({
+				metricName: this.props.conf.metric,
+				metric: this.props.monitoring[this.props.conf.metric]
+			});
+			this.setGraphData();
+		});
+	}
 
-		let datasets = [];
+	triggerMonitoring(){
+		this.props.dispatch(getMonitoringData(this.props.conf)).then(() => {
+			this.setState({
+				metricName: this.props.conf.metric,
+				metric: this.props.monitoring[this.props.conf.metric]
+			});
+			this.setGraphData();
+		});
+	}
+
+	componentDidMount() {
+
+		// setInterval(() => this.triggerMonitoring(), 7000);
+	}
+
+
+	setGraphData() {
+
+		console.log(this.state);
+
+		let datasets = this.getDataSets();
+		let labels = this.getLabels();
+
+		this.setState({
+			data: {
+				labels: labels,
+				datasets: datasets
+			}
+		});
+	}
+
+	getLabels() {
 		let labels = [];
-		this.props.monitoring[0].values.map(t => labels.push(t[0]));
+		this.state.metric.shift().values.map(t => labels.push(t[0]))
+		return labels;
+	}
 
-		this.props.monitoring.map( dataset => {
+	getDataSets() {
+		let datasets = [];
+
+		this.state.metric.map(dataset => {
+
+			delete dataset.metric['__name__'];
+			delete dataset.metric['instance'];
+			delete dataset.metric['job'];
+
 			// TODO Label
-			let label = dataset.metric.mode + dataset.metric.cpu;
+			let label = JSON.stringify(dataset.metric);
 			let data = [];
 			dataset.values.map(v => data.push(v[1]));
 			datasets.push({
 				label,
-				data
+				data,
+				backgroundColor: [
+					'rgba(255,99,132)'
+				]
 			})
-
 		});
-
-		this.state = {
-			data : {
-				labels: labels,
-				datasets : datasets
-			}
-		};
+		return datasets;
 	}
 
+
 	render() {
-		return (
-			<Line data={this.state.data} width="600" height="250"/>
-		);
+		// let series = new TimeSeries(this.state.data2);
+		//
+		// return (<ChartContainer timeRange={series.timerange()}>
+		// 	<ChartRow height="200">
+		// 		<YAxis id="axis1" label="AUD" type="linear" format="$,.2f"/>
+		// 		<Charts>
+		// 			<LineChart axis="axis1" series={series}/>
+		// 		</Charts>
+		// 	</ChartRow>
+		// </ChartContainer>);
+
+		// return (<div/>);
+		return (<div>{this.state.data ? <Line data={this.state.data} width="600" height="250"/> : null}</div>)
+
 	}
 }
 

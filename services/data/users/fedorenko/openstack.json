@@ -1,1 +1,1 @@
-[{"metric":"node_cpu","delay":1,"delaytype":"minutes","step":"10s"},{"metric":"node_memory_active_bytes_total","delay":60,"delaytype":"minutes","step":"5m"}]
+[{"metric":"node_memory_active_bytes_total","delay":60,"delaytype":"minutes","step":"5m"},{"metric":"node_load1","delay":"1","delaytype":"hours","step":"10m","steptype":"m","violated":false},{"metric":"node_memory_inactive_bytes_total","delay":"30","delaytype":"minutes","step":"1m","steptype":"m","violated":false}]

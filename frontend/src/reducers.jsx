@@ -4,11 +4,16 @@ import openstackProjectByIdReducer from './reducers/dashboard/openstack/openstac
 import flavor from './reducers/dashboard/openstack/flavor-reducer'
 import openstackServers from './reducers/dashboard/openstack/server-reducer'
 import monitoring from './reducers/dashboard/openstack/monitoring-reducer'
+import openstackUserConfig from './reducers/dashboard/openstack/openstack-user-config'
+import openstackMonitoringConfig from './reducers/dashboard/openstack/openstack-monitoring-config'
+
 
 export default combineReducers({
 	openstackProjectsReducer,
 	openstackProjectByIdReducer,
 	flavor,
 	openstackServers,
-	monitoring
+	monitoring,
+	openstackUserConfig,
+	openstackMonitoringConfig
 });

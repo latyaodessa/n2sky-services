@@ -1,55 +1,60 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions"
-import {getMonitoringData} from '../../../actions/dashboard/openstack-monitoring-actions'
+import {getMonitoringData, getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
 import ProjectsDashlet from './dashlets/projects-dashlet'
 import MonitoringDashlet from './dashlets/monitoring-dashlet'
-
+import OpenStackCreateMetricPopUp from './modal/openstack-create-metric-modal'
 
 
 @connect((store) => {
 	return {
-		monitoring: store.monitoring,
-		projects : store.openstackProjectsReducer.projects,
-		fetched : store.openstackProjectsReducer.fetched
+		projects: store.openstackProjectsReducer.projects,
+		fetched: store.openstackProjectsReducer.fetched,
+		openstackUserConfig: store.openstackUserConfig.config,
+		openstackUserConfigFetched: store.openstackUserConfig.fetched
+
 	}
 })
 export default class OpenStackMainDashboard extends React.Component {
 
+	state = {
+		showModal: false
+	};
+
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getOpenstackProjects());
-		let metrics = [
-			{
-				metric : 'node_cpu',
-				delay : 1,
-				delaytype : 'minutes',
-				step : '10s'
-			},
-			{
-				metric : 'node_memory_active_bytes_total',
-				delay : 60,
-				delaytype : 'minutes',
-				step : '5m'
-			}
-		];
-		this.props.dispatch(getMonitoringData(metrics[0]));
-		this.props.dispatch(getMonitoringData(metrics[1]));
+
+		this.props.dispatch(getOpenStackUserConfigData('fedorenko'));
+
 	}
 
+
 	addDashlets(projects) {
-		if(!projects.projects) return null;
-		return projects.projects.map(prj =>  <ProjectsDashlet key={prj.id} project={prj}/>);
+		if (!projects.projects) return null;
+		return projects.projects.map(prj => <ProjectsDashlet key={prj.id} project={prj}/>);
+	}
+
+	addMonitoringDashlets() {
+		return this.props.openstackUserConfig.map(conf => <MonitoringDashlet conf={conf}/>);
+	}
+
+	showCloseModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		})
 	}
 
 
 	render() {
 		return (
 			<div>
+				{this.state.showModal ? <OpenStackCreateMetricPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}
 				{this.props.fetched ? this.addDashlets(this.props.projects) : <Loader/>}
-				{this.props.monitoring.node_cpu ? <MonitoringDashlet monitoring={this.props.monitoring.node_cpu}/> : <b>bb</b>}
-				{this.props.monitoring.node_memory_active_bytes_total ? <MonitoringDashlet monitoring={this.props.monitoring.node_memory_active_bytes_total}/> : <b>bb</b>}
+				<button onClick={this.showCloseModal.bind(this)}>add metrics</button>
+				{this.props.openstackUserConfigFetched ? this.addMonitoringDashlets() : <Loader/>}
 			</div>
 		)
 	}

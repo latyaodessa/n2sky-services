@@ -1,15 +1,12 @@
 export default function reducer(state =
 																	{
-																		data: null,
-																		fetched: false,
-																		error: null
+																		data: []
 																	}
 																, action) {
 
-	if(action.type.includes('FULFILLED')){
-	return {
-		...state,
-		[action.type.substring(0, action.type.indexOf('/'))]: action.payload
-	}}
-	return {...state, error: action.payload}
+	if(action.type.includes('FETCH_MONITORING_DATA_FULFILLED')){
+		let metric = action.payload;
+		state[metric[0].metric.__name__] = metric;
+	}
+	return {...state}
 }
