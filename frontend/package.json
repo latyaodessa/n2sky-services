@@ -32,6 +32,7 @@
     "react-dom": "^15.4.2",
     "react-moment": "^0.6.5",
     "react-timeseries-charts": "^0.12.8",
+    "rickshaw": "^1.6.3",
     "sass-loader": "^6.0.2"
   },
   "devDependencies": {

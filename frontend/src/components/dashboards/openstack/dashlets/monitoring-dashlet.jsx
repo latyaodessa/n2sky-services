@@ -17,8 +17,12 @@ export default class MonitoringDashlet extends React.Component {
 
 	state = {
 		metricName: '',
+		columns: ["time", "value"],
+		points: '',
+		tracker: null,
 		metric: {},
-		data: null
+		data: null,
+		series: null
 	};
 
 	constructor(props) {
@@ -51,17 +55,40 @@ export default class MonitoringDashlet extends React.Component {
 
 	setGraphData() {
 
+		let datatest = {};
+
+		datatest.name = this.state.metricName;
+		datatest.columns = this.state.columns;
+
+
+		this.state.metric.map(dataset => {
+			datatest.points = dataset.values;
+			this.setState({
+				points: dataset.values
+			})
+		});
+
+
+		let serie = new TimeSeries(datatest);
+		this.setState({
+			series : serie
+		})
+
 		console.log(this.state);
 
-		let datasets = this.getDataSets();
-		let labels = this.getLabels();
 
-		this.setState({
-			data: {
-				labels: labels,
-				datasets: datasets
-			}
-		});
+
+
+        //
+		// let datasets = this.getDataSets();
+		// let labels = this.getLabels();
+        //
+		// this.setState({
+		// 	data: {
+		// 		labels: labels,
+		// 		datasets: datasets
+		// 	}
+		// });
 	}
 
 	getLabels() {
@@ -94,21 +121,58 @@ export default class MonitoringDashlet extends React.Component {
 		return datasets;
 	}
 
+	getYAxisFirst(){
+		return (<YAxis
+			id={this.state.metric[0].__name__}
+			label="Price ($)"
+			type="linear"
+			min={this.state.series.min()} max={this.state.series.max()}
+			width="60"/>);
+	}
+
+	getYAxis(){
+		// if(this.state.metric<=1) return;
+		return this.state.metric.slice(1).forEach(v => {
+			return (<YAxis
+				id={v.metric.__name__}
+				label="Price ($)"
+				type="linear"
+				min={this.state.series.min()} max={this.state.series.max()}
+				width="60"/>)
+		});
+	}
+
+
+	getLineCharts() {
+		return this.state.metric.map(v => {
+			let ds = {};
+			ds.name = v.metric.__name__;
+			ds.columns = this.state.columns;
+			ds.points = v.values;
+			return (<LineChart axis={v.metric.__name__} series={new TimeSeries(ds)}/>)
+		});
+	}
+
 
 	render() {
-		// let series = new TimeSeries(this.state.data2);
-		//
-		// return (<ChartContainer timeRange={series.timerange()}>
-		// 	<ChartRow height="200">
-		// 		<YAxis id="axis1" label="AUD" type="linear" format="$,.2f"/>
-		// 		<Charts>
-		// 			<LineChart axis="axis1" series={series}/>
-		// 		</Charts>
-		// 	</ChartRow>
-		// </ChartContainer>);
+		return (<div>{this.state.series ?
+			<ChartContainer utc={true}
+											showGrid={true}
+											showGridPosition="under"
+											timeRange={this.state.series.timerange()}
+											trackerPosition={this.state.tracker}
+											trackerTimeFormat="%X"
+											onTrackerChanged={tracker => this.setState({tracker})}>
+				<ChartRow height="200">
+					{this.getYAxis()}
+					<Charts>
+						{this.getLineCharts()}
+					</Charts>
+				</ChartRow>
+			</ChartContainer> : null}</div>);
 
 		// return (<div/>);
-		return (<div>{this.state.data ? <Line data={this.state.data} width="600" height="250"/> : null}</div>)
+		// return (<div>{this.state.data ? <Line data={this.state.data} width="600" height="250"/> : null}</div>)
 
 	}
 }
