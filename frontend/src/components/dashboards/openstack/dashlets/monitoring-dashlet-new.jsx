@@ -113,7 +113,7 @@ export default class MonitoringDashlet extends React.Component {
 			});
 		};
 
-		setInterval(() => this.triggerMonitoring(), 10000);
+		setInterval(() => this.triggerMonitoring(), 5000);
 
 	}
 
