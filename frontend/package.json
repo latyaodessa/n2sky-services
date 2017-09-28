@@ -7,7 +7,7 @@
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint --ext js --ext jsx src || exit 0",
-    "dev": " webpack-dashboard -- webpack-dev-server",
+    "dev": " webpack-dashboard -- webpack-dev-server --port 9593 --hot --host 0.0.0.0",
     "test": "export NODE_ENV=test && jest"
   },
   "repository": {
