@@ -13,7 +13,16 @@ app.use(bodyParser.json());
 app.use(function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://131.130.37.20:9594');
+    let allowedOrigins = ['http://131.130.37.20:9594', 'http://localhost:8888/'];
+    let origin = req.headers.origin;
+
+    // console.log(origin, "asdasdasd");
+
+    if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
+    // res.setHeader('Access-Control-Allow-Origin', 'http://131.130.37.20:9594');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
