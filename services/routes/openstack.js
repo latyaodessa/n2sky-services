@@ -7,6 +7,8 @@ module.exports = function (router) {
 
     let user = 'admin';
     const HOST = 'http://131.130.37.20/';
+    const HOST_VITRAGE = 'http://131.130.37.20:8999/';
+    const HOST_NETWORKS = 'http://131.130.37.20:9696/';
 
     let getToken = function getToken() {
         return new Promise((res, rej) => {
@@ -46,10 +48,32 @@ module.exports = function (router) {
             })
     });
 
+
     router.get('/servers/:id', function (req, res) {
         getProjectToken(req.params.id).then(token => {
             let options = {
                 url: HOST + 'compute/v2.1/servers/detail',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+    //
+    //
+    // commands: ips, diagnostics, os-security-groups, os-instance-actions, os-interface
+    //
+    //
+    router.get('/servers/:command/:projectid/:serverid', function (req, res) {
+        getProjectToken(req.params.projectid).then(token => {
+            let options = {
+                url: HOST + 'compute/v2.1/servers/' + req.params.serverid + '/' + req.params.command,
                 headers: {
                     'X-Auth-Token': token,
                 }
@@ -96,13 +120,66 @@ module.exports = function (router) {
             })
     });
 
-    // TODO not working networks
-
+    // NETWORKS
     router.get('/networks', function (req, res) {
 
         getToken().then(token => {
             let options = {
-                url: 'http://131.130.37.20:9696/v2.0/networks',
+                url: HOST_NETWORKS + 'v2.0/networks',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+    router.get('/extensions', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_NETWORKS + 'v2.0/extensions',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+    router.get('/subnetpools', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_NETWORKS + 'v2.0/subnetpools',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+    router.get('/service-providers', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_NETWORKS + 'v2.0/service-providers',
                 headers: {
                     'X-Auth-Token': token,
                 }
@@ -172,6 +249,64 @@ module.exports = function (router) {
                 res.send(err);
             })
     });
+
+    // VITRAGE
+
+    router.get('/rca/template', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_VITRAGE + '/v1/template/',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+    router.get('/rca/template/:id', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_VITRAGE + '/v1/template/' + req.params.id,
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+    router.get('/rca/resources', function (req, res) {
+
+        getToken().then(token => {
+            let options = {
+                url: HOST_VITRAGE + '/v1/resources/',
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
+
 
 };
 
