@@ -55,6 +55,16 @@ $pad: 0.925rem;
         height: 50px;
         padding-left: 16px;
       }
+      & .mulitple-lines {
+        display: flex;
+        & span {
+          padding-left: 30px;
+          cursor: pointer;
+          &:hover {
+            color: #e2b4d2;
+          };
+        }
+      }
     }
   }
   a {

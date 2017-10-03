@@ -1,0 +1,16 @@
+.dashlet-header {
+  display: flex;
+  height: 20px;
+
+  & .left-side {
+    margin: 0 0 0 20px;
+  }
+  & .right-side {
+    margin-left: auto;
+    padding-right: 20px;
+    & img {
+      height: 35px;
+      cursor: pointer;
+    }
+  }
+}

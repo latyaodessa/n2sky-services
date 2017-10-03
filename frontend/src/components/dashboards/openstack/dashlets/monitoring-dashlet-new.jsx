@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Rickshaw from 'rickshaw'
 import {getMonitoringData} from '../../../../actions/dashboard/openstack-monitoring-actions'
 import style from 'rickshaw/rickshaw.css'
+import MonitoringDashletHeader from './components/monitoring-dashlet-header'
 
 @connect((store) => {
 	return {
@@ -113,7 +114,7 @@ export default class MonitoringDashlet extends React.Component {
 			});
 		};
 
-		setInterval(() => this.triggerMonitoring(), 5000);
+		// setInterval(() => this.triggerMonitoring(), 5000);
 
 	}
 
@@ -139,6 +140,7 @@ export default class MonitoringDashlet extends React.Component {
 	render() {
 		return (
 			<div className="pure-u-1-2 pure-sm-1-1">
+				{this.state.metric ? <MonitoringDashletHeader name={this.state.metric[0].metric.__name__}/> : null}
 				<div className="dashlet-container">
 					{this.state.series.length > 0 && this.graph ? this.getChart() : null}
 					<div ref="graph" id={this.props.conf.metric}/>

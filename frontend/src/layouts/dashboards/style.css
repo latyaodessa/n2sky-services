@@ -37,6 +37,13 @@
     .head-nav li a img {
       height: 50px;
       padding-left: 16px; }
+    .head-nav li a .mulitple-lines {
+      display: flex; }
+      .head-nav li a .mulitple-lines span {
+        padding-left: 30px;
+        cursor: pointer; }
+        .head-nav li a .mulitple-lines span:hover {
+          color: #e2b4d2; }
 .head-nav a {
   align-items: center;
   width: 100%;
