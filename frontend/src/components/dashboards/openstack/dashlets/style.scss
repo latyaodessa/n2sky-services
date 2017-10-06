@@ -21,6 +21,23 @@
 
 }
 
+.title {
+
+  & .title-header {
+    text-transform: capitalize;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  & .info-header-item {
+    display: flex;
+    & img {
+      height: 20px;
+      margin-right: 10px;
+    }
+  }
+
+}
+
 
 
 material.header {

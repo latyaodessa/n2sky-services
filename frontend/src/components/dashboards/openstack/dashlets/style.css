@@ -15,6 +15,16 @@
     background: white;
     width: 100%; }
 
+.title .title-header {
+  text-transform: capitalize;
+  font-size: 18px;
+  font-weight: 600; }
+.title .info-header-item {
+  display: flex; }
+  .title .info-header-item img {
+    height: 20px;
+    margin-right: 10px; }
+
 material.header {
   background: white;
   padding: 20px 20px 10px 20px; }
