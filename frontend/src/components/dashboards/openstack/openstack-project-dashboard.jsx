@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getOpenstackProjectById} from "../../../actions/dashboard/openstack-actions"
 import Loader from './../../core/loader/loader'
-import FlavorDashboard from './flavor-dashboard'
-import ServerDashboard from './server-dashboard'
+import ComputeDashboard from './boards/compute-dashboard'
 import style from './style.scss'
 
 @connect((store) => {
@@ -22,16 +21,14 @@ export default class OpenStackProjectDashboard extends React.Component {
 		this.props.dispatch(getOpenstackProjectById(this.props.params.id));
 	}
 
-	getComputeDashboard() {
-		return (<div className="pure-g">
-			<FlavorDashboard id={this.props.params.id}/>
-			<ServerDashboard id={this.props.params.id}/>
-		</div>);
+	componentDidMount() {
+		this.setActiveTab("nova");
 	}
+
 
 	getActiveTab() {
 		if (this.state.activeTab === 'nova') {
-			return this.getComputeDashboard();
+			return <ComputeDashboard id={this.props.params.id}/>
 		}
 	}
 
@@ -42,6 +39,7 @@ export default class OpenStackProjectDashboard extends React.Component {
 	}
 
 	getTabs(project) {
+		console.log(project);
 		return project.catalog.map(ct => <li onClick={() => this.setActiveTab(ct.name)} key={ct.name}><a>{ct.name}</a>
 		</li>);
 	}

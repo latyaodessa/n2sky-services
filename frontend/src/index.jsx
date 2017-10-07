@@ -14,6 +14,8 @@ import UserProfile from './components/auth/user-profile'
 import DashboardsOverview from './components/dashboards/dashbpards-overview'
 import OpenStackMainDashboard from './components/dashboards/openstack/openstack-main-dashboard'
 import OpenStackProjectDashboard from './components/dashboards/openstack/openstack-project-dashboard'
+import ServerDetailsDashboard from './components/dashboards/openstack/boards/server-details-dashlet'
+
 
 
 render((
@@ -25,6 +27,7 @@ render((
 				<Route path="/overview" component={DashboardsOverview}/>
 				<Route path="/openstack" component={OpenStackMainDashboard}/>
 				<Route path="/openstack/project/:id" component={OpenStackProjectDashboard}/>
+				<Route path="/openstack/server/:projectid/:serverid" component={ServerDetailsDashboard}/>
 			</Route>
 		</Router>
 	</Provider>

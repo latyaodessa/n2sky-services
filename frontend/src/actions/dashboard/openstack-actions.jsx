@@ -11,7 +11,9 @@ import {
 	FETCH_FLAVOR_FULFILLED,
 	FETCH_FLAVOR_REJECTED,
 	FETCH_SERVER_FULFILLED,
-	FETCH_SERVER_REJECTED
+	FETCH_SERVER_REJECTED,
+	FETCH_SERVER_BY_ID_FULFILLED,
+	FETCH_SERVER_BY_ID_REJECTED
 } from "../../constants/dashboard/openstack-constants"
 
 export function getOpenstackProjects() {
@@ -50,14 +52,39 @@ export function getOpenstackFlavor(id) {
 	}
 }
 
-	export function getOpenstackServers(id) {
-		return function (dispatch) {
-			axios.get(HOST + '/servers/' + id)
-				.then((res) => {
-					dispatch({type: FETCH_SERVER_FULFILLED, payload: res.data})
-				})
-				.catch((err) => {
-					dispatch({type: FETCH_SERVER_REJECTED, payload: err})
-				})
-		}
+export function getOpenstackServers(id) {
+	return function (dispatch) {
+		axios.get(HOST + '/servers/' + id)
+			.then((res) => {
+				dispatch({type: FETCH_SERVER_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_SERVER_REJECTED, payload: err})
+			})
+	}
 }
+
+export function getOpenstackServerById(projectId, serverId) {
+	return function (dispatch) {
+		axios.get(HOST + '/server/' + [projectId, serverId].join("/"))
+			.then((res) => {
+				dispatch({type: FETCH_SERVER_BY_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_SERVER_BY_ID_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getOpenstackServerInfo(command, projectid, serverid) {
+	return function (dispatch) {
+		axios.get(HOST + '/servers/' + [command, projectid, serverid].join("/"))
+			.then((res) => {
+				dispatch({type: "FETCH_SERVER_INFO_FULFILLED_" + command, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: "FETCH_SERVER_INFO_REJECTED_" + command, payload: err})
+			})
+	}
+}
+

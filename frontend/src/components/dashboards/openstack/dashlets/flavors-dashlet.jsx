@@ -23,7 +23,8 @@ export default class FlavorDashlet extends React.Component {
 		return (
 			<material className={this.state.selected ? 'child selected' : 'child'}>
 				<div className='content'>
-					<div onClick={this.setSelected.bind(this)} className='title'>{this.props.flavor.name}</div>
+					<div onClick={this.setSelected.bind(this)} className='title'>{this.props.flavor.name} ID: {this.props.flavor.id} RAM: {this.props.flavor.ram} Disk: {this.props.flavor.disk} GB
+					</div>
 					<div onClick={this.setSelected.bind(this)} className='description'>
 						<ul>
 						<li>ID: {this.props.flavor.id}</li>

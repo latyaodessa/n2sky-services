@@ -4,7 +4,6 @@ import {getOpenstackServers} from "../../../actions/dashboard/openstack-actions"
 import Loader from './../../core/loader/loader'
 import ServerDashlet from './dashlets/server-dashlet'
 
-
 @connect((store) => {
 	return {
 		servers: store.openstackServers.servers,

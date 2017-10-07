@@ -65,6 +65,24 @@ module.exports = function (router) {
                 res.send(err);
             })
     });
+
+    router.get('/server/:projectid/:serverid', function (req, res) {
+        getProjectToken(req.params.projectid).then(token => {
+            let options = {
+                url: HOST + 'compute/v2.1/servers/' + req.params.serverid,
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            };
+            request(options, function (er, response, body) {
+                res.send(body);
+            });
+        })
+            .catch(err => {
+                res.send(err);
+            })
+    });
+
     //
     //
     // commands: ips, diagnostics, os-security-groups, os-instance-actions, os-interface

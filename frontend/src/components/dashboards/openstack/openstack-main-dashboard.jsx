@@ -4,7 +4,6 @@ import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions
 import {getMonitoringData, getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
 import ProjectsDashlet from './dashlets/projects-dashlet'
-// import MonitoringDashlet from './dashlets/monitoring-dashlet'
 import OpenStackCreateMetricPopUp from './modal/openstack-create-metric-modal'
 import MonitoringDashlet from './dashlets/monitoring-dashlet-new'
 

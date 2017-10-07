@@ -11,7 +11,7 @@
 }
 
 .list-dashlet {
-  margin: 25px;
+  padding: 15px;
 
   & material {
     display: block;
@@ -25,15 +25,15 @@
 
   & .title-header {
     text-transform: capitalize;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    padding: 5px 5px 5px 10px;
   }
   & .info-header-item {
     display: flex;
-    & img {
-      height: 20px;
-      margin-right: 10px;
-    }
+    padding: 0 0 5px 10px;
+  & img {
+    height: 25px;
+  }
   }
 
 }
@@ -81,12 +81,11 @@ material.child.ui-sortable-helper, material.child.selected .content {
   box-sizing: border-box;
   box-shadow: 0 0 20px 4px gray;
   z-index: 1000;
-  width: 110%;
 }
 material.child.selected .content {
   -webkit-transform: translate(-5%, -50%) translate(0, 10px);
   transform: translate(-5%, -50%) translate(0, 10px);
-  max-width: 395px;
+  width: 50%;
   margin: 20px;
 }
 material.child.selected .content > .title {

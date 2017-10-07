@@ -25,7 +25,7 @@ export default class FlavorDashboard extends React.Component {
 
 	render() {
 		return (
-			<div className='list-dashlet pure-u-1-3'>
+			<div className='list-dashlet pure-u-1-2'>
 				<div className="atb-text-wrap">
 					<div className="atb-text">
 						<h1 className="new-single-title">Flavors</h1>
