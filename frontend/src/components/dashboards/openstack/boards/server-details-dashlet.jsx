@@ -2,17 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {getOpenstackServerInfo, getOpenstackServerById} from "../../../../actions/dashboard/openstack-actions"
 import Loader from './../../../core/loader/loader'
+import ServerIconWhite from './../../../../../res/img/icons/cloud-computing-white.svg'
 
 
 @connect((store) => {
 	return {
 		details: store.openstackServerDetails,
-		addresses: store.openstackServerDetails.addresses,
-		instanceActions : store.openstackServerDetails.instanceActions,
-		interfaceAttachments : store.openstackServerDetails.interfaceAttachments,
-		security_groups : store.openstackServerDetails.security_groups,
-		diagnostics : store.openstackServerDetails["tap215ff2ff-6f_rx_drop"],
-		server : store.serverDetails.server
+		instanceActions: store.openstackServerDetails.instanceActions,
+		interfaceAttachments: store.openstackServerDetails.interfaceAttachments,
+		security_groups: store.openstackServerDetails.security_groups,
+		server: store.serverDetails.server
 	}
 })
 export default class ServerDetailsDashboard extends React.Component {
@@ -20,19 +19,75 @@ export default class ServerDetailsDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getOpenstackServerById(props.params.projectid, props.params.serverid));
-		this.props.dispatch(getOpenstackServerInfo("ips",props.params.projectid, props.params.serverid));
-		this.props.dispatch(getOpenstackServerInfo("diagnostics",props.params.projectid, props.params.serverid));
-		this.props.dispatch(getOpenstackServerInfo("os-security-groups",props.params.projectid, props.params.serverid));
-		this.props.dispatch(getOpenstackServerInfo("os-instance-actions",props.params.projectid, props.params.serverid));
-		this.props.dispatch(getOpenstackServerInfo("os-interface",props.params.projectid, props.params.serverid));
+		this.props.dispatch(getOpenstackServerInfo("os-security-groups", props.params.projectid, props.params.serverid));
+		this.props.dispatch(getOpenstackServerInfo("os-instance-actions", props.params.projectid, props.params.serverid));
+		this.props.dispatch(getOpenstackServerInfo("os-interface", props.params.projectid, props.params.serverid));
 
+	}
+
+	createDashlet(title, body) {
+		return <div className="pure-u-1-3 pure-sm-1-1">
+			<div className="dashlet-container">
+				<div className="title">{title}</div>
+				<ul>
+					{body}
+				</ul>
+			</div>
+		</div>
+	}
+
+	addIpAddresses() {
+		if (!this.props.server) return <Loader/>;
+		let bodyList = this.props.server.server.addresses.private.map(ip => {
+			return <li key={ip.addr}> IP Address: {ip.addr}, type: {ip["OS-EXT-IPS:type"]}</li>
+		});
+		return this.createDashlet("Allocated Ip Adresses", bodyList);
+	}
+
+	addInstancesActions() {
+		if (!this.props.instanceActions) return <Loader/>;
+		let bodyList = this.props.instanceActions.instanceActions.map(item => {
+			return <li key={item.request_id}> Action: {item.action}, at {item.start_time}</li>
+		});
+		return this.createDashlet("Instance actions", bodyList);
+	}
+
+	addInterfaceAttachments() {
+		if (!this.props.interfaceAttachments) return <Loader/>;
+		let bodyList = this.props.interfaceAttachments.interfaceAttachments.map(item => {
+			return <li key={item.mac_addr}>
+				<div className="multiple-line-item">
+					<ul> {item.fixed_ips.map(ip => {
+						return <li key={ip.ip_address}> Fixed Ip: {ip.ip_address}</li>
+					})}
+						<li>Mac Address: {item.mac_addr}</li>
+						<li>Port State: {item.port_state}</li>
+					</ul>
+				</div>
+			</li>
+		});
+		return this.createDashlet("Interface attachments", bodyList);
+	}
+
+	addSecurityGroups() {
+		if (!this.props.security_groups) return <Loader/>;
+		let bodyList = this.props.security_groups.security_groups.map(item => {
+			return <li key={item.id}><div className="multiple-line-item"><ul><li> Name: {item.name}</li><li> Descriptopn: {item.description}</li></ul></div></li>
+		});
+		return this.createDashlet("Security Groups", bodyList);
 	}
 
 	render() {
 		return (
 			<div>
-				details
-				{		console.log(this.props)}
+				<div className="server-title">
+					<img src={ServerIconWhite}/>
+				</div>
+				{this.addIpAddresses()}
+				{this.addInstancesActions()}
+				{this.addInterfaceAttachments()}
+				{this.addSecurityGroups()}
+				{console.log(this.props)}
 			</div>
 		)
 	}

@@ -5,6 +5,18 @@
   padding: 15px;
   min-height: 200px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+  .dashlet-container .title {
+    font-family: Lekton;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    margin: 0 0;
+    line-height: 24px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-decoration: none; }
   .dashlet-container ul {
     min-height: 175px; }
 
@@ -23,7 +35,8 @@
   display: flex;
   padding: 0 0 5px 10px; }
   .title .info-header-item img {
-    height: 25px; }
+    height: 23px;
+    padding: 0 10px 0 0; }
 
 material.header {
   background: white;

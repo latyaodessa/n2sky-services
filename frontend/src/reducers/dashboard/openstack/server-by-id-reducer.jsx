@@ -16,7 +16,7 @@ export default function reducer(state =
 			return {
 				...state,
 				fetched: true,
-				flavor: action.payload
+				server: action.payload
 			}
 		}
 		default: {
