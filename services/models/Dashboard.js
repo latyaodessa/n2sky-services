@@ -9,8 +9,9 @@ let Dashboard   = new Schema({
     "delaytype": String,
     "step": String,
     "steptype": String,
-    "violated": Boolean,
-    "show": [String]
+    "show": [String],
+    "selectedServerId" : String,
+    "selectedServerName" : String
 
 });
 module.exports = mongoose.model('Dashboard', Dashboard);

@@ -1,13 +1,16 @@
 .dashlet-header {
-  display: flex;
-  height: 20px; }
+  display: flex; }
   .dashlet-header .left-side {
     margin: 0 0 0 20px; }
+    .dashlet-header .left-side span {
+      margin: 0;
+      text-transform: capitalize; }
   .dashlet-header .right-side {
     margin-left: auto;
     padding-right: 20px; }
     .dashlet-header .right-side img {
       height: 35px;
+      margin: 15px 0 0 0;
       cursor: pointer; }
 
 /*# sourceMappingURL=style.css.map */

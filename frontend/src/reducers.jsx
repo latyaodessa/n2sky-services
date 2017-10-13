@@ -8,6 +8,8 @@ import openstackServerDetails from './reducers/dashboard/openstack/server-detail
 import openstackUserConfig from './reducers/dashboard/openstack/openstack-user-config'
 import openstackMonitoringConfig from './reducers/dashboard/openstack/openstack-monitoring-config'
 import serverDetails from './reducers/dashboard/openstack/server-by-id-reducer'
+import removeOpenstackMonitoring from './reducers/dashboard/openstack/openstack-remove-monitoring'
+
 
 
 export default combineReducers({
@@ -19,5 +21,6 @@ export default combineReducers({
 	openstackUserConfig,
 	openstackMonitoringConfig,
 	openstackServerDetails,
-	serverDetails
+	serverDetails,
+	removeOpenstackMonitoring
 });

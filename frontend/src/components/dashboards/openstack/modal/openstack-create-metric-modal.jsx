@@ -1,10 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux';
 import OpenStackMonitoringModal from './../../core/modal/openstack-new-dashlet-modal'
+import Loader from './../../../core/loader/loader'
 import {
 	getOpenStackMonitoringConfig,
 	addOpenStackDashLet
 } from '../../../../actions/dashboard/openstack-monitoring-actions'
+import {getOpenstackProjects, getOpenstackServers} from './../../../../actions/dashboard/openstack-actions'
 import AddIcon from './../../../../../res/img/icons/add.png'
 import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 
@@ -12,7 +14,9 @@ import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 @connect((store) => {
 	return {
 		config: store.openstackMonitoringConfig.config,
-		fetched: store.openstackMonitoringConfig.fetched
+		fetched: store.openstackMonitoringConfig.fetched,
+		projects: store.openstackProjectsReducer.projects,
+		servers: store.openstackServers.servers
 	}
 })
 export default class OpenStackCreateMetricPopUp extends React.Component {
@@ -26,18 +30,36 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 			delaytype: '',
 			step: '',
 			steptype: '',
-			violated: false
+			violated: false,
+			server: '',
+			show: '',
+			servers: [],
+			serversLoaded: false,
+			loader: false,
+			objectToSave: {},
+			selectedServerId : '',
+			selectedServerName : ''
 		};
 
 		this.handleChange = ::this.handleChange;
 		this.handleSubmitNewOpenStackDashlet = ::this.handleSubmitNewOpenStackDashlet;
 
-		this.props.dispatch(getOpenStackMonitoringConfig());
 	}
 
 
 	handleChange(event) {
 		this.setState({[event.target.name]: event.target.value});
+		if (event.target.name === "server") {
+			let index = event.target.selectedIndex;
+			let optionElement = event.target.childNodes[index];
+			let serverId = optionElement.getAttribute('id');
+			let serverName = optionElement.getAttribute('name');
+
+			this.setState({
+				selectedServerId: serverId ? serverId : "openstack",
+				selectedServerName: serverName ? serverName : "openstack"
+			});
+		}
 	}
 
 	changeValidation() {
@@ -46,26 +68,44 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 		});
 	}
 
-	validate() {
+	validate(res) {
 		return new Promise((resolve, reject) => {
-			for (let key of Object.keys(this.state)) {
-				if (this.state[key] === 0 || this.state[key] === '') {
+			for (let key of Object.keys(res)) {
+				if (res[key] === 0 || res[key] === '') {
 					this.changeValidation();
 					reject('Error');
 					return;
 				}
 			}
-			resolve(new Date());
+			resolve(res);
+		})
+	}
+
+	commit() {
+		return new Promise((resolve, reject) => {
+			let objectToSave = {
+				user: localStorage.getItem("user"),
+				metric: this.state.metric,
+				delay: this.state.delay,
+				delaytype: this.state.delaytype,
+				step: this.state.step + this.state.steptype,
+				stepWithoutType: this.state.step,
+				steptype: this.state.steptype,
+				server: this.state.server,
+				show: this.state.show,
+				selectedServerId : this.state.selectedServerId,
+				selectedServerName : this.state.selectedServerName
+			};
+
+			resolve(objectToSave);
 		})
 	}
 
 
 	handleSubmitNewOpenStackDashlet() {
-		this.validate()
-			.then(res => this.setState({
-				step: this.state.step + this.state.steptype
-			}))
-			.then(res => this.props.dispatch(addOpenStackDashLet('fedorenko', this.state)))
+		this.commit()
+			.then(res => this.validate(res))
+			.then(res => {this.props.dispatch(addOpenStackDashLet(res)); 	location.reload()})
 			.catch(err => console.log('There was an error:' + err));
 	}
 
@@ -93,22 +133,60 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 	}
 
 	getConfigCombobox() {
-		return (<select name='metric' onChange={this.handleChange} className="combobox full-width">
-			<option disabled selected value> -- select an option --</option>
-			{this.props.config.map(c => <option key={c}>{c}</option>)}
+		return (<select name='metric' onClick={this.state.server ? this.getServerMetricConfig.bind(this) : null}
+										onChange={this.handleChange} className="combobox full-width"
+										disabled={this.state.server ? false : true}>
+			<option disabled selected value> -- select an metric --</option>
+			{this.state.server && this.props.fetched ? this.props.config.map(c => <option key={c}>{c}</option>) : null}
 		</select>);
 	}
 
+	getServerMetricConfig() {
+		this.props.dispatch(getOpenStackMonitoringConfig(this.state.server));
+	}
+
 	getServersCombobox() {
-		return (<select name='server' onChange={this.handleChange} className="combobox full-width">
+		return (<select name='server' onClick={!this.state.serversLoaded ? this.loadMoreServers.bind(this) : null}
+										onChange={this.handleChange} className="combobox full-width">
 			<option disabled selected value> -- select a server --</option>
-			{this.props.config.map(c => <option key={c}>{c}</option>)}
+			<option key="openstack" value={"openstack"}>Openstack Server</option>
+			{this.state.servers.map(s => {
+				let floatingIp = s.addresses.private.filter(adr => adr["OS-EXT-IPS:type"] === "floating").shift();
+				return floatingIp ? <option key={s.id} id={s.id} name={s.name} value={floatingIp.addr}>Instance: {s.name}</option> : null;
+			})}
 		</select>);
 	}
+
+	loadMoreServers() {
+		this.setState({
+			loader: true
+		});
+		this.props.dispatch(getOpenstackProjects()).then(() => {
+			this.props.projects.projects.map(prj => {
+				this.props.dispatch(getOpenstackServers(prj.id)).then(() => {
+					console.log(this.state.servers);
+					console.log(this.props.servers.servers);
+					this.setState({
+						servers: this.props.servers.servers,
+						serversLoaded: true,
+						loader: false
+					});
+					console.log(this.state.servers);
+
+				});
+			});
+		})
+	}
+
 	getShowCombobox() {
-		return (<select name='server' onChange={this.handleChange} className="combobox full-width">
-			<option disabled selected value> -- where to add --</option>
-			{this.props.config.map(c => <option key={c}>{c}</option>)}
+		return (<select name='show' onClick={!this.state.serversLoaded ? this.loadMoreServers.bind(this) : null}
+										onChange={this.handleChange} className="combobox full-width">
+			<option disabled selected value> -- select a server --</option>
+			<option key="openstack" value="openstack">Openstack Dashboard</option>
+			<option key="overview" value="overview">Overview Dashboard</option>
+			{this.state.servers.map(s => {
+				return <option key={s.id} value={s.id}>Dashboard of instance: {s.name}</option>;
+			})}
 		</select>);
 	}
 
@@ -116,15 +194,15 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 		return (<form className="pure-form">
 			<fieldset className="pure-group">
 				<label>Metric</label>
-				{this.props.fetched ? this.getConfigCombobox() : null}
+				{this.state.servers ? this.getServersCombobox() : null}
+				{this.state.servers ? this.getShowCombobox() : null}
+				{this.getConfigCombobox()}
 				<input name='delay' onChange={this.handleChange} type="number" className="pure-input-1-1 half-width"
 							 placeholder="Delay"/>
 				{this.getTimeCombobox('delaytype')}
 				<input name="step" onChange={this.handleChange} type="number" className="pure-input-1-1 half-width"
 							 placeholder="Step"/>
 				{this.getTimeComboboxShort('steptype')}
-				{this.props.fetched ? this.getServersCombobox() : null}
-				{this.props.fetched ? this.getShowCombobox() : null}
 			</fieldset>
 			<a onClick={this.handleSubmitNewOpenStackDashlet} className="button" role="button">
 				<span>Create</span>
@@ -141,7 +219,8 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 			{this.state.violated ?
 				<AbstractAlertPopUp type='warning' validation={this.changeValidation.bind(this)} title="Validation error"
 														content="All fields are mandatory!"/> : null}
-			<OpenStackMonitoringModal showCloseModal={this.props.showCloseModal} content={this.getContent()}
+			<OpenStackMonitoringModal showCloseModal={this.props.showCloseModal}
+																content={!this.state.loader ? this.getContent() : <Loader/>}
 																title="Create new Dashlet"/>
 		</div>)
 	}

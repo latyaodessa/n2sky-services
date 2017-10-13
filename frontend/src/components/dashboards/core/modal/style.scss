@@ -52,7 +52,9 @@ $easing: cubic-bezier(.55, 0, .1, 1);
     .title {
       position: absolute;
       top: 0;
-      padding: 15px;
+      & h1 {
+        color: #2f3031;
+      }
     }
   }
 

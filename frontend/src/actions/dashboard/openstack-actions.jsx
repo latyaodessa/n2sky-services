@@ -18,7 +18,7 @@ import {
 
 export function getOpenstackProjects() {
 	return function (dispatch) {
-		axios.get(GET_PROJECTS)
+		 return axios.get(GET_PROJECTS)
 			.then((res) => {
 				dispatch({type: FETCH_OPENSTACK_PROJECTS_FULFILLED, payload: res.data})
 			})
@@ -30,7 +30,7 @@ export function getOpenstackProjects() {
 
 export function getOpenstackProjectById(id) {
 	return function (dispatch) {
-		axios.get(GET_PROJECTS + '/' + id)
+		return axios.get(GET_PROJECTS + '/' + id)
 			.then((res) => {
 				dispatch({type: FETCH_OPENSTACK_PROJECT_BY_ID_FULFILLED, payload: res.data})
 			})
@@ -54,7 +54,7 @@ export function getOpenstackFlavor(id) {
 
 export function getOpenstackServers(id) {
 	return function (dispatch) {
-		axios.get(HOST + '/servers/' + id)
+		return axios.get(HOST + '/servers/' + id)
 			.then((res) => {
 				dispatch({type: FETCH_SERVER_FULFILLED, payload: res.data})
 			})

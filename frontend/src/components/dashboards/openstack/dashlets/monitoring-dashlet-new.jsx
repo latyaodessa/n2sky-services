@@ -140,7 +140,7 @@ export default class MonitoringDashlet extends React.Component {
 	render() {
 		return (
 			<div className="pure-u-1-2 pure-sm-1-1">
-				{this.state.metric ? <MonitoringDashletHeader name={this.state.metric[0].metric.__name__}/> : null}
+				{this.state.metric ? <MonitoringDashletHeader conf={this.props.conf} name={this.state.metric[0].metric.__name__}/> : null}
 				<div className="dashlet-container">
 					{this.state.series.length > 0 && this.graph ? this.getChart() : null}
 					<div ref="graph" id={this.props.conf.metric}/>

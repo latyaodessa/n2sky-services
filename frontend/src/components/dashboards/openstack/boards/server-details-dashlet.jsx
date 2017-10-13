@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {getOpenstackServerInfo, getOpenstackServerById} from "../../../../actions/dashboard/openstack-actions"
 import {getOpenStackUserConfigData} from '../../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../../core/loader/loader'
+import MonitoringDashlet from './../dashlets/monitoring-dashlet-new'
 import ServerIconWhite from './../../../../../res/img/icons/cloud-computing-white.svg'
 
 
@@ -13,7 +14,8 @@ import ServerIconWhite from './../../../../../res/img/icons/cloud-computing-whit
 		interfaceAttachments: store.openstackServerDetails.interfaceAttachments,
 		security_groups: store.openstackServerDetails.security_groups,
 		server: store.serverDetails.server,
-		openstackUserConfig: store.openstackUserConfig.config
+		openstackUserConfig: store.openstackUserConfig.config,
+		openstackUserConfigFetched: store.openstackUserConfig.fetched
 	}
 })
 export default class ServerDetailsDashboard extends React.Component {
@@ -24,6 +26,8 @@ export default class ServerDetailsDashboard extends React.Component {
 		this.props.dispatch(getOpenstackServerInfo("os-security-groups", props.params.projectid, props.params.serverid));
 		this.props.dispatch(getOpenstackServerInfo("os-instance-actions", props.params.projectid, props.params.serverid));
 		this.props.dispatch(getOpenstackServerInfo("os-interface", props.params.projectid, props.params.serverid));
+
+		this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), props.params.serverid));
 
 	}
 
@@ -102,7 +106,9 @@ export default class ServerDetailsDashboard extends React.Component {
 				{this.addInstancesActions()}
 				{this.addInterfaceAttachments()}
 				{this.addSecurityGroups()}
-				{console.log(this.props)}
+				<div className="monitoring-dashboard-container">
+				{this.props.openstackUserConfigFetched ? this.addMonitoringDashlets() : <Loader/>}
+				</div>
 			</div>
 		)
 	}

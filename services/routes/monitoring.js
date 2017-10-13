@@ -3,7 +3,7 @@ module.exports = function (router) {
     let monitoring = require('./../monitoring/monitoring'),
         request = require('request');
 
-    const PROD_HOST = "http://131.130.37.20";
+    const PROD_HOST = "131.130.37.20";
 
 
     router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {
@@ -21,15 +21,15 @@ module.exports = function (router) {
             }
         };
 
-
         request(options, function (er, response, body) {
             res.send(JSON.parse(body).data.result);
         })
 
     });
 
-    router.get('/monitoring/metrics', function (req, res) {
-        let endpoint = PROD_HOST + ':9090/api/v1/label/__name__/values'
+    router.get('/monitoring/metrics/:host', function (req, res) {
+        let host = req.params.host === "openstack" ? PROD_HOST : req.params.host;
+        let endpoint = "http://" + host + ':9090/api/v1/label/__name__/values'
         let options = {
             url: endpoint,
             headers: {

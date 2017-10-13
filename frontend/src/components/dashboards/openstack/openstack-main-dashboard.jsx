@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions"
-import {getMonitoringData, getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
+import {getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
+import ModalToolMenu from '../core/tools/modal-tool-menu'
 import ProjectsDashlet from './dashlets/projects-dashlet'
 import OpenStackCreateMetricPopUp from './modal/openstack-create-metric-modal'
 import MonitoringDashlet from './dashlets/monitoring-dashlet-new'
@@ -51,6 +52,7 @@ export default class OpenStackMainDashboard extends React.Component {
 	render() {
 		return (
 			<div>
+				{/*<ModalToolMenu />*/}
 				{this.state.showModal ? <OpenStackCreateMetricPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}
 				{this.props.fetched ? this.addDashlets(this.props.projects) : <Loader/>}
 				<div>
