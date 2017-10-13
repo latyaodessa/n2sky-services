@@ -13,7 +13,7 @@ import {
 
 export function getMonitoringData(m) {
 	return function (dispatch) {
-		let monitoringEndpoint = [MONITORING_API, m.metric, m.delay, m.delaytype, m.step].join('/');
+		let monitoringEndpoint = [MONITORING_API, m.server, m.metric, m.delay, m.delaytype, m.step].join('/');
 		return axios.get(monitoringEndpoint)
 				.then((res) => {
 					dispatch({type: m.metric + '/'+ FETCH_MONITORING_DATA_FULFILLED, payload: res.data})
@@ -24,9 +24,9 @@ export function getMonitoringData(m) {
 		}
 }
 
-export function getOpenStackUserConfigData(user) {
+export function getOpenStackUserConfigData(user, show) {
 	return function (dispatch) {
-		let endpoint = [USER_API, 'dashboard', 'openstack', user].join('/');
+		let endpoint = [USER_API, 'dashboard', 'openstack', user, show].join('/');
 		return axios.get(endpoint)
 			.then((res) => {
 				dispatch({type: FETCH_OPENSTACK_USER_CONFIG_FULFILLED, payload: res.data})

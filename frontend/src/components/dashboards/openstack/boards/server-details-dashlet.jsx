@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {getOpenstackServerInfo, getOpenstackServerById} from "../../../../actions/dashboard/openstack-actions"
+import {getOpenStackUserConfigData} from '../../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../../core/loader/loader'
 import ServerIconWhite from './../../../../../res/img/icons/cloud-computing-white.svg'
 
@@ -11,7 +12,8 @@ import ServerIconWhite from './../../../../../res/img/icons/cloud-computing-whit
 		instanceActions: store.openstackServerDetails.instanceActions,
 		interfaceAttachments: store.openstackServerDetails.interfaceAttachments,
 		security_groups: store.openstackServerDetails.security_groups,
-		server: store.serverDetails.server
+		server: store.serverDetails.server,
+		openstackUserConfig: store.openstackUserConfig.config
 	}
 })
 export default class ServerDetailsDashboard extends React.Component {
@@ -25,8 +27,12 @@ export default class ServerDetailsDashboard extends React.Component {
 
 	}
 
+	addMonitoringDashlets() {
+		return this.props.openstackUserConfig.map(conf => <MonitoringDashlet key={conf.metric} conf={conf}/>);
+	}
+
 	createDashlet(title, body) {
-		return <div className="pure-u-1-3 pure-sm-1-1">
+		return <div className="pure-u-1-4 pure-sm-1-1">
 			<div className="dashlet-container">
 				<div className="title">{title}</div>
 				<ul>
@@ -72,7 +78,14 @@ export default class ServerDetailsDashboard extends React.Component {
 	addSecurityGroups() {
 		if (!this.props.security_groups) return <Loader/>;
 		let bodyList = this.props.security_groups.security_groups.map(item => {
-			return <li key={item.id}><div className="multiple-line-item"><ul><li> Name: {item.name}</li><li> Descriptopn: {item.description}</li></ul></div></li>
+			return <li key={item.id}>
+				<div className="multiple-line-item">
+					<ul>
+						<li> Name: {item.name}</li>
+						<li> Descriptopn: {item.description}</li>
+					</ul>
+				</div>
+			</li>
 		});
 		return this.createDashlet("Security Groups", bodyList);
 	}
@@ -80,9 +93,11 @@ export default class ServerDetailsDashboard extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className="server-title">
+				{this.props.server ? <div className="server-title">
 					<img src={ServerIconWhite}/>
-				</div>
+					<div><h1>{this.props.server.server.name}</h1>
+					<span>Status: {this.props.server.server.status}</span></div>
+				</div> : <Loader/>}
 				{this.addIpAddresses()}
 				{this.addInstancesActions()}
 				{this.addInterfaceAttachments()}

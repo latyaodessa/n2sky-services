@@ -15,6 +15,7 @@
     "http": "0.0.0",
     "jsonfile": "^3.0.1",
     "moment": "^2.18.1",
+    "mongoose": "^4.10.8",
     "openstack-wrapper": "^2.1.7",
     "promise": "^8.0.1",
     "querystring": "^0.2.0",

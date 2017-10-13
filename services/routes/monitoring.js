@@ -6,9 +6,9 @@ module.exports = function (router) {
     const PROD_HOST = "http://131.130.37.20";
 
 
-    router.get('/monitoring/:query/:minus/:type/:step', function (req, res) {
+    router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {
 
-        let monitoring_host = PROD_HOST + ':9090/api/v1/query_range?query=';
+        let monitoring_host = "http://" + req.params.server + ':9090/api/v1/query_range?query=';
         let formatted = monitoring.currentTimeStemp();
         let minusMinutes = monitoring.currentStampMinusTime(req.params.minus, req.params.type);
 

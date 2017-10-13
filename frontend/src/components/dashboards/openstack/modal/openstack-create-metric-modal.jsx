@@ -99,6 +99,19 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 		</select>);
 	}
 
+	getServersCombobox() {
+		return (<select name='server' onChange={this.handleChange} className="combobox full-width">
+			<option disabled selected value> -- select a server --</option>
+			{this.props.config.map(c => <option key={c}>{c}</option>)}
+		</select>);
+	}
+	getShowCombobox() {
+		return (<select name='server' onChange={this.handleChange} className="combobox full-width">
+			<option disabled selected value> -- where to add --</option>
+			{this.props.config.map(c => <option key={c}>{c}</option>)}
+		</select>);
+	}
+
 	getContent() {
 		return (<form className="pure-form">
 			<fieldset className="pure-group">
@@ -110,6 +123,8 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 				<input name="step" onChange={this.handleChange} type="number" className="pure-input-1-1 half-width"
 							 placeholder="Step"/>
 				{this.getTimeComboboxShort('steptype')}
+				{this.props.fetched ? this.getServersCombobox() : null}
+				{this.props.fetched ? this.getShowCombobox() : null}
 			</fieldset>
 			<a onClick={this.handleSubmitNewOpenStackDashlet} className="button" role="button">
 				<span>Create</span>

@@ -8,7 +8,6 @@ import OpenStackCreateMetricPopUp from './modal/openstack-create-metric-modal'
 import MonitoringDashlet from './dashlets/monitoring-dashlet-new'
 
 
-
 @connect((store) => {
 	return {
 		projects: store.openstackProjectsReducer.projects,
@@ -28,7 +27,7 @@ export default class OpenStackMainDashboard extends React.Component {
 		super(props);
 		this.props.dispatch(getOpenstackProjects());
 
-		this.props.dispatch(getOpenStackUserConfigData('fedorenko'));
+		this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), "openstack"));
 
 	}
 
@@ -54,7 +53,9 @@ export default class OpenStackMainDashboard extends React.Component {
 			<div>
 				{this.state.showModal ? <OpenStackCreateMetricPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}
 				{this.props.fetched ? this.addDashlets(this.props.projects) : <Loader/>}
-				<div><button onClick={this.showCloseModal.bind(this)}>add metrics</button></div>
+				<div>
+					<button onClick={this.showCloseModal.bind(this)}>add metrics</button>
+				</div>
 				{this.props.openstackUserConfigFetched ? this.addMonitoringDashlets() : <Loader/>}
 			</div>
 		)

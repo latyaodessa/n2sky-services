@@ -1,10 +1,14 @@
 import React from 'react'
 import Sidebar from './../core/sidebar'
+import {browserHistory} from 'react-router'
 import style from './style.scss'
 
 export default class AbstractDashboardLayout extends React.Component {
 	constructor(props) {
 		super(props);
+		if(!localStorage.getItem("user")){
+			browserHistory.push('/');
+		}
 		this.state = {};
 
 	}
