@@ -13,7 +13,7 @@ import style from './style.scss'
 })
 export default class OpenStackProjectDashboard extends React.Component {
 	state = {
-		activeTab: null
+		activeTab: 'nova'
 	};
 
 	constructor(props) {
@@ -38,9 +38,11 @@ export default class OpenStackProjectDashboard extends React.Component {
 		})
 	}
 
-	getTabs(project) {
-		console.log(project);
-		return project.catalog.map(ct => <li onClick={() => this.setActiveTab(ct.name)} key={ct.name}><a>{ct.name}</a>
+	getTabs() {
+
+		let tabs = ["nova", "neutron", "images", "vitrage"];
+
+		return tabs.map(ct => <li onClick={() => this.setActiveTab(ct)} key={ct}><a>{ct}</a>
 		</li>);
 	}
 
@@ -48,9 +50,11 @@ export default class OpenStackProjectDashboard extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.props.fetched ? <nav className="topbar">
-					<ul>{this.getTabs(this.props.project)}</ul>
-				</nav> : <Loader/>}
+				 <nav className="topbar">
+					<ul>
+						{this.getTabs()}
+					</ul>
+				</nav>
 				{this.state.activeTab ? this.getActiveTab() : <Loader/>}
 			</div>
 		)

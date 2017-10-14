@@ -193,7 +193,7 @@ module.exports = function (router) {
             })
     });
 
-    router.get('/service-providers', function (req, res) {
+        router.get('/service-providers', function (req, res) {
 
         getToken().then(token => {
             let options = {
