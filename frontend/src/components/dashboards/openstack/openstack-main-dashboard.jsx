@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {getOpenstackProjects} from "../../../actions/dashboard/openstack-actions"
 import {getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
-import ModalToolMenu from '../core/tools/modal-tool-menu'
 import ProjectsDashlet from './dashlets/projects-dashlet'
 import OpenStackCreateMetricPopUp from './modal/openstack-create-metric-modal'
 import MonitoringDashlet from './dashlets/monitoring-dashlet-new'

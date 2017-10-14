@@ -4,6 +4,7 @@ import UserIcon from './../../../res/img/icons/user.svg'
 import OpenStackIcon from './../../../res/img/icons/openstack.png'
 import CloudifyIcon from './../../../res/img/icons/cloudify.png'
 import N2SkyIcon from './../../../res/img/logo-white.png'
+import SettingsIcon from './../../../res/img/icons/settings.svg'
 import {browserHistory} from 'react-router'
 
 
@@ -44,6 +45,12 @@ export default class Sidebar extends React.Component {
 							<a href="#">
 								<img className="sibar-icon" src={N2SkyIcon}/>
 								<span>N2Sky Dashboard</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<img className="sibar-icon" src={SettingsIcon}/>
+								<span>Dashboards Settigns</span>
 							</a>
 						</li>
 					</ul>
