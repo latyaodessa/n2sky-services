@@ -1,25 +1,27 @@
 import React from 'react'
 import Sidebar from './../core/sidebar'
 import {browserHistory} from 'react-router'
-import SettingsMenu from './../core/menu/settings-menu'
+import SettingsPopUp from './../core/popup/settings-popup'
 import style from './style.scss'
 
 export default class AbstractDashboardLayout extends React.Component {
 	constructor(props) {
 		super(props);
-		if(!localStorage.getItem("user")){
+		if (!localStorage.getItem("user")) {
 			browserHistory.push('/');
 		}
-		this.state = {};
+		this.state = {
+			showModal: false
+		};
 
 	}
 
 	componentDidMount() {
-		window.addEventListener("resize", this.updateDimensions);
+		// window.addEventListener("resize", this.updateDimensions);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("resize", this.updateDimensions);
+		// window.removeEventListener("resize", this.updateDimensions);
 	}
 
 	updateDimensions() {
@@ -28,14 +30,20 @@ export default class AbstractDashboardLayout extends React.Component {
 		})
 	}
 
+	showCloseModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		})
+	}
+
 	render() {
 		return (
 			<div>
-				<Sidebar/>
+				<Sidebar showCloseModal={this.showCloseModal.bind(this)}/>
 				<div className="wrap-all-the-things">
 					{React.cloneElement(this.props.children)}
 				</div>
-				<SettingsMenu/>
+				{this.state.showModal ? <SettingsPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}
 			</div>
 		)
 	}

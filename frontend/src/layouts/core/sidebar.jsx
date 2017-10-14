@@ -5,6 +5,7 @@ import OpenStackIcon from './../../../res/img/icons/openstack.png'
 import CloudifyIcon from './../../../res/img/icons/cloudify.png'
 import N2SkyIcon from './../../../res/img/logo-white.png'
 import SettingsIcon from './../../../res/img/icons/settings.svg'
+import HomeIcon from './../../../res/img/icons/home.svg'
 import {browserHistory} from 'react-router'
 
 
@@ -30,6 +31,12 @@ export default class Sidebar extends React.Component {
 							</Link>
 						</li>
 						<li>
+							<Link to="/overview">
+								<img className="sibar-icon" src={HomeIcon}/>
+								<span>Main Dashboard</span>
+							</Link>
+						</li>
+						<li>
 							<Link to="/openstack">
 								<img className="sibar-icon" src={OpenStackIcon}/>
 								<span>OpenStack Dashboard</span>
@@ -48,7 +55,7 @@ export default class Sidebar extends React.Component {
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a onClick={this.props.showCloseModal} href="#">
 								<img className="sibar-icon" src={SettingsIcon}/>
 								<span>Dashboards Settigns</span>
 							</a>

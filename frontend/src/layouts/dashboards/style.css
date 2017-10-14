@@ -51,7 +51,7 @@
   text-decoration: none;
   transition: color 400ms; }
   .head-nav a span {
-    padding-left: 5px;
+    padding-left: 20px;
     position: relative;
     display: block;
     z-index: 0;
@@ -72,6 +72,9 @@
   z-index: 1;
   background: rgba(19, 26, 7, 0.14);
   transition: width 400ms; }
+  .main-head li:last-child {
+    position: absolute;
+    bottom: 0; }
   .main-head:hover {
     width: 326px; }
     .main-head:hover + .wrap-all-the-things {
