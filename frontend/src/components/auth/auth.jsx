@@ -44,6 +44,7 @@ export default class Auth extends React.Component {
 			name: this.state.username,
 			password: this.state.password
 		})).then(() => {
+			console.log(this.props);
 			if (this.props.login.resp.success) {
 				localStorage.setItem('user', this.state.username);
 				localStorage.setItem('token', this.props.login.resp.token);
