@@ -3,7 +3,7 @@
 //PROD
 export const HOST = 'http://localhost:9595/api/';
 
-export const HOST_USER_SERVICE = 'http://localhost:9594/';
+export const HOST_USER_SERVICE = 'http://131.130.37.24:9594/';
 
 
 export const MONITORING_API = HOST + 'monitoring';

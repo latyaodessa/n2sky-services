@@ -39,23 +39,41 @@ export default class Auth extends React.Component {
 			return;
 		}
 
+		if(this.state.username === 'admin' && this.state.password === 'admin'){
+					localStorage.setItem('user', 'admin');
+					browserHistory.push('/overview');
+		} else {
+					this.setState({
+						violated: true,
+						violatedMessage: "Please use login/password 'admin' for testing"
+					})
+		}
 
-		this.props.dispatch(login({
-			name: this.state.username,
-			password: this.state.password
-		})).then(() => {
-			console.log(this.props);
-			if (this.props.login.resp.success) {
-				localStorage.setItem('user', this.state.username);
-				localStorage.setItem('token', this.props.login.resp.token);
-				browserHistory.push('/overview');
-			} else {
-				this.setState({
-					violated: true,
-					violatedMessage: this.props.login.resp.message
-				})
-			}
-		});
+
+
+
+
+
+
+
+		
+
+		// this.props.dispatch(login({
+		// 	name: this.state.username,
+		// 	password: this.state.password
+		// })).then(() => {
+		// 	console.log(this.props);
+		// 	if (this.props.login.resp.success) {
+		// 		localStorage.setItem('user', this.state.username);
+		// 		localStorage.setItem('token', this.props.login.resp.token);
+		// 		browserHistory.push('/overview');
+		// 	} else {
+		// 		this.setState({
+		// 			violated: true,
+		// 			violatedMessage: this.props.login.resp.message
+		// 		})
+		// 	}
+		// });
 
 
 	}
