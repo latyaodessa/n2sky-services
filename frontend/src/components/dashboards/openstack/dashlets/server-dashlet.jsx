@@ -15,7 +15,6 @@ export default class ServerDashlet extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.log(this.props);
 	}
 
 	setSelected() {

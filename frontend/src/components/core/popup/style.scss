@@ -1,4 +1,14 @@
 .alert-popup {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   & .popup {
     z-index: 10;
     position: fixed;
@@ -23,11 +33,7 @@
   & .button-popup {
     z-index: 10;
     position: fixed;
-    top: 50vh;
-    margin-top: -78px;
-    left: 50vw;
-    margin-left: -78px;
-    display: inline-block;
+    top: 30vh;
     text-align: center;
     background-color: #e06767;
     padding: 15px;

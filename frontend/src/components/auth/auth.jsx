@@ -1,14 +1,19 @@
 import React from 'react';
-import style from './style.scss'
-import Neuron from './../../../res/img/neuron.png'
+import {connect} from 'react-redux'
+import {login} from '../../actions/administration/user-actions'
 import LogoWhite from './../../../res/img/logo-white.png'
 import LogoBlack from './../../../res/img/logo.svg'
 import {Link} from 'react-router'
 import AbstractAlertPopUp from './../core/popup/abstract-alert-popup'
 import {browserHistory} from 'react-router'
+import style from './style.scss'
 
 
-
+@connect((store) => {
+	return {
+		login: store.login
+	}
+})
 export default class Auth extends React.Component {
 
 
@@ -17,23 +22,42 @@ export default class Auth extends React.Component {
 		username: '',
 		password: '',
 		violated: false,
+		violatedMessage: '',
 		logo: LogoWhite
 	};
 
 	constructor(props) {
 		super(props);
-		if(localStorage.getItem('user')){
+		if (localStorage.getItem('user')) {
 			browserHistory.push('/overview');
 		}
 	}
 
 	authonize() {
 		if (!this.state.username || !this.state.password) {
-			this.setState({violated: true});
+			this.setState({violated: true, violatedMessage: "Login or password can't be empty"});
 			return;
 		}
-		localStorage.setItem('user', this.state.username);
-		browserHistory.push('/overview');
+
+		let user = {
+			name: this.state.username,
+			password: this.state.password
+		};
+
+		this.props.dispatch(login(user)).then(() => {
+			if (this.props.login.resp.success) {
+				localStorage.setItem('user', this.state.username);
+				localStorage.setItem('token', this.props.login.resp.token);
+				browserHistory.push('/overview');
+			} else {
+				this.setState({
+					violated: true,
+					violatedMessage: this.props.login.resp.message
+				})
+			}
+		});
+
+
 	}
 
 
@@ -54,22 +78,22 @@ export default class Auth extends React.Component {
 		return (
 			<div>
 				{this.state.violated ?
-					<AbstractAlertPopUp type='warning' validation={this.changeValidation.bind(this)} title="Validation error"
-															content="All fields are mandatory!"/> : null}
+					<AbstractAlertPopUp type='warning' validation={this.changeValidation.bind(this)}
+															title={this.state.violatedMessage}/> : null}
 				<div className="container">
 					<div className={this.state.form}>
 						<button className="profile__avatar" id="toggleProfile">
 							<div onClick={this.openForm.bind(this)} className="header-auth">
 								<img id="spin" src={this.state.logo}/>
 								<div className="wrapper-header">
-								<div className="letters">
-									<span className="letter">n</span>
-									<span className="letter">2</span>
-									<span className="letter">s</span>
-									<span className="letter">k</span>
-									<span className="letter">y</span>
+									<div className="letters">
+										<span className="letter">n</span>
+										<span className="letter">2</span>
+										<span className="letter">s</span>
+										<span className="letter">k</span>
+										<span className="letter">y</span>
+									</div>
 								</div>
-							</div>
 							</div>
 						</button>
 						<div className="profile__form">

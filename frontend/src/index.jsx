@@ -15,7 +15,7 @@ import DashboardsOverview from './components/dashboards/dashbpards-overview'
 import OpenStackMainDashboard from './components/dashboards/openstack/openstack-main-dashboard'
 import OpenStackProjectDashboard from './components/dashboards/openstack/openstack-project-dashboard'
 import ServerDetailsDashboard from './components/dashboards/openstack/boards/server-details-dashlet'
-
+import VitrageDetailsView from './components/dashboards/openstack/boards/vitrage-details-view'
 
 
 render((
@@ -28,6 +28,7 @@ render((
 				<Route path="/openstack" component={OpenStackMainDashboard}/>
 				<Route path="/openstack/project/:id" component={OpenStackProjectDashboard}/>
 				<Route path="/openstack/server/:projectid/:serverid" component={ServerDetailsDashboard}/>
+				<Route path="/openstack/vitrage/:templateId" component={VitrageDetailsView}/>
 			</Route>
 		</Router>
 	</Provider>

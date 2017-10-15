@@ -1,0 +1,20 @@
+.header-container-panel {
+  padding: 20px;
+  text-transform: capitalize;
+}
+.container-panel {
+  & h1 {
+    padding: 0 0 0 20px;
+  }
+  & ul {
+    background: #FFF;
+    padding: 10px;
+    margin: 20px;
+    & li {
+      padding: 0 0 5px 10px;
+    }
+    & img {
+      height: 30px;
+    }
+  }
+}

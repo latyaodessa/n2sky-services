@@ -13,7 +13,18 @@ import {
 	FETCH_SERVER_FULFILLED,
 	FETCH_SERVER_REJECTED,
 	FETCH_SERVER_BY_ID_FULFILLED,
-	FETCH_SERVER_BY_ID_REJECTED
+	FETCH_SERVER_BY_ID_REJECTED,
+	FETCH_NETRON_FULFILLED,
+	FETCH_NETRON_REJECTED,
+	FETCH_IMAGES_FULFILLED,
+	FETCH_IMAGES_REJECTED,
+	FETCH_TEMPLATES_FULFILLED,
+	FETCH_TEMPLATES_REJECTED,
+	FETCH_TEMPLATE_BY_ID_FULFILLED,
+	FETCH_TEMPLATE_BY_ID_REJECTED,
+	FETCH_RECOURCES_FULFILLED,
+	FETCH_RECOURCES_REJECTED
+
 } from "../../constants/dashboard/openstack-constants"
 
 export function getOpenstackProjects() {
@@ -84,6 +95,77 @@ export function getOpenstackServerInfo(command, projectid, serverid) {
 			})
 			.catch((err) => {
 				dispatch({type: "FETCH_SERVER_INFO_REJECTED_" + command, payload: err})
+			})
+	}
+}
+
+export function getOpenstackNutronByType(type) {
+	return function (dispatch) {
+		axios.get(HOST + '/' + type)
+			.then((res) => {
+				dispatch({type: type + '/' + FETCH_NETRON_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: type + '/' + FETCH_NETRON_REJECTED, payload: err})
+			})
+	}
+}
+
+	export function getOpenstackImages() {
+		return function (dispatch) {
+			axios.get(HOST + '/images')
+				.then((res) => {
+					dispatch({type: FETCH_IMAGES_FULFILLED, payload: res.data})
+				})
+				.catch((err) => {
+					dispatch({type: FETCH_IMAGES_REJECTED, payload: err})
+				})
+		}
+	}
+// 		export function openstackImageDownload(id) {
+// 			return function (dispatch) {
+// 				axios.get(HOST + '/images/image/' + id)
+// 					.then((res) => {
+// 						dispatch({type: xxx, payload: res.data})
+// 					})
+// 					.catch((err) => {
+// 						dispatch({type: xxx, payload: err})
+// 					})
+// 			}
+// }
+
+export function getOpenstackTemplates() {
+	return function (dispatch) {
+		return axios.get(HOST + '/rca/template')
+			.then((res) => {
+				dispatch({type: FETCH_TEMPLATES_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_TEMPLATES_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getOpenstackTemplateById(id) {
+	return function (dispatch) {
+		return axios.get(HOST + '/rca/template/' + id)
+			.then((res) => {
+				dispatch({type: FETCH_TEMPLATE_BY_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_TEMPLATE_BY_ID_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getOpenstackRecources() {
+	return function (dispatch) {
+		axios.get(HOST + '/rca/resources')
+			.then((res) => {
+				dispatch({type: FETCH_RECOURCES_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_RECOURCES_REJECTED, payload: err})
 			})
 	}
 }

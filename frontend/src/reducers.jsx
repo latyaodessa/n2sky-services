@@ -9,6 +9,13 @@ import openstackUserConfig from './reducers/dashboard/openstack/openstack-user-c
 import openstackMonitoringConfig from './reducers/dashboard/openstack/openstack-monitoring-config'
 import serverDetails from './reducers/dashboard/openstack/server-by-id-reducer'
 import removeOpenstackMonitoring from './reducers/dashboard/openstack/openstack-remove-monitoring'
+import openstackNeutron from './reducers/dashboard/openstack/openstack-neutron-reducer'
+import openstackImages from './reducers/dashboard/openstack/openstack-images-reducer'
+import openstackVitrage from './reducers/dashboard/openstack/openstack-templates-reducer'
+
+import login from './reducers/administration/login-reducer'
+
+
 
 
 
@@ -22,5 +29,9 @@ export default combineReducers({
 	openstackMonitoringConfig,
 	openstackServerDetails,
 	serverDetails,
-	removeOpenstackMonitoring
+	removeOpenstackMonitoring,
+	openstackNeutron,
+	openstackImages,
+	openstackVitrage,
+	login
 });

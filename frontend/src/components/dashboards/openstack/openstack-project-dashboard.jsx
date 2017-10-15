@@ -3,6 +3,10 @@ import {connect} from 'react-redux';
 import {getOpenstackProjectById} from "../../../actions/dashboard/openstack-actions"
 import Loader from './../../core/loader/loader'
 import ComputeDashboard from './boards/compute-dashboard'
+import NeutronDashboard from './boards/neutron-dashboard'
+import ImagesDashboard from './boards/images-dashboard'
+import VitrageDashboard from './boards/vitrage-dashboard'
+
 import style from './style.scss'
 
 @connect((store) => {
@@ -21,14 +25,15 @@ export default class OpenStackProjectDashboard extends React.Component {
 		this.props.dispatch(getOpenstackProjectById(this.props.params.id));
 	}
 
-	componentDidMount() {
-		this.setActiveTab("nova");
-	}
-
-
 	getActiveTab() {
 		if (this.state.activeTab === 'nova') {
 			return <ComputeDashboard id={this.props.params.id}/>
+		} else if (this.state.activeTab === 'neutron') {
+			return <NeutronDashboard/>
+		} else if (this.state.activeTab === 'images') {
+			return <ImagesDashboard/>
+		} else if (this.state.activeTab === 'vitrage') {
+			return <VitrageDashboard/>
 		}
 	}
 
@@ -39,18 +44,15 @@ export default class OpenStackProjectDashboard extends React.Component {
 	}
 
 	getTabs() {
-
 		let tabs = ["nova", "neutron", "images", "vitrage"];
-
-		return tabs.map(ct => <li onClick={() => this.setActiveTab(ct)} key={ct}><a>{ct}</a>
-		</li>);
+		return tabs.map(ct => <li onClick={() => this.setActiveTab(ct)} key={ct}><a>{ct}</a></li>);
 	}
 
 
 	render() {
 		return (
 			<div>
-				 <nav className="topbar">
+				<nav className="topbar">
 					<ul>
 						{this.getTabs()}
 					</ul>

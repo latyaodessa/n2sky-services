@@ -23,13 +23,6 @@ export default class AbstractAlertPopUp extends React.Component {
 		return (
 			<div onClick={this.props.validation} className="alert-popup">
 				<span className='button-popup'>{this.props.title}</span>
-				<div className='popup'>
-					<div>{this.props.content}</div>
-					<svg height="50" width="100">
-						<path d="M0 50 L40 0 L65 0 Z"/>
-						{this.props.content}
-					</svg>
-				</div>
 			</div>
 		);
 	}

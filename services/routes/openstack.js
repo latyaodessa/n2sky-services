@@ -259,8 +259,17 @@ module.exports = function (router) {
                     'X-Auth-Token': token,
                 }
             };
+
             request(options, function (er, response, body) {
-                res.send(body);
+
+                res.writeHead(200, {
+                    'Content-Type': 'text/plain',
+                    'Content-disposition': 'attachment;filename=' + "image",
+                    'Content-Length': 99999
+                });
+                res.end(new Buffer(body, 'binary'));
+
+                // res.download(body);
             });
         })
             .catch(err => {
