@@ -7,6 +7,8 @@ import {LOGIN_FULFILLED, LOGIN_REJECTED} from "../../constants/administration/us
 
 export function login(userData) {
 	console.log(userData);
+	console.log(HOST_USER_SERVICE + "login");
+
 	return function (dispatch) {
 		return axios.post(HOST_USER_SERVICE + "login", userData)
 			.then((res) => {
