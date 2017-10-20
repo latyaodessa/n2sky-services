@@ -33,6 +33,12 @@ export default class Auth extends React.Component {
 		}
 	}
 
+	_handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			this.authonize();
+		}
+	}
+
 	authonize() {
 		if (!this.state.username || !this.state.password) {
 			this.setState({violated: true, violatedMessage: "Login or password can't be empty"});
@@ -48,6 +54,7 @@ export default class Auth extends React.Component {
 			if (this.props.login.resp.success) {
 				localStorage.setItem('user', this.state.username);
 				localStorage.setItem('token', this.props.login.resp.token);
+				localStorage.setItem('type', this.props.login.resp.user.type);
 				browserHistory.push('/overview');
 			} else {
 				this.setState({
@@ -74,6 +81,10 @@ export default class Auth extends React.Component {
 		});
 	}
 
+	signUp = () => {
+		browserHistory.push('/signup');
+	};
+
 	render() {
 		return (
 			<div>
@@ -99,19 +110,20 @@ export default class Auth extends React.Component {
 						<div className="profile__form">
 							<div className="profile__fields">
 								<div className="field">
-									<input value={this.state.username} onChange={(evt) => {
+									<input onKeyPress={this._handleKeyPress} value={this.state.username} onChange={(evt) => {
 										this.setState({username: evt.target.value})
 									}} type="text" id="fieldUser" className="input" required/>
 									<label htmlFor="fieldUser" className="label">Username</label>
 								</div>
 								<div className="field">
-									<input value={this.state.password} onChange={(evt) => {
+									<input onKeyPress={this._handleKeyPress} value={this.state.password} onChange={(evt) => {
 										this.setState({password: evt.target.value})
 									}} type="password" id="fieldPassword" className="input" required/>
 									<label htmlFor="fieldPassword" className="label">Password</label>
 								</div>
 								<div className="profile__footer">
 									<button onClick={this.authonize.bind(this)} className="btn">Login</button>
+									<button onClick={this.signUp} className="btn">Sign up</button>
 								</div>
 							</div>
 						</div>

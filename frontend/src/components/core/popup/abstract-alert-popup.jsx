@@ -2,8 +2,10 @@ import React from 'react'
 import style from './style.scss'
 
 export default class AbstractAlertPopUp extends React.Component {
+
 	constructor(props){
 		super(props);
+
 	}
 
 	getButtonColor(){
@@ -19,9 +21,21 @@ export default class AbstractAlertPopUp extends React.Component {
 		}
 	}
 
+	escFunction(event){
+		if(event.keyCode === 27) {
+			console.log(this.state);
+		}
+	}
+	componentDidMount(){
+		document.addEventListener("keydown", this.escFunction, false);
+	}
+	componentWillUnmount(){
+		document.removeEventListener("keydown", this.escFunction, false);
+	}
+
 	render() {
 		return (
-			<div onClick={this.props.validation} className="alert-popup">
+			<div onKeyPress={this.props.validation} onClick={this.props.validation} className="alert-popup">
 				<span className='button-popup'>{this.props.title}</span>
 			</div>
 		);

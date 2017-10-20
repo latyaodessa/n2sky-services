@@ -85,7 +85,10 @@ button {
 }
 
 .profile__footer {
-  padding-top: 1em;
+  position: absolute;
+  left: 45%;
+  margin-left: -100px;
+  bottom: 0;
 }
 
 /* Form */
@@ -143,6 +146,7 @@ input:valid + .label {
   border-radius: .25rem;
   letter-spacing: .2em;
   transition: background .2s;
+  margin: 10px;
 }
 
 .btn:focus {

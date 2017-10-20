@@ -10,6 +10,7 @@ import style from './../styles/index.scss'
 import AbstractDashboardLayout from './layouts/dashboards/abstract-dashboard-layout'
 
 import Auth from './components/auth/auth'
+import Reg from './components/auth/registration'
 import UserProfile from './components/auth/user-profile'
 import DashboardsOverview from './components/dashboards/dashbpards-overview'
 import OpenStackMainDashboard from './components/dashboards/openstack/openstack-main-dashboard'
@@ -22,6 +23,7 @@ render((
 	<Provider store={store}>
 		<Router history={browserHistory}>
 			<Route path="/" component={Auth}/>
+			<Route path="/signup" component={Reg}/>
 			<Route component={AbstractDashboardLayout}>
 				<Route path="/user/profile" component={UserProfile}/>
 				<Route path="/overview" component={DashboardsOverview}/>

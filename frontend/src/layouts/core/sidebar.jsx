@@ -11,6 +11,10 @@ import {browserHistory} from 'react-router'
 
 export default class Sidebar extends React.Component {
 
+	state = {
+		type: localStorage.getItem("type")
+	};
+
 	logout() {
 		localStorage.removeItem("user");
 		browserHistory.push('/');
@@ -25,7 +29,9 @@ export default class Sidebar extends React.Component {
 							<Link>
 								<img className="sibar-icon" src={UserIcon}/>
 								<div className="mulitple-lines">
-									<span onClick={() => {browserHistory.push('/user/profile')}}>Profile</span>
+									<span onClick={() => {
+										browserHistory.push('/user/profile')
+									}}>Profile</span>
 									<span onClick={this.logout.bind(this)}>Logout</span>
 								</div>
 							</Link>
@@ -36,18 +42,20 @@ export default class Sidebar extends React.Component {
 								<span>Main Dashboard</span>
 							</Link>
 						</li>
-						<li>
-							<Link to="/openstack">
-								<img className="sibar-icon" src={OpenStackIcon}/>
-								<span>OpenStack Dashboard</span>
-							</Link>
-						</li>
+						{this.state.type && this.state.type === 'admin' ?
+							<li>
+								<Link to="/openstack">
+									<img className="sibar-icon" src={OpenStackIcon}/>
+									<span>OpenStack Dashboard</span>
+								</Link>
+							</li> : null}
+						{this.state.type && this.state.type === 'admin' ?
 						<li>
 							<a href="#">
 								<img className="sibar-icon" src={CloudifyIcon}/>
 								<span>Cloudify Dashboard</span>
 							</a>
-						</li>
+						</li> : null}
 						<li>
 							<a href="#">
 								<img className="sibar-icon" src={N2SkyIcon}/>

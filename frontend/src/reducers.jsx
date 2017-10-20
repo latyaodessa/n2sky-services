@@ -14,6 +14,7 @@ import openstackImages from './reducers/dashboard/openstack/openstack-images-red
 import openstackVitrage from './reducers/dashboard/openstack/openstack-templates-reducer'
 
 import login from './reducers/administration/login-reducer'
+import reg from './reducers/administration/reg-reducer'
 
 
 
@@ -33,5 +34,6 @@ export default combineReducers({
 	openstackNeutron,
 	openstackImages,
 	openstackVitrage,
-	login
+	login,
+	reg
 });
