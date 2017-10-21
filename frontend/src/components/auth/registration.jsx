@@ -30,7 +30,7 @@ export default class Reg extends React.Component {
 	constructor(props) {
 		super(props);
 		if (localStorage.getItem('user')) {
-			browserHistory.push('/overview');
+			browserHistory.push('/n2sky');
 		}
 	}
 
@@ -52,7 +52,7 @@ export default class Reg extends React.Component {
 					localStorage.setItem('user', this.props.reg.resp.user.name);
 					localStorage.setItem('token', this.props.reg.resp.token);
 					localStorage.setItem('type', this.props.reg.resp.user.type);
-					browserHistory.push('/overview');
+					browserHistory.push('/n2sky');
 				}
 			})
 		}

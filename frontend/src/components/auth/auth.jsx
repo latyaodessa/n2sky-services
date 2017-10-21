@@ -55,7 +55,7 @@ export default class Auth extends React.Component {
 				localStorage.setItem('user', this.state.username);
 				localStorage.setItem('token', this.props.login.resp.token);
 				localStorage.setItem('type', this.props.login.resp.user.type);
-				browserHistory.push('/overview');
+				this.redirectUser()
 			} else {
 				this.setState({
 					violated: true,
@@ -63,9 +63,16 @@ export default class Auth extends React.Component {
 				})
 			}
 		});
-
-
 	}
+
+
+	redirectUser = () => {
+		if(this.props.login.resp.user.type === 'admin'){
+			browserHistory.push('/overview');
+		} else {
+			browserHistory.push('/n2sky');
+		}
+	};
 
 
 	openForm() {

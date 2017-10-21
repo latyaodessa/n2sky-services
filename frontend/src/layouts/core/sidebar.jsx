@@ -57,10 +57,10 @@ export default class Sidebar extends React.Component {
 							</a>
 						</li> : null}
 						<li>
-							<a href="#">
+							<Link to="/n2sky">
 								<img className="sibar-icon" src={N2SkyIcon}/>
 								<span>N2Sky Dashboard</span>
-							</a>
+							</Link>
 						</li>
 						<li>
 							<a onClick={this.props.showCloseModal} href="#">

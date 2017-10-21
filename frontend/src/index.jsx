@@ -14,6 +14,7 @@ import Reg from './components/auth/registration'
 import UserProfile from './components/auth/user-profile'
 import DashboardsOverview from './components/dashboards/dashbpards-overview'
 import OpenStackMainDashboard from './components/dashboards/openstack/openstack-main-dashboard'
+import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
 import OpenStackProjectDashboard from './components/dashboards/openstack/openstack-project-dashboard'
 import ServerDetailsDashboard from './components/dashboards/openstack/boards/server-details-dashlet'
 import VitrageDetailsView from './components/dashboards/openstack/boards/vitrage-details-view'
@@ -31,6 +32,8 @@ render((
 				<Route path="/openstack/project/:id" component={OpenStackProjectDashboard}/>
 				<Route path="/openstack/server/:projectid/:serverid" component={ServerDetailsDashboard}/>
 				<Route path="/openstack/vitrage/:templateId" component={VitrageDetailsView}/>
+
+				<Route path="/n2sky" component={N2SkyDashboard}/>
 			</Route>
 		</Router>
 	</Provider>
