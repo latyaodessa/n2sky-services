@@ -4,6 +4,8 @@ import {getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-m
 import Loader from './../../core/loader/loader'
 import MonitoringDashlet from './../../dashboards/openstack/dashlets/monitoring-dashlet-new'
 import XORIcon from './../../../../res/img/icons/xor.svg'
+import XORNetwork from './networks/xor-network'
+import NewDescriptionPopup from './common/new-description-popup'
 
 
 @connect((store) => {
@@ -15,13 +17,19 @@ import XORIcon from './../../../../res/img/icons/xor.svg'
 export default class N2SkyDashboard extends React.Component {
 
 
-	state = {
-	};
-
 	constructor(props) {
 		super(props);
+		this.state = {
+			showCreateOpenstackDashlet: false
+		};
 		// this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), 'overview'));
 	}
+
+	showCloseModal = () => {
+		this.setState({
+			showCreateOpenstackDashlet: !this.state.showCreateOpenstackDashlet
+		})
+	};
 
 
 	getOpenstackMonitoringPanel = () => {
@@ -30,11 +38,24 @@ export default class N2SkyDashboard extends React.Component {
 		</div>
 	};
 
+	getNewDescriptionPoppup = () => {
+		return (this.state.showCreateOpenstackDashlet ? <NewDescriptionPopup showCloseModal={this.showCloseModal}/> : null);
+	};
+
+	getContent = () => {
+		return <div>
+			<a onClick={this.showCloseModal} className="button">new description</a>
+		</div>
+	};
+
 
 	render() {
 		return (
 			<div>
-				{this.getOpenstackMonitoringPanel()}
+				{this.getNewDescriptionPoppup()}
+				{this.getContent()}
+				{/*{this.getOpenstackMonitoringPanel()}*/}
+				{/*<XORNetwork />*/}
 			</div>
 		)
 	}

@@ -1,24 +1,24 @@
-import {GET_DOCKERHUB_USER_REJECTED, GET_DOCKERHUB_USER_FULFILLED} from "../../constants/n2sky/dockerhub-constants"
+import {TRAIN_NEURAL_NETWROK_REJECTED, TRAIN_NEURAL_NETWROK_FULFILLED} from "../../constants/n2sky/n2sky-constants"
 
 export default function reducer(state =
 																	{
-																		dockerHubUser: null,
+																		model: null,
 																		done: false
 																	}
 	, action) {
 	switch (action.type) {
-		case GET_DOCKERHUB_USER_REJECTED: {
+		case TRAIN_NEURAL_NETWROK_REJECTED: {
 			return {
 				...state,
 				error: action.payload,
 				done: false
 			}
 		}
-		case GET_DOCKERHUB_USER_FULFILLED: {
+		case TRAIN_NEURAL_NETWROK_FULFILLED: {
 			return {
 				...state,
 				done: true,
-				dockerHubUser: action.payload
+				model: action.payload
 			}
 		}
 		default: {

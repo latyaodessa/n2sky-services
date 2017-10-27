@@ -38,7 +38,7 @@ export default class Reg extends React.Component {
 		if (e.key === 'Enter') {
 			this.register();
 		}
-	}
+	};
 
 	register = () => {
 

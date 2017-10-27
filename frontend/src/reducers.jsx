@@ -17,6 +17,10 @@ import login from './reducers/administration/login-reducer'
 import reg from './reducers/administration/reg-reducer'
 
 
+import neuralNetwork from './reducers/n2sky/neural-network-reducer'
+import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
+
+
 
 
 
@@ -35,5 +39,7 @@ export default combineReducers({
 	openstackImages,
 	openstackVitrage,
 	login,
-	reg
+	reg,
+	neuralNetwork,
+	dockerHub
 });

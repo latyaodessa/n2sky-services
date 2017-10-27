@@ -1,24 +1,24 @@
-import {GET_DOCKERHUB_USER_REJECTED, GET_DOCKERHUB_USER_FULFILLED} from "../../constants/n2sky/dockerhub-constants"
+import {SAVE_DESCRIPTION_REJECTED, SAVE_DESCRIPTION_FULFILLED} from "../../constants/n2sky/n2sky-constants"
 
 export default function reducer(state =
 																	{
-																		dockerHubUser: null,
+																		success: null,
 																		done: false
 																	}
 	, action) {
 	switch (action.type) {
-		case GET_DOCKERHUB_USER_REJECTED: {
+		case SAVE_DESCRIPTION_REJECTED: {
 			return {
 				...state,
 				error: action.payload,
 				done: false
 			}
 		}
-		case GET_DOCKERHUB_USER_FULFILLED: {
+		case SAVE_DESCRIPTION_FULFILLED: {
 			return {
 				...state,
 				done: true,
-				dockerHubUser: action.payload
+				success: action.payload
 			}
 		}
 		default: {
