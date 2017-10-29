@@ -20,6 +20,8 @@ import reg from './reducers/administration/reg-reducer'
 import neuralNetwork from './reducers/n2sky/neural-network-reducer'
 import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 
+import {getDescriptionsReducer, descriptionById} from './reducers/n2sky/description-reducer'
+
 
 
 
@@ -41,5 +43,6 @@ export default combineReducers({
 	login,
 	reg,
 	neuralNetwork,
-	dockerHub
+	dockerHub,
+	getDescriptionsReducer, descriptionById
 });

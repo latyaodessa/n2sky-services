@@ -18,3 +18,16 @@
     }
   }
 }
+
+.container-header-panel {
+  display: flex;
+  justify-content: space-between;
+  & .is-running-header {
+    justify-content: space-between;
+    display: flex;
+    & img {
+      height: 35px;
+      padding: 0 20px 0 15px;
+    }
+  }
+}

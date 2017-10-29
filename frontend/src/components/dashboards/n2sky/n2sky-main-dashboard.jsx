@@ -1,17 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {getOpenStackUserConfigData} from '../../../actions/dashboard/openstack-monitoring-actions'
 import Loader from './../../core/loader/loader'
-import MonitoringDashlet from './../../dashboards/openstack/dashlets/monitoring-dashlet-new'
-import XORIcon from './../../../../res/img/icons/xor.svg'
-import XORNetwork from './networks/xor-network'
-import NewDescriptionPopup from './common/new-description-popup'
+import DescriptionsOverview from './components/description-overview'
 
 
 @connect((store) => {
 	return {
-		// openstackUserConfig: store.openstackUserConfig.config,
-		// openstackUserConfigFetched: store.openstackUserConfig.fetched
+
 	}
 })
 export default class N2SkyDashboard extends React.Component {
@@ -20,42 +15,46 @@ export default class N2SkyDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showCreateOpenstackDashlet: false
+			activeTab: 'Neural Networks'
 		};
-		// this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), 'overview'));
 	}
 
-	showCloseModal = () => {
+
+
+	getTabs() {
+		let tabs = ["Neural Networks", "Running Instances", "Available Networks"];
+		return tabs.map(ct => <li onClick={() => this.setActiveTab(ct)} key={ct}><a>{ct}</a></li>);
+	}
+
+	setActiveTab(tab) {
 		this.setState({
-			showCreateOpenstackDashlet: !this.state.showCreateOpenstackDashlet
+			activeTab: tab
 		})
-	};
+	}
 
-
-	getOpenstackMonitoringPanel = () => {
-		return <div>
-			<img src={XORIcon}/>
-		</div>
-	};
-
-	getNewDescriptionPoppup = () => {
-		return (this.state.showCreateOpenstackDashlet ? <NewDescriptionPopup showCloseModal={this.showCloseModal}/> : null);
-	};
-
-	getContent = () => {
-		return <div>
-			<a onClick={this.showCloseModal} className="button">new description</a>
-		</div>
-	};
+	getActiveTab() {
+		if (this.state.activeTab === 'Neural Networks') {
+			return <DescriptionsOverview/>
+		} else if (this.state.activeTab === 'neutron') {
+			return <DescriptionsOverview/>
+		} else if (this.state.activeTab === 'images') {
+			return <DescriptionsOverview/>
+		} else if (this.state.activeTab === 'vitrage') {
+			return <DescriptionsOverview/>
+		}
+	}
 
 
 	render() {
 		return (
 			<div>
-				{this.getNewDescriptionPoppup()}
-				{this.getContent()}
-				{/*{this.getOpenstackMonitoringPanel()}*/}
-				{/*<XORNetwork />*/}
+				<nav className="topbar">
+					<ul>
+						{this.getTabs()}
+					</ul>
+				</nav>
+				{this.state.activeTab ? this.getActiveTab() : <Loader/>}
+
 			</div>
 		)
 	}

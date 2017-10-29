@@ -13,4 +13,14 @@
   .container-panel ul img {
     height: 30px; }
 
+.container-header-panel {
+  display: flex;
+  justify-content: space-between; }
+  .container-header-panel .is-running-header {
+    justify-content: space-between;
+    display: flex; }
+    .container-header-panel .is-running-header img {
+      height: 35px;
+      padding: 0 20px 0 15px; }
+
 /*# sourceMappingURL=style.css.map */

@@ -83,7 +83,7 @@ export default class NewDescriptionPopup extends React.Component {
 			<option disabled selected value> -- select the project --</option>
 			{this.props.dockerHub ? this.props.dockerHub.results.map(s => {
 				let v = s.user + "/" + s.name;
-				return <option key={s.name} id={s.name} name={s.name} value={s.name}>{v}</option>;
+				return <option key={s.name} id={s.name} name={s.name} value={JSON.stringify(s)}>{v}</option>;
 			}) : null}
 		</select>);
 	}

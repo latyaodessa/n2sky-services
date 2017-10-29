@@ -8,16 +8,22 @@ import store from "./store"
 import style from './../styles/index.scss'
 
 import AbstractDashboardLayout from './layouts/dashboards/abstract-dashboard-layout'
+import AbstractUserN2SkyLayout from './layouts/dashboards/abstract-user-n2sky-layout'
+
+
 
 import Auth from './components/auth/auth'
 import Reg from './components/auth/registration'
 import UserProfile from './components/auth/user-profile'
 import DashboardsOverview from './components/dashboards/dashbpards-overview'
 import OpenStackMainDashboard from './components/dashboards/openstack/openstack-main-dashboard'
-import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
 import OpenStackProjectDashboard from './components/dashboards/openstack/openstack-project-dashboard'
 import ServerDetailsDashboard from './components/dashboards/openstack/boards/server-details-dashlet'
 import VitrageDetailsView from './components/dashboards/openstack/boards/vitrage-details-view'
+
+import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
+import NetworkDetails from './components/dashboards/n2sky/components/network-details'
+
 
 
 render((
@@ -32,8 +38,10 @@ render((
 				<Route path="/openstack/project/:id" component={OpenStackProjectDashboard}/>
 				<Route path="/openstack/server/:projectid/:serverid" component={ServerDetailsDashboard}/>
 				<Route path="/openstack/vitrage/:templateId" component={VitrageDetailsView}/>
-
+			</Route>
+			<Route component={AbstractUserN2SkyLayout}>
 				<Route path="/n2sky" component={N2SkyDashboard}/>
+				<Route path="/n2sky/network/:id" component={NetworkDetails}/>
 			</Route>
 		</Router>
 	</Provider>
