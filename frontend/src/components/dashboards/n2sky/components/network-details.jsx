@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {train, getDescriptionById} from '../../../../actions/n2sky/neural-network-actions'
+import {getDescriptionById, getModelsByDescriptionId} from '../../../../actions/n2sky/neural-network-actions'
+import TrainModelPopup from './train-model-popup'
 import Loader from './../../../core/loader/loader'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
@@ -8,17 +9,28 @@ import LogoGrey from './../../../../../res/img/logo-grey.svg'
 
 @connect((store) => {
 	return {
-		descriptionById: store.descriptionById.description
+		descriptionById: store.descriptionById.description,
+		modelsByDescId: store.modelsByDescId.models
 	}
 })
 export default class NetworkDetails extends React.Component {
 
-	state = {};
+	state = {
+		showModal: false
+	};
 
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getDescriptionById(this.props.params.id));
+		this.props.dispatch(getModelsByDescriptionId(this.props.params.id))
 	}
+
+	showCloseModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		})
+	}
+
 
 	getMainDetails = () => {
 		return <div className="container-panel pure-u-1-3">
@@ -101,15 +113,49 @@ export default class NetworkDetails extends React.Component {
 				<li><a>Neural Network {this.props.descriptionById.name}</a></li>
 			</ul>
 		</nav>
-	}
+	};
 
 	getNavbarInstances = () => {
 		return <nav className="topbar">
 			<ul>
 				<li><a>Trained Models</a></li>
+				<li onClick={this.showCloseModal.bind(this)}><a>Train</a></li>
 			</ul>
 		</nav>
+	};
+
+	getTrainedModelsTalbe = () => {
+		console.log(this.props);
+		return <table className="full-width pure-table">
+			<thead>
+			<tr>
+				<th>Model Name</th>
+				<th>User</th>
+				<th>Requested Parameters</th>
+				<th>Running Instance</th>
+				<th>Test</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			{this.getRow()}
+			</tbody>
+		</table>
 	}
+
+
+	getRow = () => {
+		return this.props.modelsByDescId.map(m => {
+			return <tr key={m.__id} className="pure-table-odd">
+				<td>{m.name}</td>
+				<td>{m.trainedBy}</td>
+				<td>{JSON.stringify(m.modelParameters)}</td>
+				<td>{m.endpoint}</td>
+				<td><button className="Button">Test </button></td>
+			</tr>
+		})
+	};
+
 
 	render() {
 		return (
@@ -117,7 +163,9 @@ export default class NetworkDetails extends React.Component {
 				{this.props.descriptionById ? this.getNavbar() : null}
 				{this.props.descriptionById ? this.getContent() : <Loader/>}
 				{this.getNavbarInstances()}
-			</div>
+				{this.state.showModal &&  this.props.descriptionById ? <TrainModelPopup descriptionById={this.props.descriptionById} modelParameters={this.props.descriptionById.modelParameters} showCloseModal={this.showCloseModal.bind(this)}/> : null}
+				{this.props.modelsByDescId ? this.getTrainedModelsTalbe(): null}
+				</div>
 		)
 	}
 }

@@ -2,7 +2,7 @@ import {TRAIN_NEURAL_NETWROK_REJECTED, TRAIN_NEURAL_NETWROK_FULFILLED} from "../
 
 export default function reducer(state =
 																	{
-																		model: null,
+																		success: null,
 																		done: false
 																	}
 	, action) {
@@ -18,7 +18,7 @@ export default function reducer(state =
 			return {
 				...state,
 				done: true,
-				model: action.payload
+				success: action.payload
 			}
 		}
 		default: {

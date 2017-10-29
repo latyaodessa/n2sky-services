@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import {HOST_NEURAL_NETWORK, HOST_MODEL_REPO_SERVICE} from "../../restclient/abstract-rest-client"
+import {HOST_MODEL_REPO_SERVICE} from "../../restclient/abstract-rest-client"
 
 import {
 	TRAIN_NEURAL_NETWROK_FULFILLED,
@@ -10,13 +10,15 @@ import {
 	FETCH_DESCRIPTIONS_FULFILLED,
 	FETCH_DESCRIPTIONS_REJECTED,
 	FETCH_DESCRIPTION_BY_ID_FULFILLED,
-	FETCH_DESCRIPTION_BY_ID_REJECTED
+	FETCH_DESCRIPTION_BY_ID_REJECTED,
+	FETCH_MODELS_BY_DESC_ID_FULFILLED,
+	FETCH_MODELS_BY_DESC_ID_REJECTED
 } from "../../constants/n2sky/n2sky-constants"
 
 
 export function train(trainData) {
 	return function (dispatch) {
-		return axios.post(HOST_NEURAL_NETWORK + "train", trainData)
+		return axios.post(HOST_MODEL_REPO_SERVICE + "model/train", trainData)
 			.then((res) => {
 				dispatch({type: TRAIN_NEURAL_NETWROK_FULFILLED, payload: res.data})
 			})
@@ -65,4 +67,18 @@ export function getDescriptions(user, userType) {
 				})
 		}
 	}
+
+export function getModelsByDescriptionId(descriptionId) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "models" + "/" + descriptionId;
+	return function (dispatch) {
+		return axios.get(endpoint)
+			.then((res) => {
+				dispatch({type: FETCH_MODELS_BY_DESC_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_MODELS_BY_DESC_ID_REJECTED, payload: err})
+			})
+	}
+}
+
 
