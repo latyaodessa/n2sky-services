@@ -92,8 +92,9 @@ export default class NewDescriptionPopup extends React.Component {
 	this.commit()
 		.then(r => this.hasNull(r))
 		.then(r => {
-			this.props.dispatch(saveModelDescription(r));
-			location.reload();
+			this.props.dispatch(saveModelDescription(r)).then(() => {
+				location.reload();
+			});
 		})
 		.catch(err => this.setState({violated: true}));
 	}
