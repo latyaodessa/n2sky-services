@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux';
-import OpenStackMonitoringModal from './../../core/modal/openstack-new-dashlet-modal'
-import Loader from './../../../core/loader/loader'
+import OpenStackMonitoringModal from './../core/modal/openstack-new-dashlet-modal'
+import Loader from './../../core/loader/loader'
 import {
 	getOpenStackMonitoringConfig,
 	addOpenStackDashLet
-} from '../../../../actions/dashboard/openstack-monitoring-actions'
-import {getOpenstackProjects, getOpenstackServers} from './../../../../actions/dashboard/openstack-actions'
-import AddIcon from './../../../../../res/img/icons/add.png'
-import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
+} from '../../../actions/dashboard/openstack-monitoring-actions'
+import {getOpenstackProjects, getOpenstackServers} from './../../../actions/dashboard/openstack-actions'
+import AddIcon from './../../../../res/img/icons/add.png'
+import AbstractAlertPopUp from './../../core/popup/abstract-alert-popup'
 
 
 @connect((store) => {
@@ -19,7 +19,7 @@ import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 		servers: store.openstackServers.servers
 	}
 })
-export default class OpenStackCreateMetricPopUp extends React.Component {
+export default class CreateAlertPopup extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -135,7 +135,7 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 	getConfigCombobox() {
 		return (<select name='metric' onClick={this.state.server ? this.getServerMetricConfig.bind(this) : null}
 										onChange={this.handleChange} className="combobox full-width"
-										disabled={!this.state.server}>
+										disabled={this.state.server ? false : true}>
 			<option disabled selected value> -- select an metric --</option>
 			{this.state.server && this.props.fetched ? this.props.config.map(c => <option key={c}>{c}</option>) : null}
 		</select>);
@@ -190,19 +190,28 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 		</select>);
 	}
 
+	getSeversity() {
+		return (<select name='severity' onChange={this.handleChange} className="combobox full-width">
+			<option disabled selected value> -- select a severity --</option>
+			<option>page</option>
+			<option>warning</option>
+			<option>critical</option>
+		</select>);
+	}
+
 	getContent() {
 		return (<form className="pure-form">
 			<fieldset className="pure-group">
-				<label>Metric</label>
+				<input name="name" onChange={this.handleChange} type="text" className="pure-input-1-1 full-width" placeholder="Alert Name"/>
 				{this.state.servers ? this.getServersCombobox() : null}
 				{this.state.servers ? this.getShowCombobox() : null}
 				{this.getConfigCombobox()}
-				<input name='delay' onChange={this.handleChange} type="number" className="pure-input-1-1 half-width"
-							 placeholder="Delay"/>
-				{this.getTimeCombobox('delaytype')}
-				<input name="step" onChange={this.handleChange} type="number" className="pure-input-1-1 half-width"
-							 placeholder="Step"/>
-				{this.getTimeComboboxShort('steptype')}
+				{this.getSeversity()}
+				<input name="summary" onChange={this.handleChange} type="text" className="pure-input-1-1 full-width" placeholder="Summary"/>
+				<input name="description" onChange={this.handleChange} type="text" className="pure-input-1-1 full-width" placeholder="Description"/>
+				<input name="expr" onChange={this.handleChange} type="text" className="pure-input-1-1 full-width" placeholder="Expression"/>
+				<input name="for" onChange={this.handleChange} type="number" className="pure-input-1-1 full-width" placeholder="Period"/>
+
 			</fieldset>
 			<a onClick={this.handleSubmitNewOpenStackDashlet} className="button" role="button">
 				<span>Create</span>
@@ -221,7 +230,7 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 														content="All fields are mandatory!"/> : null}
 			<OpenStackMonitoringModal showCloseModal={this.props.showCloseModal}
 																content={!this.state.loader ? this.getContent() : <Loader/>}
-																title="Create new Dashlet"/>
+																title="Create new Alert"/>
 		</div>)
 	}
 }
