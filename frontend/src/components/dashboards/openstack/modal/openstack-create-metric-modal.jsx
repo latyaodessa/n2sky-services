@@ -135,7 +135,7 @@ export default class OpenStackCreateMetricPopUp extends React.Component {
 	getConfigCombobox() {
 		return (<select name='metric' onClick={this.state.server ? this.getServerMetricConfig.bind(this) : null}
 										onChange={this.handleChange} className="combobox full-width"
-										disabled={this.state.server ? false : true}>
+										disabled={!this.state.server}>
 			<option disabled selected value> -- select an metric --</option>
 			{this.state.server && this.props.fetched ? this.props.config.map(c => <option key={c}>{c}</option>) : null}
 		</select>);

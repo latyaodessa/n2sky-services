@@ -6,6 +6,7 @@ import CloudifyIcon from './../../../res/img/icons/cloudify.png'
 import N2SkyIcon from './../../../res/img/logo-white.svg'
 import SettingsIcon from './../../../res/img/icons/settings.svg'
 import HomeIcon from './../../../res/img/icons/home.svg'
+import AlertIcon from './../../../res/img/icons/bell.svg'
 import {browserHistory} from 'react-router'
 
 
@@ -56,6 +57,13 @@ export default class Sidebar extends React.Component {
 								<span>Cloudify Dashboard</span>
 							</a>
 						</li> : null}
+						{this.state.type && this.state.type === 'admin' ?
+							<li>
+								<Link to="/alert">
+									<img className="sibar-icon" src={AlertIcon}/>
+									<span>Alert System</span>
+								</Link>
+							</li> : null}
 						<li>
 							<Link to="/n2sky">
 								<img className="sibar-icon" src={N2SkyIcon}/>

@@ -21,6 +21,8 @@ import OpenStackProjectDashboard from './components/dashboards/openstack/opensta
 import ServerDetailsDashboard from './components/dashboards/openstack/boards/server-details-dashlet'
 import VitrageDetailsView from './components/dashboards/openstack/boards/vitrage-details-view'
 
+import AlertDashboard from './components/dashboards/alert/alert-main-dashboard'
+
 import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
 import NetworkDetails from './components/dashboards/n2sky/components/network-details'
 
@@ -38,6 +40,7 @@ render((
 				<Route path="/openstack/project/:id" component={OpenStackProjectDashboard}/>
 				<Route path="/openstack/server/:projectid/:serverid" component={ServerDetailsDashboard}/>
 				<Route path="/openstack/vitrage/:templateId" component={VitrageDetailsView}/>
+				<Route path="/alert" component={AlertDashboard}/>
 			</Route>
 			<Route component={AbstractUserN2SkyLayout}>
 				<Route path="/n2sky" component={N2SkyDashboard}/>
