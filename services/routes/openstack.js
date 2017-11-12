@@ -2,17 +2,25 @@ module.exports = function (router) {
 
     let Promise = require('promise'),
         request = require('request'),
-        OSWrap = require('openstack-wrapper'),
-        keystone = new OSWrap.Keystone('http://131.130.37.20/identity/v3');
+        OSWrap = require('openstack-wrapper');
 
+    // let IP = '131.130.37.20';
+    // let user = 'admin';
+    // let password = 'password';
+
+
+    let IP = '192.168.0.81';
     let user = 'admin';
-    const HOST = 'http://131.130.37.20/';
-    const HOST_VITRAGE = 'http://131.130.37.20:8999/';
-    const HOST_NETWORKS = 'http://131.130.37.20:9696/';
+    let password = 'nomoresecret';
+
+    let keystone = new OSWrap.Keystone('http://' + IP + '/identity/v3');
+    const HOST = 'http://' + IP + '/';
+    const HOST_VITRAGE = 'http://' + IP + ':8999/';
+    const HOST_NETWORKS = 'http://' + IP + ':9696/';
 
     let getToken = function getToken() {
         return new Promise((res, rej) => {
-            keystone.getToken(user, 'password', function (error, token) {
+            keystone.getToken(user, password, function (error, token) {
                 if (error) return rej(error);
                 return res(token.token);
             });
@@ -283,7 +291,7 @@ module.exports = function (router) {
 
         getToken().then(token => {
             let options = {
-                url: HOST_VITRAGE + '/v1/template/',
+                url: HOST_VITRAGE + 'v1/template/',
                 headers: {
                     'X-Auth-Token': token,
                 }

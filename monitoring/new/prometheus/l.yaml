@@ -1,7 +1,0 @@
-ALERT ApiServerDown
-  IF          absent(up{job="default/kubernetes"}) or sum(up{job="default/kubernetes"}) < 1
-  FOR         5m
-  LABELS      { severity="warning" }
-  ANNOTATIONS {
-    summary = "Kubernetes API server down for 5m",
-    impact = "Our Kubernetes cluster is inoperable. User impact uncertain.",

@@ -1,11 +1,7 @@
 let express = require('express'),
     bodyParser = require('body-parser'),
     request = require('request'),
-    fs = require('fs'),
     jsonfile = require('jsonfile');
-
-
-
 
 let app = express();
 app.use(express.static(__dirname + "/../public"));
