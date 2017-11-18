@@ -1,13 +1,13 @@
 global:
   # The smarthost and SMTP sender used for mail notifications.
   smtp_smarthost: 'localhost:25'
-  smtp_from: 'alertmanager@example.org'
-  smtp_auth_username: 'alertmanager'
+  smtp_from: 'alertmanager@localhost'
+  smtp_auth_username: 'user'
   smtp_auth_password: 'password'
   # The auth token for Hipchat.
-  hipchat_auth_token: '1234556789'
+  #hipchat_auth_token: '1234556789'
   # Alternative host for Hipchat.
-  hipchat_url: 'https://hipchat.foobar.org/'
+  #hipchat_url: 'https://hipchat.foobar.org/'
 
 # The directory from which notification templates are read.
 templates: 
@@ -96,17 +96,17 @@ inhibit_rules:
 receivers:
 - name: 'team-X-mails'
   email_configs:
-  - to: 'team-X+alerts@example.org'
+  - to: 'andreasfedorenko@gmail.com'
 
 - name: 'team-X-pager'
   email_configs:
-  - to: 'team-X+alerts-critical@example.org'
+  - to: 'andreasfedorenko@gmail.com'
   pagerduty_configs:
   - service_key: <team-X-key>
 
 - name: 'team-Y-mails'
   email_configs:
-  - to: 'team-Y+alerts@example.org'
+  - to: 'andreasfedorenko@gmail.com'
 
 - name: 'team-Y-pager'
   pagerduty_configs:
