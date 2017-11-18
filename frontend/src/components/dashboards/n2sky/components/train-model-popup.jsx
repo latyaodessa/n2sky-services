@@ -74,7 +74,7 @@ export default class TrainModelPopup extends React.Component {
 				descriptionId: this.props.descriptionById,
 				trainedBy : localStorage.getItem("user"),
 				modelParameters : this.state.params,
-				endpoint : "http://131.130.37.26:9094"
+				endpoint : "http://192.168.0.79:2223"
 
 			};
 			resolve(train);

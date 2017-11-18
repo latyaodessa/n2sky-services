@@ -30,7 +30,7 @@ export default class DescriptionsOverview extends React.Component {
 		console.log(this.props.descriptions)
 		return this.props.descriptions.map(d => {
 			return <div key={d._id} className="container-panel pure-u-1-3">
-				<div>
+				<div className="container-nn">
 					<div className="container-header-panel">
 						<h1>{d.name}</h1>
 						{this.getRunningStatus(d.isRunning)}
@@ -41,13 +41,13 @@ export default class DescriptionsOverview extends React.Component {
 						<li>Domain: {d.domain}</li>
 						<li>Input Dimentions: {d.inputDimensions}</li>
 						<li>Input Type: {d.inputType}</li>
-						<Link to={"/n2sky/network/" + d._id} className="button" role="button">
-							<span>Details and actions</span>
-							<div className="icon">
-								<img src={Enter}/>
-							</div>
-						</Link>
 					</ul>
+					<Link to={"/n2sky/network/" + d._id} className="button" role="button">
+						<span>Details and actions</span>
+						<div className="icon">
+							<img src={Enter}/>
+						</div>
+					</Link>
 				</div>
 			</div>
 		})
