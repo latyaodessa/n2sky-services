@@ -3,7 +3,8 @@ module.exports = function (router) {
     let monitoring = require('./../monitoring/monitoring'),
         request = require('request');
 
-    const PROD_HOST = "131.130.37.20";
+    // const PROD_HOST = "131.130.37.20";
+    const PROD_HOST = "192.168.0.79";
 
 
     router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {

@@ -9,9 +9,9 @@ module.exports = function (router) {
     // let password = 'password';
 
 
-    let IP = '192.168.0.81';
+    let IP = '192.168.0.79';
     let user = 'admin';
-    let password = 'nomoresecret';
+    let password = 'admin';
 
     let keystone = new OSWrap.Keystone('http://' + IP + '/identity/v3');
     const HOST = 'http://' + IP + '/';

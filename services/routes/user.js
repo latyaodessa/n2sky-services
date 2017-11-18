@@ -7,7 +7,7 @@ module.exports = function (router) {
 
     let Dashboard = require('./../models/Dashboard');
 
-    const PROD_HOST = "131.130.37.20";
+    const PROD_HOST = "192.168.0.79";
 
 
     mongoose.connect(config.database, config.options);
