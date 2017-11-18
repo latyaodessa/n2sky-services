@@ -163,115 +163,115 @@ input:valid + .label {
     background-color: #2f3031; }
 
 .letter:nth-child(1):before {
-  content: "3102578496";
-  margin-top: -96px;
+  content: "8519642703";
+  margin-top: -48px;
   animation-name: letter1;
-  animation-duration: 0.224s;
-  animation-delay: 0.93s;
+  animation-duration: 0.64s;
+  animation-delay: 0.76s;
   animation-fill-mode: forwards; }
 
 @keyframes letter1 {
   from {
-    margin-top: -96px; }
+    margin-top: -48px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(2):before {
-  content: "5640983712";
-  margin-top: -192px;
-  animation-name: letter2;
-  animation-duration: 1.06667s;
-  animation-delay: 0.7s;
-  animation-fill-mode: forwards; }
-
-@keyframes letter2 {
-  from {
-    margin-top: -192px; }
-  to {
-    margin-top: 24px; } }
-.letter:nth-child(3):before {
-  content: "3149582670";
-  margin-top: -192px;
-  animation-name: letter3;
-  animation-duration: 2.98667s;
-  animation-delay: 0.16s;
-  animation-fill-mode: forwards; }
-
-@keyframes letter3 {
-  from {
-    margin-top: -192px; }
-  to {
-    margin-top: 24px; } }
-.letter:nth-child(4):before {
-  content: "0256918347";
-  margin-top: -192px;
-  animation-name: letter4;
-  animation-duration: 2.09778s;
-  animation-delay: 0.41s;
-  animation-fill-mode: forwards; }
-
-@keyframes letter4 {
-  from {
-    margin-top: -192px; }
-  to {
-    margin-top: 24px; } }
-.letter:nth-child(5):before {
-  content: "5037492618";
-  margin-top: -192px;
-  animation-name: letter5;
-  animation-duration: 2.70222s;
-  animation-delay: 0.24s;
-  animation-fill-mode: forwards; }
-
-@keyframes letter5 {
-  from {
-    margin-top: -192px; }
-  to {
-    margin-top: 24px; } }
-.letter:nth-child(6):before {
-  content: "0518764923";
+  content: "9462781305";
   margin-top: -96px;
-  animation-name: letter6;
+  animation-name: letter2;
   animation-duration: 2.912s;
   animation-delay: 0.09s;
   animation-fill-mode: forwards; }
 
-@keyframes letter6 {
+@keyframes letter2 {
   from {
     margin-top: -96px; }
   to {
     margin-top: 24px; } }
-.letter:nth-child(7):before {
-  content: "8935762401";
+.letter:nth-child(3):before {
+  content: "6098742531";
+  margin-top: -120px;
+  animation-name: letter3;
+  animation-duration: 2.1s;
+  animation-delay: 0.37s;
+  animation-fill-mode: forwards; }
+
+@keyframes letter3 {
+  from {
+    margin-top: -120px; }
+  to {
+    margin-top: 24px; } }
+.letter:nth-child(4):before {
+  content: "6701423958";
   margin-top: -96px;
+  animation-name: letter4;
+  animation-duration: 2.56s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards; }
+
+@keyframes letter4 {
+  from {
+    margin-top: -96px; }
+  to {
+    margin-top: 24px; } }
+.letter:nth-child(5):before {
+  content: "0962815374";
+  margin-top: -120px;
+  animation-name: letter5;
+  animation-duration: 2.1s;
+  animation-delay: 0.37s;
+  animation-fill-mode: forwards; }
+
+@keyframes letter5 {
+  from {
+    margin-top: -120px; }
+  to {
+    margin-top: 24px; } }
+.letter:nth-child(6):before {
+  content: "5398720614";
+  margin-top: -144px;
+  animation-name: letter6;
+  animation-duration: 1.74857s;
+  animation-delay: 0.49s;
+  animation-fill-mode: forwards; }
+
+@keyframes letter6 {
+  from {
+    margin-top: -144px; }
+  to {
+    margin-top: 24px; } }
+.letter:nth-child(7):before {
+  content: "1506943278";
+  margin-top: -24px;
   animation-name: letter7;
-  animation-duration: 1.568s;
-  animation-delay: 0.51s;
+  animation-duration: 1.72s;
+  animation-delay: 0.14s;
   animation-fill-mode: forwards; }
 
 @keyframes letter7 {
   from {
-    margin-top: -96px; }
+    margin-top: -24px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(8):before {
-  content: "3768429015";
-  margin-top: -168px;
+  content: "4978360521";
+  margin-top: -120px;
   animation-name: letter8;
-  animation-duration: 0.35s;
-  animation-delay: 0.9s;
+  animation-duration: 2.36667s;
+  animation-delay: 0.29s;
   animation-fill-mode: forwards; }
 
 @keyframes letter8 {
   from {
-    margin-top: -168px; }
+    margin-top: -120px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(9):before {
-  content: "6389104572";
+  content: "1479653802";
   margin-top: 0px;
   animation-name: letter9;
   animation-duration: 0s;
-  animation-delay: 0.72s;
+  animation-delay: 0.95s;
   animation-fill-mode: forwards; }
 
 @keyframes letter9 {
@@ -280,89 +280,89 @@ input:valid + .label {
   to {
     margin-top: 24px; } }
 .letter:nth-child(10):before {
-  content: "2045937618";
-  margin-top: -96px;
+  content: "0529836714";
+  margin-top: -192px;
   animation-name: letter10;
-  animation-duration: 0.288s;
-  animation-delay: 0.91s;
+  animation-duration: 2.73778s;
+  animation-delay: 0.23s;
   animation-fill-mode: forwards; }
 
 @keyframes letter10 {
   from {
-    margin-top: -96px; }
+    margin-top: -192px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(11):before {
-  content: "0726435918";
-  margin-top: -72px;
+  content: "5241763809";
+  margin-top: -192px;
   animation-name: letter11;
-  animation-duration: 1.26s;
-  animation-delay: 0.58s;
+  animation-duration: 2.56s;
+  animation-delay: 0.28s;
   animation-fill-mode: forwards; }
 
 @keyframes letter11 {
   from {
-    margin-top: -72px; }
+    margin-top: -192px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(12):before {
-  content: "2310485697";
-  margin-top: -48px;
+  content: "2436518097";
+  margin-top: -72px;
   animation-name: letter12;
-  animation-duration: 0.26667s;
-  animation-delay: 0.9s;
+  animation-duration: 2.88s;
+  animation-delay: 0.04s;
   animation-fill-mode: forwards; }
 
 @keyframes letter12 {
   from {
-    margin-top: -48px; }
+    margin-top: -72px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(13):before {
-  content: "0694752813";
-  margin-top: -24px;
+  content: "7091543628";
+  margin-top: -72px;
   animation-name: letter13;
-  animation-duration: 0.84s;
-  animation-delay: 0.58s;
+  animation-duration: 1.11s;
+  animation-delay: 0.63s;
   animation-fill-mode: forwards; }
 
 @keyframes letter13 {
   from {
-    margin-top: -24px; }
+    margin-top: -72px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(14):before {
-  content: "4637582901";
-  margin-top: -168px;
+  content: "8615490372";
+  margin-top: -72px;
   animation-name: letter14;
-  animation-duration: 0.945s;
-  animation-delay: 0.73s;
+  animation-duration: 2.52s;
+  animation-delay: 0.16s;
   animation-fill-mode: forwards; }
 
 @keyframes letter14 {
   from {
-    margin-top: -168px; }
+    margin-top: -72px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(15):before {
-  content: "2934516708";
-  margin-top: -24px;
+  content: "8325701469";
+  margin-top: -48px;
   animation-name: letter15;
-  animation-duration: 1.32s;
-  animation-delay: 0.34s;
+  animation-duration: 0.05333s;
+  animation-delay: 0.98s;
   animation-fill-mode: forwards; }
 
 @keyframes letter15 {
   from {
-    margin-top: -24px; }
+    margin-top: -48px; }
   to {
     margin-top: 24px; } }
 .letter:nth-child(16):before {
-  content: "6371052984";
+  content: "8907523641";
   margin-top: -72px;
   animation-name: letter16;
-  animation-duration: 1.44s;
-  animation-delay: 0.52s;
+  animation-duration: 2.55s;
+  animation-delay: 0.15s;
   animation-fill-mode: forwards; }
 
 @keyframes letter16 {
@@ -398,5 +398,140 @@ input:valid + .label {
   -ms-animation-duration: 20s;
   -ms-animation-iteration-count: infinite;
   -ms-animation-timing-function: linear; }
+
+aside {
+  position: relative;
+  display: block;
+  height: 66vh;
+  overflow: hidden;
+  margin: auto;
+  margin-top: 10vh;
+  text-align: center;
+  padding: 5em;
+  box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+  -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+  -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+  -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+  -webkit-animation: shadow 1s linear forwards;
+  -moz-animation: shadow 1s linear forwards;
+  animation: shadow 1s linear forwards;
+  -webkit-animation-delay: .5s;
+  -moz-animation-delay: .5s;
+  animation-delay: .5s; }
+
+@-moz-keyframes shadow {
+  from {
+    box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    max-width: 0em; }
+  to {
+    box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    max-width: 30em; } }
+@keyframes shadow {
+  from {
+    box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    max-width: 0em; }
+  to {
+    box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    max-width: 30em; } }
+@-webkit-keyframes shadow {
+  from {
+    box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+    max-width: 0em; }
+  to {
+    box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    max-width: 30em; } }
+.profile-header .profile-pic {
+  width: 10em;
+  opacity: 0;
+  border-radius: 50%;
+  box-shadow: .25em .25em .75em 0 #999;
+  -webkit-box-shadow: .25em .25em .75em 0 #999;
+  -moz-box-shadow: .25em .25em .75em 0 #999;
+  -o-box-shadow: .25em .25em .75em 0 #999;
+  -webkit-animation: circle .5s linear forwards;
+  -moz-animation: circle .5s linear forwards;
+  animation: circle .5s linear forwards;
+  -webkit-animation-delay: 2s;
+  -moz-animation-delay: 2s;
+  animation-delay: 2s;
+  -webkit-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  -moz-transition: all .5s ease;
+  transition: all .5s ease; }
+
+@-webkit-keyframes circle {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
+@-moz-keyframes circle {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
+@keyframes circle {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
+.profile-header .profile-pic:hover {
+  box-shadow: -.25em .25em .75em 0 #999;
+  -webkit-box-shadow: 0em 0em 1em 0 #999;
+  -moz-box-shadow: -.25em .25em .75em 0 #999;
+  -o-box-shadow: -.25em .25em .75em 0 #999;
+  -webkit-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  -moz-transition: all .5s ease;
+  -ms-transition: all .5s ease;
+  -kthtml-transition: all .5s ease;
+  transition: all .5s ease; }
+
+.profile-header {
+  font: 1.25em/1em poiret one, sans-serif;
+  letter-spacing: .5em;
+  text-transform: uppercase; }
+
+.profile-header h2 {
+  font-size: .75em; }
+
+.profile-bio {
+  font: 1.3em/1.25em open sans, sans-serif;
+  font-variant: small-caps;
+  letter-spacing: .025em;
+  margin-top: 2em; }
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
+@-moz-keyframes fade {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
+@keyframes fade {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 100; } }
 
 /*# sourceMappingURL=style.css.map */
