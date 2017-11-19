@@ -5,6 +5,8 @@ import {HOST_MODEL_REPO_SERVICE} from "../../restclient/abstract-rest-client"
 import {
 	TRAIN_NEURAL_NETWROK_FULFILLED,
 	TRAIN_NEURAL_NETWROK_REJECTED,
+	TEST_NEURAL_NETWROK_REJECTED,
+	TEST_NEURAL_NETWROK_FULFILLED,
 	SAVE_DESCRIPTION_FULFILLED,
 	SAVE_DESCRIPTION_REJECTED,
 	FETCH_DESCRIPTIONS_FULFILLED,
@@ -12,7 +14,9 @@ import {
 	FETCH_DESCRIPTION_BY_ID_FULFILLED,
 	FETCH_DESCRIPTION_BY_ID_REJECTED,
 	FETCH_MODELS_BY_DESC_ID_FULFILLED,
-	FETCH_MODELS_BY_DESC_ID_REJECTED
+	FETCH_MODELS_BY_DESC_ID_REJECTED,
+	FETCH_MODEL_BY_ID_FULFILLED,
+	FETCH_MODEL_BY_ID_REJECTED
 } from "../../constants/n2sky/n2sky-constants"
 
 
@@ -28,7 +32,17 @@ export function train(trainData) {
 	}
 }
 
-
+export function test(request) {
+	return function (dispatch) {
+		return axios.post(HOST_MODEL_REPO_SERVICE + "model/test", request)
+			.then((res) => {
+				dispatch({type: TEST_NEURAL_NETWROK_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: TEST_NEURAL_NETWROK_REJECTED, payload: err})
+			})
+	}
+}
 
 export function saveModelDescription(description) {
 	return function (dispatch) {
@@ -55,18 +69,18 @@ export function getDescriptions(user, userType) {
 	}
 }
 
-	export function getDescriptionById(id) {
-		let endpoint = HOST_MODEL_REPO_SERVICE + "description" + "/" + id;
-		return function (dispatch) {
-			return axios.get(endpoint)
-				.then((res) => {
-					dispatch({type: FETCH_DESCRIPTION_BY_ID_FULFILLED, payload: res.data})
-				})
-				.catch((err) => {
-					dispatch({type: FETCH_DESCRIPTION_BY_ID_REJECTED, payload: err})
-				})
-		}
+export function getDescriptionById(id) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "description" + "/" + id;
+	return function (dispatch) {
+		return axios.get(endpoint)
+			.then((res) => {
+				dispatch({type: FETCH_DESCRIPTION_BY_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_DESCRIPTION_BY_ID_REJECTED, payload: err})
+			})
 	}
+}
 
 export function getModelsByDescriptionId(descriptionId) {
 	let endpoint = HOST_MODEL_REPO_SERVICE + "models" + "/" + descriptionId;
@@ -77,6 +91,19 @@ export function getModelsByDescriptionId(descriptionId) {
 			})
 			.catch((err) => {
 				dispatch({type: FETCH_MODELS_BY_DESC_ID_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getModelsById(modelId) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "models/id" + "/" + modelId;
+	return function (dispatch) {
+		return axios.get(endpoint)
+			.then((res) => {
+				dispatch({type: FETCH_MODEL_BY_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_MODEL_BY_ID_REJECTED, payload: err})
 			})
 	}
 }

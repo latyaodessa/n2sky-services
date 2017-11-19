@@ -73,7 +73,6 @@ export default class NewDescriptionPopup extends React.Component {
 
 	getDockerHubUserProjects = () => {
 		this.props.dispatch(getDockerGubUserProjects(this.state.user)).then(() => {
-			console.log(this.props);
 		})
 	};
 

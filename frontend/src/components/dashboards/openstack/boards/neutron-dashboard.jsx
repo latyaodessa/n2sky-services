@@ -83,13 +83,19 @@ export default class NeutronDashboard extends React.Component {
 		return (
 			<div>
 				<div className="container-panel pure-u-1-3">
+					<div className="container-nn">
 					{this.props.neutron.networks.networks ? this.getNetworks("Openstack Networks") : <Loader/>}
+					</div>
 				</div>
 				<div className="container-panel pure-u-1-3">
+					<div className="container-nn">
 					{this.props.neutron.subnetpools.subnetpools ? this.getSubnetPools("Openstack Subnet Pools") : <Loader/>}
+					</div>
 				</div>
 				<div className="container-panel pure-u-1-3">
+					<div className="container-nn">
 					{this.props.neutron.service_providers.service_providers ? this.getServiceProviders("Openstack Service Providers") : <Loader/>}
+					</div>
 				</div>
 			</div>
 		)

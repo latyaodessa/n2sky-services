@@ -45,7 +45,8 @@ $pad: 0.925rem;
     width: 100%;
     padding: 0;
     transition: background 400ms;
-    a {
+    a, .sidebar-link {
+      cursor: pointer;
       display: flex;
       padding: {
         top: 2vh;
@@ -67,7 +68,7 @@ $pad: 0.925rem;
       }
     }
   }
-  a {
+  a, .sidebar-link  {
     align-items: center;
     width: 100%;
     color: $color-2;
@@ -154,7 +155,7 @@ $pad: 0.925rem;
   & .head-nav li:before {
     background: transparent;
   }
-  & .head-nav a span {
+  & .head-nav a span, .head-nav .sidebar-link span {
     text-indent: 0;
   }
 }

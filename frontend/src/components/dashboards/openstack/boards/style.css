@@ -12,6 +12,19 @@
   -moz-background-size: 4px 4px;
   background-size: 4px 4px; }
 
+.icon-button-container {
+  display: flex;
+  justify-content: center;
+  cursor: pointer; }
+  .icon-button-container img {
+    height: 40px; }
+
+tr {
+  background-color: #FFF; }
+
+tbody tr:hover {
+  background-color: #efefef; }
+
 .header-container-panel {
   padding: 20px;
   text-transform: capitalize; }
@@ -20,8 +33,7 @@
   padding: 0 0 0 20px; }
 .container-panel ul {
   background: #FFF;
-  padding: 15px;
-  margin: 15px; }
+  padding: 15px; }
   .container-panel ul li {
     padding: 0 0 5px 10px; }
     .container-panel ul li span {
@@ -40,6 +52,10 @@
     .container-header-panel .is-running-header img {
       height: 35px;
       padding: 0 20px 0 15px; }
+
+.raw-model {
+  max-height: 150px;
+  font-family: "Courier New", monospace; }
 
 .draw-border {
   box-shadow: inset 0 0 0 3px #FFF;

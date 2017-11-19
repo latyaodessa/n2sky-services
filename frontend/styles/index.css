@@ -107,6 +107,8 @@ ul {
     width: 28%;
     right: 0;
     transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4); }
+    .button .icon img {
+      height: 25px; }
     .button .icon .fa {
       font-size: 30px;
       vertical-align: middle;

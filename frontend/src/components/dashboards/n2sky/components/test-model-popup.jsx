@@ -3,9 +3,8 @@ import {connect} from 'react-redux';
 import Loader from './../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
-import {train} from './../../../../actions/n2sky/neural-network-actions'
-import AddIcon from './../../../../../res/img/icons/add.png'
-
+import {test} from './../../../../actions/n2sky/neural-network-actions'
+import TestIcong from './../../../../../res/img/icons/coding.svg'
 
 
 @connect((store) => {
@@ -13,26 +12,22 @@ import AddIcon from './../../../../../res/img/icons/add.png'
 		model: store.neuralNetwork.success
 	}
 })
-export default class TrainModelPopup extends React.Component {
+export default class TestModelPopup extends React.Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			showCreateOpenstackDashlet: false,
-			params : {},
-			name: null
+			testing_data: null
 		};
 
-		this.handleChange = ::this.handleChange;
+		console.log(this.props);
+
 		this.handleReqChange = ::this.handleReqChange;
 		this.submitForm = ::this.submitForm;
 	}
 
-
-	handleChange(event) {
-		this.state.params[event.target.name] = event.target.value;
-	}
 
 	handleReqChange(event) {
 		this.state[event.target.name] = event.target.value;
@@ -53,55 +48,44 @@ export default class TrainModelPopup extends React.Component {
 	}
 
 
-
-
 	submitForm() {
 		this.commit()
 			.then(r => {
-			this.props.dispatch(train(r)).then(() => {
-				location.reload();
-			});
-		}).catch(err => this.setState({violated: true}));
+				this.props.dispatch(test(r)).then(() => {
+					location.reload();
+				});
+			}).catch(err => this.setState({violated: true}));
 
 	}
 
 	commit() {
 		return new Promise((resolve, reject) => {
 
-			let train = {
-				name: this.state.name,
-				descriptionId: this.props.descriptionById,
-				trainedBy : localStorage.getItem("user"),
-				modelParameters : this.state.params,
-				endpoint : "http://192.168.0.79:2223"
-
+			let request = {
+				modelId: this.props.modelId,
+				testing_data: this.state.testing_data,
+				user: localStorage.getItem("user")
 			};
-			resolve(train);
+
+			resolve(request);
 		})
 	}
-
 
 
 	getContent = () => {
 		return (
 			<form className="pure-form modal-content-container">
+				<div className="popup-label-content">
+					<h1>Model: {this.props.modelName}</h1>
+				</div>
 				<fieldset className="pure-group">
-					<input type="text" name="name" onChange={this.handleReqChange} className="pure-input-1-1 full-width"
-								 placeholder="Model Name"/>
+					<input type="text" name="testing_data" onChange={this.handleReqChange} className="pure-input-1-1 full-width"
+								 placeholder="Testing Data"/>
 				</fieldset>
-				{this.props.modelParameters.map(p => {
-					return <fieldset className="pure-group" key={p.parameter}>
-						<input type="text" name={p.parameter} onChange={this.handleChange} className="pure-input-1-1 full-width"
-									 placeholder={"Param.: " + p.parameter + " Default: " + p.defaultValue}/>
-					</fieldset>
-
-				})}
-
-
 				<a onClick={this.submitForm} className="button" role="button">
-					<span>Create</span>
+					<span>Perform Testing</span>
 					<div className="icon">
-						<img src={AddIcon}/>
+						<img src={TestIcong}/>
 					</div>
 				</a>
 
@@ -117,7 +101,7 @@ export default class TrainModelPopup extends React.Component {
 														content="All fields are mandatory!"/> : null}
 			<OpenStackMonitoringModal showCloseModal={this.props.showCloseModal}
 																content={!this.state.loader ? this.getContent() : <Loader/>}
-																title="Train a neural network"/>
+																title="Perform testing"/>
 		</div>)
 	}
 }

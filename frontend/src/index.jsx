@@ -25,6 +25,7 @@ import AlertDashboard from './components/dashboards/alert/alert-main-dashboard'
 
 import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
 import NetworkDetails from './components/dashboards/n2sky/components/network-details'
+import NetworkTestDetails from './components/dashboards/n2sky/components/network-test-details'
 
 
 
@@ -45,6 +46,7 @@ render((
 			<Route component={AbstractUserN2SkyLayout}>
 				<Route path="/n2sky" component={N2SkyDashboard}/>
 				<Route path="/n2sky/network/:id" component={NetworkDetails}/>
+				<Route path="/n2sky/network/:id/test/:model_id" component={NetworkTestDetails}/>
 			</Route>
 		</Router>
 	</Provider>

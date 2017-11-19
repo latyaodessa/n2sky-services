@@ -62,6 +62,7 @@ export default class VitrageDetailsView extends React.Component {
 	getScenario() {
 		return this.props.vitrage.templatesDetails.scenarios.map(sc => {
 			return <div key={sc.scenario.condition} className="container-panel pure-u-1-3">
+				<div className="container-nn">
 				<h1>{sc.scenario.condition}</h1>
 				{sc.scenario.actions.map(a => {
 					return <ul key={a.action.action_type}>
@@ -70,6 +71,7 @@ export default class VitrageDetailsView extends React.Component {
 						{/*<li>Action workflow: {a.action.properties.workflow}</li>*/}
 					</ul>
 				})}
+				</div>
 			</div>
 		});
 	}
@@ -81,13 +83,19 @@ export default class VitrageDetailsView extends React.Component {
 					{this.props.vitrage.templatesDetails.metadata.description ?<span>{this.normalizeText(this.props.vitrage.templatesDetails.metadata.description)}</span> : null }
 				</div>
 				<div className="container-panel pure-u-1-2">
+					<div className="container-nn">
 					{this.getEntities("Template Entities")}
+					</div>
 				</div>
 				<div className="container-panel pure-u-1-2">
+					<div className="container-nn">
 					{this.getRels("Template Relationships")}
+					</div>
 				</div>
 				<div className="container-panel">
+					<div className="container-nn">
 					{this.getScenario()}
+					</div>
 				</div>
 			</div>
 		)

@@ -14,12 +14,14 @@ export default class ProjectsDashlet extends React.Component {
 
 	render() {
 		return (
-			<div className="pure-u-1-3 pure-sm-1-1">
-				<div className="dashlet-container">
+			<div className="container-panel pure-u-1-3 pure-sm-1-1">
+				<div className="container-nn">
+					<div className="container-header-panel">
+						<h1>Project {this.props.project.name}</h1>
+					</div>
 					<ul>
-						<li>Name: {this.props.project.name}</li>
 						<li>ID: {this.props.project.id}</li>
-						{this.props.project.description ? <li>Description: {this.props.project.description}</li> : null}
+						{/*{this.props.project.description ? <li>Description: {this.props.project.description}</li> : null}*/}
 						<li>Enabled: {this.props.project.enabled ? "Yes" : "No"}</li>
 						<li>Is a domain: {this.props.project.is_domain ? "Yes " + this.props.project.domain_id : "No"} </li>
 						<li>Parent: {this.props.project.parent_id}</li>

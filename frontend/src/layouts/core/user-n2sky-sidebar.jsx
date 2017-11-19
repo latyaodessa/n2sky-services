@@ -22,10 +22,10 @@ export default class UserN2SkySidebar extends React.Component {
 				<nav className="head-nav">
 					<ul className="menu">
 						<li>
-							<a onClick={this.props.showCloseModal} href="#">
+							<div className="sidebar-link" onClick={this.props.showCloseModal}>
 								<img className="sibar-icon" src={CloudCreate}/>
 								<span>Add neural network</span>
-							</a>
+							</div>
 						</li>
 						{/*<li>*/}
 							{/*<Link>*/}

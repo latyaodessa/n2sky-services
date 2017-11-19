@@ -12,10 +12,27 @@
   -moz-background-size: 4px 4px;
   background-size: 4px 4px;
 }
+
+.icon-button-container {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  & img {
+    height: 40px;
+  }
+}
+
+tr {
+  background-color: #FFF;
+}
+tbody tr:hover {
+  background-color: #efefef;
+}
 .header-container-panel {
   padding: 20px;
   text-transform: capitalize;
 }
+
 .container-panel {
   & h1 {
     padding: 0 0 0 20px;
@@ -23,7 +40,6 @@
   & ul {
     background: #FFF;
     padding: 15px;
-    margin: 15px;
     & li {
       padding: 0 0 5px 10px;
       & span {
@@ -51,7 +67,10 @@
   }
 }
 
-
+.raw-model {
+  max-height: 150px;
+  font-family: "Courier New", monospace;
+}
 
 //=== Drawing effect
 
@@ -68,7 +87,8 @@
     content: '';
     pointer-events: none;
     position: absolute;
-    width: 0; height: 0;
+    width: 0;
+    height: 0;
 
     #{$vertical}: 0;
     #{$horizontal}: 0;
@@ -98,9 +118,13 @@
       height: 100%;
     }
 
-    &::before { transition-delay: 0s, 0s, $duration; }
+    &::before {
+      transition-delay: 0s, 0s, $duration;
+    }
 
-    &::after { transition-delay: 0s, $duration, 0s; }
+    &::after {
+      transition-delay: 0s, $duration, 0s;
+    }
   }
 }
 

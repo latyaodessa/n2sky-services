@@ -22,7 +22,7 @@ import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 
 import {getDescriptionsReducer, descriptionById} from './reducers/n2sky/description-reducer'
 import {getAlerts} from './reducers/alert/alerts-reducer'
-import {modelsByDescId} from './reducers/n2sky/models-reducer'
+import {modelsByDescId, modelById, trainedModel} from './reducers/n2sky/models-reducer'
 
 
 export default combineReducers({
@@ -45,5 +45,5 @@ export default combineReducers({
 	dockerHub,
 	getDescriptionsReducer, descriptionById,
 	getAlerts,
-	modelsByDescId
+	modelsByDescId, modelById, trainedModel
 });

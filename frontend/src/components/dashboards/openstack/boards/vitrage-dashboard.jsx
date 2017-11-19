@@ -27,23 +27,25 @@ export default class VitrageDashboard extends React.Component {
 
 	getTemplatesList() {
 		return this.props.vitrage.templates.map(t => {
-			return <ul key={t.uuid}>
-				<li>Name: {t.name}</li>
-				<li>ID: {t.uuid}</li>
-				<li>Status Details: {t['status details']}</li>
-				<li>Status: {t.status}</li>
-				<li>Date: {t.date}</li>
+			return <div>
+				<ul key={t.uuid}>
+					<li>Name: {t.name}</li>
+					<li>ID: {t.uuid}</li>
+					<li>Status Details: {t['status details']}</li>
+					<li>Status: {t.status}</li>
+					<li>Date: {t.date}</li>
+				</ul>
 				<Link to={"/openstack/vitrage/" + t.uuid} className="button" role="button">
 					<span>Template Details</span>
 					<div className="icon">
 						<img src={DetailsIcon}/>
 					</div>
 				</Link>
-			</ul>
+			</div>
 		})
 	}
 
-	getTemplates(title){
+	getTemplates(title) {
 		return <div>
 			<h1>{title}</h1>
 			{this.getTemplatesList()}
@@ -65,7 +67,7 @@ export default class VitrageDashboard extends React.Component {
 		})
 	}
 
-	getRecources(title){
+	getRecources(title) {
 		return <div>
 			<h1>{title}</h1>
 			{this.getRecourcesList()}
@@ -78,10 +80,14 @@ export default class VitrageDashboard extends React.Component {
 			<div>
 				{console.log(this.props)}
 				<div className="container-panel pure-u-1-2">
-					{this.props.vitrage.templates ? this.getTemplates("Openstack Templates") : <Loader/>}
+					<div className="container-nn">
+						{this.props.vitrage.templates ? this.getTemplates("Openstack Templates") : <Loader/>}
+					</div>
 				</div>
 				<div className="container-panel pure-u-1-2">
-					{this.props.vitrage.recources ? this.getRecources("Openstack Resources") : <Loader/>}
+					<div className="container-nn">
+						{this.props.vitrage.recources ? this.getRecources("Openstack Resources") : <Loader/>}
+					</div>
 				</div>
 			</div>
 		)

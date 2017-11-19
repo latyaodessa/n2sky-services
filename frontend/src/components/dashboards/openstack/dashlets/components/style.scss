@@ -18,7 +18,7 @@
     }
   }
   & .additional-field {
-    & label{
+    & label {
       cursor: pointer;
     }
     img {
@@ -37,4 +37,11 @@
 .modal-content-container {
   margin-top: 10px;
   margin-bottom: 10px;
+  & .popup-label-content {
+    display: flex;
+    justify-content: center;
+    & h1 {
+      color: black;
+    }
+  }
 }

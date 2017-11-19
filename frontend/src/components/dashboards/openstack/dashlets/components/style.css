@@ -26,5 +26,10 @@
 .modal-content-container {
   margin-top: 10px;
   margin-bottom: 10px; }
+  .modal-content-container .popup-label-content {
+    display: flex;
+    justify-content: center; }
+    .modal-content-container .popup-label-content h1 {
+      color: black; }
 
 /*# sourceMappingURL=style.css.map */

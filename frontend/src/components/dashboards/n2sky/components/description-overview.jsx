@@ -22,12 +22,10 @@ export default class DescriptionsOverview extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getDescriptions(localStorage.getItem("user"), localStorage.getItem("type"))).then(() => {
-			console.log(this.props);
 		});
 	}
 
 	getDescription = () => {
-		console.log(this.props.descriptions)
 		return this.props.descriptions.map(d => {
 			return <div key={d._id} className="container-panel pure-u-1-3">
 				<div className="container-nn">

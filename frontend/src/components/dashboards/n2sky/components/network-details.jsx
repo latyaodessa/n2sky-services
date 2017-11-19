@@ -1,10 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
 import {getDescriptionById, getModelsByDescriptionId} from '../../../../actions/n2sky/neural-network-actions'
 import TrainModelPopup from './train-model-popup'
 import Loader from './../../../core/loader/loader'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
+import TrainIcon from './../../../../../res/img/icons/atomic.svg'
+import TrainIconGrey from './../../../../../res/img/icons/flask_grey.svg'
 
 
 @connect((store) => {
@@ -34,7 +37,7 @@ export default class NetworkDetails extends React.Component {
 
 	getMainDetails = () => {
 		return <div className="container-panel pure-u-1-3">
-			<div>
+			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>{this.props.descriptionById.name}</h1>
 					{this.getRunningStatus(this.props.descriptionById.isRunning)}
@@ -52,13 +55,13 @@ export default class NetworkDetails extends React.Component {
 
 	getParamDetails = () => {
 		return <div className="container-panel pure-u-1-3">
-			<div>
+			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>Model Parameters / Default Values</h1>
 				</div>
 				<ul>
 					{this.props.descriptionById.modelParameters.map(p => {
-							return <li key={p._id}>{p.parameter} : {p.defaultValue}</li>
+						return <li key={p._id}>{p.parameter} : {p.defaultValue}</li>
 					})}
 				</ul>
 			</div>
@@ -83,7 +86,7 @@ export default class NetworkDetails extends React.Component {
 
 	getDockerDetails = () => {
 		return <div className="container-panel pure-u-1-3">
-			<div>
+			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>Docker Image</h1>
 				</div>
@@ -99,7 +102,6 @@ export default class NetworkDetails extends React.Component {
 	};
 
 	getContent = () => {
-		console.log(this.props.descriptionById);
 		return <div className="pure-g">
 			{this.getMainDetails()}
 			{this.getParamDetails()}
@@ -118,14 +120,22 @@ export default class NetworkDetails extends React.Component {
 	getNavbarInstances = () => {
 		return <nav className="topbar">
 			<ul>
-				<li><a>Trained Models</a></li>
-				<li onClick={this.showCloseModal.bind(this)}><a>Train</a></li>
+				<li><span className="no-action">Trained Models</span></li>
+				<li className="right-float">
+					<div className="standard-nav-item">
+					<span onClick={this.showCloseModal.bind(this)} className="button" role="button">
+						<span>Train a model</span>
+						<div className="icon">
+							<img src={TrainIcon}/>
+						</div>
+					</span>
+					</div>
+				</li>
 			</ul>
 		</nav>
 	};
 
 	getTrainedModelsTalbe = () => {
-		console.log(this.props);
 		return <table className="full-width pure-table">
 			<thead>
 			<tr>
@@ -133,7 +143,7 @@ export default class NetworkDetails extends React.Component {
 				<th>User</th>
 				<th>Requested Parameters</th>
 				<th>Running Instance</th>
-				<th>Test</th>
+				<th>Details and Test</th>
 			</tr>
 			</thead>
 
@@ -146,15 +156,26 @@ export default class NetworkDetails extends React.Component {
 
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
-			return <tr key={m.__id} className="pure-table-odd">
+			return <tr key={m._id} className="pure-table">
 				<td>{m.name}</td>
 				<td>{m.trainedBy}</td>
-				<td>{JSON.stringify(m.modelParameters)}</td>
+				<td>{this.getRequestedParameters(m.modelParameters)}</td>
 				<td>{m.endpoint}</td>
-				<td><button className="Button">Test </button></td>
+				<td>
+					<Link to={"/n2sky/network/" + this.props.params.id + "/test/" + m._id} className="icon-button-container"><img
+						src={TrainIconGrey}/></Link>
+				</td>
 			</tr>
 		})
 	};
+
+	getRequestedParameters(modelParameters) {
+		let lies = [];
+		for (let [key, value] of Object.entries(modelParameters)) {
+			lies.push(<li key={key}><span>{key}:</span> {value} </li>)
+		}
+		return <ul>{lies}</ul>;
+	}
 
 
 	render() {
@@ -163,9 +184,12 @@ export default class NetworkDetails extends React.Component {
 				{this.props.descriptionById ? this.getNavbar() : null}
 				{this.props.descriptionById ? this.getContent() : <Loader/>}
 				{this.getNavbarInstances()}
-				{this.state.showModal &&  this.props.descriptionById ? <TrainModelPopup descriptionById={this.props.descriptionById} modelParameters={this.props.descriptionById.modelParameters} showCloseModal={this.showCloseModal.bind(this)}/> : null}
-				{this.props.modelsByDescId ? this.getTrainedModelsTalbe(): null}
-				</div>
+				{this.state.showModal && this.props.descriptionById ?
+					<TrainModelPopup descriptionById={this.props.descriptionById}
+													 modelParameters={this.props.descriptionById.modelParameters}
+													 showCloseModal={this.showCloseModal.bind(this)}/> : null}
+				{this.props.modelsByDescId ? this.getTrainedModelsTalbe() : null}
+			</div>
 		)
 	}
 }

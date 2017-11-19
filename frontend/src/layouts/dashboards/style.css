@@ -30,27 +30,28 @@
   width: 100%;
   padding: 0;
   transition: background 400ms; }
-  .head-nav li a {
+  .head-nav li a, .head-nav li .sidebar-link {
+    cursor: pointer;
     display: flex;
     padding-top: 2vh;
     padding-bottom: 2vh; }
-    .head-nav li a img {
+    .head-nav li a img, .head-nav li .sidebar-link img {
       height: 50px;
       padding-left: 16px; }
-    .head-nav li a .mulitple-lines {
+    .head-nav li a .mulitple-lines, .head-nav li .sidebar-link .mulitple-lines {
       display: flex; }
-      .head-nav li a .mulitple-lines span {
+      .head-nav li a .mulitple-lines span, .head-nav li .sidebar-link .mulitple-lines span {
         padding-left: 30px;
         cursor: pointer; }
-        .head-nav li a .mulitple-lines span:hover {
+        .head-nav li a .mulitple-lines span:hover, .head-nav li .sidebar-link .mulitple-lines span:hover {
           color: #e2b4d2; }
-.head-nav a {
+.head-nav a, .head-nav .sidebar-link {
   align-items: center;
   width: 100%;
   color: #fefefe;
   text-decoration: none;
   transition: color 400ms; }
-  .head-nav a span {
+  .head-nav a span, .head-nav .sidebar-link span {
     padding-left: 20px;
     position: relative;
     display: block;
@@ -104,7 +105,7 @@
   right: 0; }
   .main-head-right .head-nav li:before {
     background: transparent; }
-  .main-head-right .head-nav a span {
+  .main-head-right .head-nav a span, .main-head-right .head-nav .sidebar-link {
     text-indent: 0; }
 
 .wrap-all-the-things {

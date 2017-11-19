@@ -48,16 +48,18 @@ export default class AlertsComponent extends React.Component {
 	getAlerts = () => {
 		return <div className="pure-g">
 			{this.props.alerts.map(a => {
-				return <div key={a.fingerprint} className="container-panel pure-u-1-3"><h1>{a.labels.alertname}</h1>
-					<ul className="draw-border" style={{backgroundColor: this.getAlertyType(a.labels.severity)}}>
-						<li><span>Summary:</span> {a.annotations.summary}</li>
-						<li><span>Description:</span> {a.annotations.description}</li>
-						<li><span>Starts at:</span> {a.startsAt}</li>
-						<li><span>Ends at:</span> {a.endsAt}</li>
-						<li><span>Status:</span> {a.status.state}</li>
-						{a.receivers.map(r => <li key={r}><span>Receiver:</span> {r}</li>)}
-						<li><span>Location:</span> {a.generatorURL}</li>
-					</ul>
+				return <div key={a.fingerprint} className="container-panel pure-u-1-3">
+					<div className="container-nn"><h1>{a.labels.alertname}</h1>
+						<ul className="draw-border" style={{backgroundColor: this.getAlertyType(a.labels.severity)}}>
+							<li><span>Summary:</span> {a.annotations.summary}</li>
+							<li><span>Description:</span> {a.annotations.description}</li>
+							<li><span>Starts at:</span> {a.startsAt}</li>
+							<li><span>Ends at:</span> {a.endsAt}</li>
+							<li><span>Status:</span> {a.status.state}</li>
+							{a.receivers.map(r => <li key={r}><span>Receiver:</span> {r}</li>)}
+							<li><span>Location:</span> {a.generatorURL}</li>
+						</ul>
+					</div>
 				</div>
 
 			})}
