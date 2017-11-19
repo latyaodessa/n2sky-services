@@ -111,7 +111,7 @@ export default class NetworkTestDetails extends React.Component {
 		return <div className="container-panel pure-u-1-3">
 			<div className="container-nn">
 				<div className="container-header-panel">
-					<h1>Model Parameters / Default Values</h1>
+					<h1>RAW MODEL in JSON Format</h1>
 				</div>
 				<pre className="raw-model">
 					{JSON.stringify(this.props.model.model, null, 2)}
