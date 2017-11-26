@@ -9,11 +9,13 @@ import LogoGrey from './../../../../../res/img/logo-grey.svg'
 import Enter from './../../../../../res/img/icons/right-arrow.png'
 import LockedIcon from './../../../../../res/img/icons/locked.svg'
 import UnlockedIcon from './../../../../../res/img/icons/unlocked.svg'
+import StarColoredIcon from './../../../../../res/img/icons/star_color.svg'
+import StartWhiteIcnon from './../../../../../res/img/icons/star_white.svg'
 
 
-import {getDescriptions} from './../../../../actions/n2sky/neural-network-actions'
+import {getAvailableDescriptions} from './../../../../actions/n2sky/neural-network-actions'
 
-const offsetSize = 6;
+const offsetSize = 9;
 
 @connect((store) => {
 	return {
@@ -21,7 +23,7 @@ const offsetSize = 6;
 		done: store.getDescriptionsReducer.done,
 	}
 })
-export default class DescriptionsOverview extends React.Component {
+export default class AvailableNetworksOverview extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -30,21 +32,11 @@ export default class DescriptionsOverview extends React.Component {
 	}
 
 	componentDidMount() {
-		this.geDescriptonWithOffset(0);
+		this.geDescriptonWithOffset(0, offsetSize);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if(JSON.stringify(this.props.reqParams) !== JSON.stringify(nextProps.reqParams))
-		{
-			this.geDescriptonWithOffset(0, nextProps.reqParams);
-		}
-	}
-
-	geDescriptonWithOffset(from, reqParams = this.props.reqParams) {
-		this.props.dispatch(getDescriptions(
-			reqParams,
-			from,
-			offsetSize));
+	geDescriptonWithOffset(from) {
+		this.props.dispatch(getAvailableDescriptions(from, offsetSize));
 	}
 
 
@@ -53,6 +45,7 @@ export default class DescriptionsOverview extends React.Component {
 			return <div key={d._id} className="container-panel pure-u-1-3">
 				<div className="container-nn">
 					<div className="container-header-panel">
+						<img className="header-panel-icon" src={StartWhiteIcnon}/>
 						<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
 						<h1>{d.name}</h1>
 						{this.getRunningStatus(d.isRunning)}
@@ -64,12 +57,14 @@ export default class DescriptionsOverview extends React.Component {
 						<li>Input Dimentions: {d.inputDimensions}</li>
 						<li>Input Type: {d.inputType}</li>
 					</ul>
-					<Link to={"/n2sky/network/" + d._id} className="button" role="button">
-						<span>Details and actions</span>
-						<div className="icon">
-							<img src={Enter}/>
-						</div>
-					</Link>
+					<div>
+						<Link to={"/n2sky/network/" + d._id} className="button" role="button">
+							<span>Details and actions</span>
+							<div className="icon">
+								<img src={Enter}/>
+							</div>
+						</Link>
+					</div>
 				</div>
 			</div>
 		})
@@ -96,6 +91,7 @@ export default class DescriptionsOverview extends React.Component {
 
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<div className="pure-g">

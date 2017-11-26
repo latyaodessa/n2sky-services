@@ -1,5 +1,6 @@
 import React from 'react'
 import Sidebar from './../core/sidebar'
+import UserSidebar from './../core/sidebar-user'
 import UserN2SkySidebar from './../core/user-n2sky-sidebar'
 import {browserHistory} from 'react-router'
 import NewDescriptionPopup from './../../components/dashboards/n2sky/components/new-description-popup'
@@ -49,12 +50,12 @@ export default class AbstractUserN2SkyLayout extends React.Component {
 	render() {
 		return (
 			<div>
-				<Sidebar showCloseModal={this.showCloseModal.bind(this)}/>
-				<div className="wrap-all-the-things wrap-all-the-things-right">
+				<UserSidebar showCloseModal={this.showCloseNewNNModal.bind(this)}/>
+				<div className="wrap-all-the-things">
 					{React.cloneElement(this.props.children)}
 				</div>
-				<UserN2SkySidebar showCloseModal={this.showCloseNewNNModal.bind(this)}/>
-				{this.state.showModal ? <SettingsPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}
+				{/*<UserN2SkySidebar showCloseModal={this.showCloseNewNNModal.bind(this)}/>*/}
+				{/*{this.state.showModal ? <SettingsPopUp showCloseModal={this.showCloseModal.bind(this)}/> : null}*/}
 				{this.state.showNNModal ? <NewDescriptionPopup showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}
 			</div>
 		)

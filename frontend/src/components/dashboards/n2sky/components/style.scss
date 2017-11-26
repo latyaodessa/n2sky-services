@@ -1,0 +1,11 @@
+.no-own-nn-container {
+  display: flex;
+  justify-content: center;
+  & .no-nn-content-container {
+    width: 350px;
+    & .header-label {
+      display: block;
+      margin: 35px 0 35px 0;
+    }
+  }
+}

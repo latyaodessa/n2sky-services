@@ -1,0 +1,10 @@
+.no-own-nn-container {
+  display: flex;
+  justify-content: center; }
+  .no-own-nn-container .no-nn-content-container {
+    width: 350px; }
+    .no-own-nn-container .no-nn-content-container .header-label {
+      display: block;
+      margin: 35px 0 35px 0; }
+
+/*# sourceMappingURL=style.css.map */

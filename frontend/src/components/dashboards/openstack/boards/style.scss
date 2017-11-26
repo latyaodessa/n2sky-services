@@ -57,6 +57,10 @@ tbody tr:hover {
 .container-header-panel {
   display: flex;
   justify-content: space-between;
+  & .header-panel-icon {
+    height: 35px;
+    margin-left: 10px;
+  }
   & .is-running-header {
     justify-content: space-between;
     display: flex;

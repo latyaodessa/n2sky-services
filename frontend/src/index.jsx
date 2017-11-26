@@ -11,7 +11,6 @@ import AbstractDashboardLayout from './layouts/dashboards/abstract-dashboard-lay
 import AbstractUserN2SkyLayout from './layouts/dashboards/abstract-user-n2sky-layout'
 
 
-
 import Auth from './components/auth/auth'
 import Reg from './components/auth/registration'
 import UserProfile from './components/auth/user-profile'
@@ -24,9 +23,10 @@ import VitrageDetailsView from './components/dashboards/openstack/boards/vitrage
 import AlertDashboard from './components/dashboards/alert/alert-main-dashboard'
 
 import N2SkyDashboard from './components/dashboards/n2sky/n2sky-main-dashboard'
+import AvailableNetworksOverview from './components/dashboards/n2sky/components/available-networks-overview'
+
 import NetworkDetails from './components/dashboards/n2sky/components/network-details'
 import NetworkTestDetails from './components/dashboards/n2sky/components/network-test-details'
-
 
 
 render((
@@ -45,6 +45,7 @@ render((
 			</Route>
 			<Route component={AbstractUserN2SkyLayout}>
 				<Route path="/n2sky" component={N2SkyDashboard}/>
+				<Route path="/n2sky/available" components={AvailableNetworksOverview}/>
 				<Route path="/n2sky/network/:id" component={NetworkDetails}/>
 				<Route path="/n2sky/network/:id/test/:model_id" component={NetworkTestDetails}/>
 			</Route>

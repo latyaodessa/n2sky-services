@@ -56,10 +56,23 @@ export function saveModelDescription(description) {
 	}
 }
 
-export function getDescriptions(user, userType) {
-	let endpoint = HOST_MODEL_REPO_SERVICE + "descriptions" + "/" + user + "/" + userType;
+export function getDescriptions(reqParams, from, offsetSize) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "descriptions" + "/" + from + "/" + offsetSize;
 	return function (dispatch) {
-		return axios.get(endpoint)
+		return axios.post(endpoint, reqParams)
+			.then((res) => {
+				dispatch({type: FETCH_DESCRIPTIONS_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_DESCRIPTIONS_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getAvailableDescriptions(from, offsetSize) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "descriptions/running/" + from + '/' + offsetSize;
+	return function (dispatch) {
+		return axios.post(endpoint, {})
 			.then((res) => {
 				dispatch({type: FETCH_DESCRIPTIONS_FULFILLED, payload: res.data})
 			})
