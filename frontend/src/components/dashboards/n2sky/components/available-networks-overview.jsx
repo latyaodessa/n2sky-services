@@ -70,8 +70,8 @@ export default class AvailableNetworksOverview extends React.Component {
 
 	getSaveButton = (d) => {
 		console.log(d._id);
-		console.log(this.props.savedDescriptionsByUser.saved.descriptionsId);
-		return this.props.savedDescriptionsByUser.saved.descriptionsId.includes(d._id) ?
+		console.log(this.props);
+		return this.props.savedDescriptionsByUser.saved && this.props.savedDescriptionsByUser.saved.descriptionsId.includes(d._id) ?
 			<img onClick={this.removeCopyToUser.bind(this, d._id)} className="header-panel-icon" src={StarColoredIcon}/>
 			:
 			<img onClick={this.copyToUser.bind(this, d)} className="header-panel-icon" src={StartWhiteIcnon}/>
