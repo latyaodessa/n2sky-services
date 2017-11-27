@@ -1,6 +1,14 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import style from './style.scss'
+import {getUserByIdentity} from './../../actions/administration/user-actions'
+import UserIcon from './../../../res/img/icons/android.svg'
 
+@connect((store) => {
+	return {
+		user: store.getUserByIdentity.user,
+	}
+})
 export default class UserProfile extends React.Component {
 
 
@@ -8,6 +16,7 @@ export default class UserProfile extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.props.dispatch(getUserByIdentity(localStorage.getItem("user")));
 	}
 
 	getName = () => {
@@ -23,26 +32,53 @@ export default class UserProfile extends React.Component {
 	render() {
 		return (
 			<aside className="profile-card">
-
-				<div className="profile-header">
-					<a href="https://tutsplus.com">
-						<img className="profile-pic"
-								 src="https://pbs.twimg.com/profile_images/619517630538510336/A7enqSs__400x400.jpg"/>
+				<header>
+					<a target="_blank" href="#">
+						<img src="http://lorempixel.com/150/150/people/" className="hoverZoomLink"/>
 					</a>
 
-					<h1>{this.getName()}</h1>
+					<h1>
+						John Doe
+					</h1>
 
-				</div>
+					<h2>
+						Better Visuals
+					</h2>
+
+				</header>
 
 				<div className="profile-bio">
 
-					<p>I’m a 22 year old guy from Belgium.
-						Currently studying multimedia production in the great city of Ghent.
-						Being in school gives me a lot of opportunities to learn and to be creative, but in my spare time I continue
-						this path and do a lot of research.</p>
+					<p>
+						It takes monumental improvement for us to change how we live our lives. Design is the way we access that
+						improvement.
+					</p>
 
 				</div>
 
+				<ul className="profile-social-links">
+					<li>
+						<a target="_blank" href="https://www.facebook.com/creativedonut">
+							<i className="fa fa-facebook"/>
+						</a>
+					</li>
+					<li>
+						<a target="_blank" href="https://twitter.com/dropyourbass">
+							<i className="fa fa-twitter"/>
+						</a>
+					</li>
+					<li>
+						<a target="_blank" href="https://github.com/vipulsaxena">
+							<i className="fa fa-github"/>
+						</a>
+					</li>
+					<li>
+						<a target="_blank" href="https://www.behance.net/vipulsaxena">
+
+							<i className="fa fa-behance"/>
+						</a>
+					</li>
+				</ul>
 			</aside>
 		)
 	}

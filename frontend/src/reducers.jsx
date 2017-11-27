@@ -15,12 +15,13 @@ import openstackVitrage from './reducers/dashboard/openstack/openstack-templates
 
 import login from './reducers/administration/login-reducer'
 import reg from './reducers/administration/reg-reducer'
+import {getUserByIdentity} from './reducers/administration/user-reducer'
 
 
 import neuralNetwork from './reducers/n2sky/neural-network-reducer'
 import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 
-import {getDescriptionsReducer, descriptionById} from './reducers/n2sky/description-reducer'
+import {getDescriptionsReducer, descriptionById, savedDescriptionsByUser} from './reducers/n2sky/description-reducer'
 import {getAlerts} from './reducers/alert/alerts-reducer'
 import {modelsByDescId, modelById, trainedModel} from './reducers/n2sky/models-reducer'
 
@@ -39,11 +40,10 @@ export default combineReducers({
 	openstackNeutron,
 	openstackImages,
 	openstackVitrage,
-	login,
-	reg,
+	login, reg, getUserByIdentity,
 	neuralNetwork,
 	dockerHub,
-	getDescriptionsReducer, descriptionById,
+	getDescriptionsReducer, descriptionById, savedDescriptionsByUser,
 	getAlerts,
 	modelsByDescId, modelById, trainedModel
 });

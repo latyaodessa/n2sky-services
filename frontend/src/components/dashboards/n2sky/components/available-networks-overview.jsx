@@ -13,7 +13,12 @@ import StarColoredIcon from './../../../../../res/img/icons/star_color.svg'
 import StartWhiteIcnon from './../../../../../res/img/icons/star_white.svg'
 
 
-import {getAvailableDescriptions} from './../../../../actions/n2sky/neural-network-actions'
+import {
+	getDescriptions,
+	copyModelDescription,
+	getCopiedDescriptions,
+	removeCopyModelDescription
+} from './../../../../actions/n2sky/neural-network-actions'
 
 const offsetSize = 9;
 
@@ -21,6 +26,7 @@ const offsetSize = 9;
 	return {
 		descriptions: store.getDescriptionsReducer.descriptions,
 		done: store.getDescriptionsReducer.done,
+		savedDescriptionsByUser: store.savedDescriptionsByUser
 	}
 })
 export default class AvailableNetworksOverview extends React.Component {
@@ -36,16 +42,49 @@ export default class AvailableNetworksOverview extends React.Component {
 	}
 
 	geDescriptonWithOffset(from) {
-		this.props.dispatch(getAvailableDescriptions(from, offsetSize));
+		let user = localStorage.getItem("user");
+		this.props.dispatch(getCopiedDescriptions(user)).then(() => {
+			let reqParams = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
+
+			this.props.dispatch(getDescriptions(reqParams, from, offsetSize));
+		});
 	}
 
+	getNavbar = () => {
+		return <nav className="topbar">
+			<ul>
+				<li><span className="no-action">Available Neural Networks</span></li>
+				{/*<li className="right-float">*/}
+				{/*<div className="standard-nav-item">*/}
+				{/*<span onClick={this.showCloseModal.bind(this)} className="button" role="button">*/}
+				{/*<span>Train a model</span>*/}
+				{/*<div className="icon">*/}
+				{/*<img src={TrainIcon}/>*/}
+				{/*</div>*/}
+				{/*</span>*/}
+				{/*</div>*/}
+				{/*</li>*/}
+			</ul>
+		</nav>
+	};
+
+	getSaveButton = (d) => {
+		console.log(d._id);
+		console.log(this.props.savedDescriptionsByUser.saved.descriptionsId);
+		return this.props.savedDescriptionsByUser.saved.descriptionsId.includes(d._id) ?
+			<img onClick={this.removeCopyToUser.bind(this, d._id)} className="header-panel-icon" src={StarColoredIcon}/>
+			:
+			<img onClick={this.copyToUser.bind(this, d)} className="header-panel-icon" src={StartWhiteIcnon}/>
+	};
 
 	getDescription = () => {
 		return this.props.descriptions.map(d => {
 			return <div key={d._id} className="container-panel pure-u-1-3">
 				<div className="container-nn">
 					<div className="container-header-panel">
-						<img className="header-panel-icon" src={StartWhiteIcnon}/>
+
+						{this.getSaveButton(d)}
+
 						<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
 						<h1>{d.name}</h1>
 						{this.getRunningStatus(d.isRunning)}
@@ -70,6 +109,19 @@ export default class AvailableNetworksOverview extends React.Component {
 		})
 	};
 
+	copyToUser(desc) {
+		desc.user = localStorage.getItem("user");
+		this.props.dispatch(copyModelDescription(desc)).then(() => {
+			location.reload();
+		});
+	}
+
+	removeCopyToUser(id) {
+		this.props.dispatch(removeCopyModelDescription(localStorage.getItem("user"), id)).then(() => {
+			location.reload();
+		});
+	}
+
 	getRunningStatus = (isRunning) => {
 		if (isRunning) {
 			return <div className="is-running-header">
@@ -91,9 +143,9 @@ export default class AvailableNetworksOverview extends React.Component {
 
 
 	render() {
-		console.log(this.props)
 		return (
 			<div>
+				{this.getNavbar()}
 				<div className="pure-g">
 					{this.props.done ? this.getDescription() : <Loader/>}
 				</div>

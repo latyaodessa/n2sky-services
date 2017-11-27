@@ -13,7 +13,7 @@ import UnlockedIcon from './../../../../../res/img/icons/unlocked.svg'
 
 import {getDescriptions} from './../../../../actions/n2sky/neural-network-actions'
 
-const offsetSize = 6;
+const offsetSize = 3;
 
 @connect((store) => {
 	return {

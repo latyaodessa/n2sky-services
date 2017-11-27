@@ -4,7 +4,9 @@ import {
 	FETCH_DESCRIPTIONS_REJECTED,
 	FETCH_DESCRIPTIONS_FULFILLED,
 	FETCH_DESCRIPTION_BY_ID_REJECTED,
-	FETCH_DESCRIPTION_BY_ID_FULFILLED
+	FETCH_DESCRIPTION_BY_ID_FULFILLED,
+	FETCH_SAVED_DESCRIPTIONS_REJECTED,
+	FETCH_SAVED_DESCRIPTIONS_FULFILLED
 } from "../../constants/n2sky/n2sky-constants"
 
 export function saveDescriptionReducer(state =
@@ -59,6 +61,34 @@ export function getDescriptionsReducer(state =
 		}
 	}
 }
+
+export function savedDescriptionsByUser(state =
+																				 {
+																					 saved: null,
+																					 done: false
+																				 }, action) {
+	switch (action.type) {
+		case FETCH_SAVED_DESCRIPTIONS_REJECTED: {
+			return {
+				...state,
+				error: action.payload,
+				done: false
+			}
+		}
+		case FETCH_SAVED_DESCRIPTIONS_FULFILLED: {
+			return {
+				...state,
+				done: true,
+				saved: action.payload
+			}
+		}
+		default: {
+			return {...state}
+		}
+	}
+}
+
+
 
 export function descriptionById(state =
 																				 {

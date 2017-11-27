@@ -16,7 +16,9 @@ import {
 	FETCH_MODELS_BY_DESC_ID_FULFILLED,
 	FETCH_MODELS_BY_DESC_ID_REJECTED,
 	FETCH_MODEL_BY_ID_FULFILLED,
-	FETCH_MODEL_BY_ID_REJECTED
+	FETCH_MODEL_BY_ID_REJECTED,
+	FETCH_SAVED_DESCRIPTIONS_FULFILLED,
+	FETCH_SAVED_DESCRIPTIONS_REJECTED
 } from "../../constants/n2sky/n2sky-constants"
 
 
@@ -56,6 +58,32 @@ export function saveModelDescription(description) {
 	}
 }
 
+export function copyModelDescription(description) {
+	return function (dispatch) {
+		return axios.post(HOST_MODEL_REPO_SERVICE + "description/copy", description)
+			.then((res) => {
+				dispatch({type: "asd", payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: "dsa", payload: err})
+			})
+	}
+}
+
+export function removeCopyModelDescription(user, descriptionsId) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "description/remove/copy/" + user + '/' + descriptionsId;
+	console.log(endpoint);
+	return function (dispatch) {
+		return axios.get(HOST_MODEL_REPO_SERVICE + "description/remove/copy/" + user + '/' + descriptionsId)
+			.then((res) => {
+				dispatch({type: SAVE_DESCRIPTION_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: SAVE_DESCRIPTION_REJECTED, payload: err})
+			})
+	}
+}
+
 export function getDescriptions(reqParams, from, offsetSize) {
 	let endpoint = HOST_MODEL_REPO_SERVICE + "descriptions" + "/" + from + "/" + offsetSize;
 	return function (dispatch) {
@@ -69,15 +97,15 @@ export function getDescriptions(reqParams, from, offsetSize) {
 	}
 }
 
-export function getAvailableDescriptions(from, offsetSize) {
-	let endpoint = HOST_MODEL_REPO_SERVICE + "descriptions/running/" + from + '/' + offsetSize;
+export function getCopiedDescriptions(user) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "description/references/" + user;
 	return function (dispatch) {
-		return axios.post(endpoint, {})
+		return axios.get(endpoint)
 			.then((res) => {
-				dispatch({type: FETCH_DESCRIPTIONS_FULFILLED, payload: res.data})
+				dispatch({type: FETCH_SAVED_DESCRIPTIONS_FULFILLED, payload: res.data})
 			})
 			.catch((err) => {
-				dispatch({type: FETCH_DESCRIPTIONS_REJECTED, payload: err})
+				dispatch({type: FETCH_SAVED_DESCRIPTIONS_REJECTED, payload: err})
 			})
 	}
 }
@@ -91,6 +119,19 @@ export function getDescriptionById(id) {
 			})
 			.catch((err) => {
 				dispatch({type: FETCH_DESCRIPTION_BY_ID_REJECTED, payload: err})
+			})
+	}
+}
+
+export function updateDescription(id, reqParams) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "description/update/" + id;
+	return function (dispatch) {
+		return axios.post(endpoint, reqParams)
+			.then((res) => {
+				dispatch({type: "DESCRIPTION_UPDATED", payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: "DESCRIPTION_NOT_UPDATED", payload: err})
 			})
 	}
 }

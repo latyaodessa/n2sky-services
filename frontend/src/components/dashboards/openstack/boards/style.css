@@ -48,7 +48,8 @@ tbody tr:hover {
   justify-content: space-between; }
   .container-header-panel .header-panel-icon {
     height: 35px;
-    margin-left: 10px; }
+    margin-left: 10px;
+    cursor: pointer; }
   .container-header-panel .is-running-header {
     justify-content: space-between;
     display: flex; }

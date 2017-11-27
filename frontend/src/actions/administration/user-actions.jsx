@@ -2,7 +2,7 @@ import axios from "axios"
 
 import {HOST_USER_SERVICE} from "../../restclient/abstract-rest-client"
 
-import {LOGIN_FULFILLED, LOGIN_REJECTED, REGISTRATION_FULFILLED, REGISTRATION_REJECTED} from "../../constants/administration/user-constants"
+import {LOGIN_FULFILLED, LOGIN_REJECTED, REGISTRATION_FULFILLED, REGISTRATION_REJECTED, GET_USER_FULFILLED, GET_USER_REJECTED} from "../../constants/administration/user-constants"
 
 
 export function login(userData) {
@@ -25,6 +25,18 @@ export function registration(userData) {
 			})
 			.catch((err) => {
 				dispatch({type: REGISTRATION_REJECTED, payload: err})
+			})
+	}
+}
+
+export function getUserByIdentity(user) {
+	return function (dispatch) {
+		return axios.get(HOST_USER_SERVICE + "user/" + user)
+			.then((res) => {
+				dispatch({type: GET_USER_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: GET_USER_REJECTED, payload: err})
 			})
 	}
 }
