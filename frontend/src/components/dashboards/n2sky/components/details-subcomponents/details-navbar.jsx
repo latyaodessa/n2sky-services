@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {
-	updateDescription
+	updateDescription,
+	stopInstanceDescription
 } from '../../../../../actions/n2sky/neural-network-actions'
 import StopIcon from './../../../../../../res/img/icons/stop.svg'
 import RunIcon from './../../../../../../res/img/icons/rocket.svg'
@@ -30,12 +31,18 @@ export default class DetailsNavbar extends React.Component {
 		})
 	}
 
+	stopInstance = () => {
+		this.props.dispatch(stopInstanceDescription({}, this.props.descriptionById._id)).then(() => {
+			location.reload();
+		})
+	};
+
 
 	getIsRunningNavBarStatus = () => {
 		return <li className="left-float">
 			<div className="standard-nav-item">
 				{this.props.descriptionById.isRunning ?
-					<span style={{backgroundColor: "#6b0202"}} className="button"
+					<span onClick={this.stopInstance.bind(this)} style={{backgroundColor: "#6b0202"}} className="button"
 								role="button">
 						<span>STOP INSTANCE</span>
 						<div className="icon">

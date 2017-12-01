@@ -18,7 +18,9 @@ import {
 	FETCH_MODEL_BY_ID_FULFILLED,
 	FETCH_MODEL_BY_ID_REJECTED,
 	FETCH_SAVED_DESCRIPTIONS_FULFILLED,
-	FETCH_SAVED_DESCRIPTIONS_REJECTED
+	FETCH_SAVED_DESCRIPTIONS_REJECTED,
+	RUN_INSTANCE_DESCRIPTION_FULFILLED,
+	RUN_INSTANCE_DESCRIPTION_REJECTED
 } from "../../constants/n2sky/n2sky-constants"
 
 
@@ -80,6 +82,30 @@ export function removeCopyModelDescription(user, descriptionsId) {
 			})
 			.catch((err) => {
 				dispatch({type: SAVE_DESCRIPTION_REJECTED, payload: err})
+			})
+	}
+}
+
+export function runInstanceDescription(reqParams, id) {
+	return function (dispatch) {
+		return axios.post(HOST_MODEL_REPO_SERVICE + "description/run/instance/" + id, reqParams)
+			.then((res) => {
+				dispatch({type: RUN_INSTANCE_DESCRIPTION_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: RUN_INSTANCE_DESCRIPTION_REJECTED, payload: err})
+			})
+	}
+}
+
+export function stopInstanceDescription(reqParams, id) {
+	return function (dispatch) {
+		return axios.post(HOST_MODEL_REPO_SERVICE + "description/stop/instance/" + id, reqParams)
+			.then((res) => {
+				dispatch({type: RUN_INSTANCE_DESCRIPTION_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: RUN_INSTANCE_DESCRIPTION_REJECTED, payload: err})
 			})
 	}
 }

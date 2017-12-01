@@ -3,15 +3,14 @@ import {connect} from 'react-redux';
 import Loader from './../../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
-import {getDockerGubUserProjects} from './../../../../../actions/n2sky/dockerhub-actions'
-import {saveModelDescription} from './../../../../../actions/n2sky/neural-network-actions'
 import AddIcon from './../../../../../../res/img/icons/add.png'
+import {runInstanceDescription} from './../../../../../actions/n2sky/neural-network-actions'
 
-
+const N2SY = 'n2sky';
+const OWN = 'own';
 
 @connect((store) => {
-	return {
-	}
+	return {}
 })
 export default class RunInstancePopup extends React.Component {
 
@@ -20,27 +19,14 @@ export default class RunInstancePopup extends React.Component {
 
 		this.state = {
 			loader: false,
-			violated: false
+			violated: false,
+			deployment: null,
+			endpoint: null
 		};
 
-		this.handleChange = ::this.handleChange;
 		this.submitForm = ::this.submitForm;
+		this.handleChange = ::this.handleChange;
 	}
-
-
-	componentWillMount() {
-		this.timer = null;
-	}
-
-
-	handleChange(event) {
-		clearTimeout(this.timer);
-
-		this.setState({[event.target.name]: event.target.value});
-
-		this.timer = setTimeout(::this.getDockerHubUserProjects, WAIT_INTERVAL);
-	}
-
 
 	showCloseCreateOpenstackDashletModal() {
 		this.setState({
@@ -49,33 +35,21 @@ export default class RunInstancePopup extends React.Component {
 	}
 
 
+	handleChange(event) {
+		this.setState({[event.target.name]: event.target.value});
+	}
+
 	changeValidation() {
 		this.setState({
 			violated: !this.state.violated
 		});
 	}
 
-	getDockerHubUserProjects = () => {
-		this.props.dispatch(getDockerGubUserProjects(this.state.user)).then(() => {
-		})
-	};
-
-	getUserProjectsCombobox() {
-		return (<select name='docker' disabled={!this.props.dockerHub}
-										onChange={this.handleChange} className="combobox full-width">
-			<option disabled selected value> -- select the project --</option>
-			{this.props.dockerHub ? this.props.dockerHub.results.map(s => {
-				let v = s.user + "/" + s.name;
-				return <option key={s.name} id={s.name} name={s.name} value={JSON.stringify(s)}>{v}</option>;
-			}) : null}
-		</select>);
-	}
 
 	submitForm() {
 		this.commit()
-			.then(r => this.hasNull(r))
 			.then(r => {
-				this.props.dispatch(saveModelDescription(r)).then(() => {
+				this.props.dispatch(runInstanceDescription(r, this.props.descriptionById._id)).then(() => {
 					location.reload();
 				});
 			})
@@ -83,57 +57,89 @@ export default class RunInstancePopup extends React.Component {
 	}
 
 
-
-	hasNull(target) {
-		return new Promise((resolve, reject) => {
-			for (let member in target) {
-				if (target[member] === null || target[member] === '') {
-					reject(member);
-				}
-			}
-			resolve(target);
-		})
-	}
-
 	commit() {
 		return new Promise((resolve, reject) => {
 
-			let description = {
-				user: localStorage.getItem('user'),
-				name: this.state.name,
-				docker: this.state.docker,
-				domain: this.state.domain,
-				inputType: this.state.inputType,
-				inputDimensions: this.state.inputDimensions,
-				modelParameters: this.state.modelParameters
-			};
-			resolve(description);
+			let reqParams = {};
+
+			if (this.deployment === N2SY) {
+				reqParams = {
+					isRunning: true,
+					isCloudify: false
+				};
+			} else {
+				if (!this.state.endpoint) {
+					reject(reqParams)
+				}
+				reqParams = {
+					isRunning: true,
+					isCloudify: true,
+					endpoint: this.state.endpoint
+				};
+			}
+			resolve(reqParams);
 		})
 	}
 
 
+	changeDeployment = (type) => {
+		this.setState({deployment: type});
+	};
 
+
+	getDeployChoiceRadio = () => {
+		return <div>
+			<label className="pure-radio">
+				<input onClick={this.changeDeployment.bind(this, N2SY)} id="option-two" type="radio" name="optionsRadios"
+							 value={N2SY}/>
+				Deploy on N2Sky environment
+			</label>
+
+			<label className="pure-radio">
+				<input onClick={this.changeDeployment.bind(this, OWN)} id="option-three" type="radio" name="optionsRadios"
+							 value={OWN}/>
+				Instance already deployed on external environment
+			</label>
+		</div>
+	};
+
+
+	getDeployOnN2skyForm = () => {
+
+	};
+
+	getDeployOnOwnMachine = () => {
+		return <fieldset className="pure-group">
+			<input type="text" name='endpoint' onChange={this.handleChange} className="pure-input-1-1 full-width"
+						 placeholder="Endpoint of you neural network"/>
+
+			{this.state.endpoint ? <table className="pure-table full-width">
+
+				<tbody>
+				<tr>
+					<td>Endpoint for training</td>
+					<td>{this.state.endpoint}/train</td>
+				</tr>
+				<tr>
+					<td>Endpoint for testing</td>
+					<td>{this.state.endpoint}/test</td>
+				</tr>
+				</tbody>
+			</table> : null}
+		</fieldset>
+	};
 
 
 	getContent = () => {
 		return (
 			<form className="pure-form modal-content-container">
-				<fieldset className="pure-group">
-					<input type="text" name='name' onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Neural Network Name"/>
-					<input type="text" name='user' onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="DockerHub User Name"/>
-					<input type="text" name='domain' onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Domain"/>
-					<input type="text" name='inputType' onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Input Type"/>
-					<input type="text" name='inputDimensions' onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Input Dimensions"/>
+				{this.getDeployChoiceRadio()}
 
-				</fieldset>
+				{this.state.deployment === N2SY ? this.getDeployOnN2skyForm() : null}
+				{this.state.deployment === OWN ? this.getDeployOnOwnMachine() : null}
 
 				<a onClick={this.submitForm} className="button" role="button">
-					<span>Create</span>
+					<span>Run Instance</span>
 					<div className="icon">
 						<img src={AddIcon}/>
 					</div>
