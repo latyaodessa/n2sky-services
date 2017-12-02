@@ -62,10 +62,10 @@ export default class RunInstancePopup extends React.Component {
 
 			let reqParams = {};
 
-			if (this.deployment === N2SY) {
+			if (this.state.deployment === N2SY) {
 				reqParams = {
 					isRunning: true,
-					isCloudify: false
+					isCloudify: true
 				};
 			} else {
 				if (!this.state.endpoint) {
@@ -73,7 +73,7 @@ export default class RunInstancePopup extends React.Component {
 				}
 				reqParams = {
 					isRunning: true,
-					isCloudify: true,
+					isCloudify: false,
 					endpoint: this.state.endpoint
 				};
 			}

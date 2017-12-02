@@ -96,13 +96,14 @@ export default class DetailsNavbar extends React.Component {
 		console.log(this.props);
 		return <nav className="topbar">
 			<ul>
-				{this.getIsRunningNavBarStatus()}
+				{this.props.descriptionById.createdBy === localStorage.getItem('user') ? this.getIsRunningNavBarStatus() : null}
 				<li>
 					<span className="no-action">
-						{this.props.descriptionById.name} / {this.props.descriptionById.isRunning ? "Running" : "Stopped"} / {this.props.descriptionById.isPublic ? "Published" : "Private"}
+						{this.props.descriptionById.name} / {this.props.descriptionById.isRunning ? "Running" : "Stopped"}
+						/ {this.props.descriptionById.isPublic ? "Published" : "Private"}
 				</span>
 				</li>
-				{this.getIsPublishNavBarStatus()}
+				{this.props.descriptionById.createdBy === localStorage.getItem('user') ? this.getIsPublishNavBarStatus() : null}
 			</ul>
 		</nav>
 	};
@@ -114,7 +115,7 @@ export default class DetailsNavbar extends React.Component {
 				{this.getNavbar()}
 				{this.state.showModal && this.props.descriptionById ?
 					<RunInstancePopup descriptionById={this.props.descriptionById}
-												 showCloseModal={this.showCloseModal.bind(this)}/> : null}
+														showCloseModal={this.showCloseModal.bind(this)}/> : null}
 			</div>
 		)
 	}

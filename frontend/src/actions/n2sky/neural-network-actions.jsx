@@ -175,6 +175,19 @@ export function getModelsByDescriptionId(descriptionId) {
 	}
 }
 
+export function getModelsByReqParams(descripIds, from, to) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "models/descriptions" + "/" + from + "/" + to;
+	return function (dispatch) {
+		return axios.post(endpoint, descripIds)
+			.then((res) => {
+				dispatch({type: FETCH_MODELS_BY_DESC_ID_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: FETCH_MODELS_BY_DESC_ID_REJECTED, payload: err})
+			})
+	}
+}
+
 export function getModelsById(modelId) {
 	let endpoint = HOST_MODEL_REPO_SERVICE + "models/id" + "/" + modelId;
 	return function (dispatch) {

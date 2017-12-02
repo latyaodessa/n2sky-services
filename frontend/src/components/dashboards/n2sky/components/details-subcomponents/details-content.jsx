@@ -2,16 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux'
 import LogoWhite from './../../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../../res/img/logo-grey.svg'
+import CheckIcon from './../../../../../../res/img/icons/tick-inside-circle.svg'
+
+import style from './style.scss'
 
 @connect((store) => {
-	return {
-	}
+	return {}
 })
 export default class DetailsContent extends React.Component {
 
 
-	state = {
-	};
+	state = {};
 
 	constructor(props) {
 		super(props);
@@ -92,10 +93,46 @@ export default class DetailsContent extends React.Component {
 		</div>
 	};
 
+	getIsRunningheaderStatus = () => {
+		console.log(this.props.descriptionById);
+		return <div className='header-nn-details'>
+			{this.props.descriptionById.isCloudify ? <div><h1>Neural network deployed on N2Sky</h1></div>
+				: <div><h1>Neural network deployed on external environment</h1></div>}
+			<div>
+				<table className="pure-table full-width">
+
+					<tbody>
+					<tr>
+						<td>Endpoint for training</td>
+						<td>{this.props.descriptionById.endpoint}/train</td>
+						<td><a className="button" role="button">
+							<span>Check</span>
+							<div className="icon">
+								<img src={CheckIcon}/>
+							</div>
+						</a></td>
+					</tr>
+					<tr>
+						<td>Endpoint for testing</td>
+						<td>{this.props.descriptionById.endpoint}/test</td>
+						<td><a className="button" role="button">
+							<span>Check</span>
+							<div className="icon">
+								<img src={CheckIcon}/>
+							</div>
+						</a></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	};
+
 
 	render() {
 		return (
 			<div>
+				{this.props.descriptionById.isRunning ? this.getIsRunningheaderStatus() : null}
 				{this.getContent()}
 			</div>
 		)

@@ -4,6 +4,7 @@ import {Link} from 'react-router'
 import Loader from './../../../core/loader/loader'
 import NoOwnNNComponent from './no-own-nn-component'
 import NavigationPage from '../core/navigation-page'
+import DetailsModelsTable from './details-subcomponents/details-models-tabel'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
 import Enter from './../../../../../res/img/icons/right-arrow.png'
@@ -15,13 +16,19 @@ import {getDescriptions} from './../../../../actions/n2sky/neural-network-action
 
 const offsetSize = 3;
 
+
 @connect((store) => {
 	return {
 		descriptions: store.getDescriptionsReducer.descriptions,
-		done: store.getDescriptionsReducer.done,
+		done: store.getDescriptionsReducer.done
 	}
 })
 export default class DescriptionsOverview extends React.Component {
+
+	state = {
+		descripIds: null,
+		chained: false
+	};
 
 	constructor(props) {
 		super(props);
@@ -34,8 +41,8 @@ export default class DescriptionsOverview extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(JSON.stringify(this.props.reqParams) !== JSON.stringify(nextProps.reqParams))
-		{
+		if (JSON.stringify(this.props.reqParams) !== JSON.stringify(nextProps.reqParams)) {
+			this.setState({descripIds : null});
 			this.geDescriptonWithOffset(0, nextProps.reqParams);
 		}
 	}
@@ -44,13 +51,43 @@ export default class DescriptionsOverview extends React.Component {
 		this.props.dispatch(getDescriptions(
 			reqParams,
 			from,
-			offsetSize));
+			offsetSize)).then(() => {
+			this.getDescriptionIds();
+		});
 	}
+
+	getDescriptionIds = (id = null) => {
+		this.setState({descripIds: null});
+		console.log(this.state);
+
+		if(id) {
+			this.setState({descripIds : new Array(id)});
+		} else {
+			let descripIds = [];
+			this.props.descriptions.map(desc => descripIds.push(desc._id));
+			this.setState({descripIds: descripIds});
+		}
+	};
+
+
+	getModelModeListener = () => {
+		let newStatus = !this.state.chained;
+		if(newStatus) {
+			this.setState({descripIds: null})
+		} else {
+			this.getDescriptionIds();
+		}
+		this.setState({chained: newStatus})
+	};
+
+
+
 
 
 	getDescription = () => {
 		return this.props.descriptions.map(d => {
-			return <div key={d._id} className="container-panel pure-u-1-3">
+			return <div onClick={this.getDescriptionIds.bind(this, d._id)} key={d._id}
+									className="container-panel pure-u-1-3">
 				<div className="container-nn">
 					<div className="container-header-panel">
 						<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
@@ -102,7 +139,8 @@ export default class DescriptionsOverview extends React.Component {
 					{this.props.done ? this.getDescription() : <Loader/>}
 				</div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() : null}
-				<NavigationPage method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+				<NavigationPage chained={this.state.chained} getModelModeListener={this.getModelModeListener.bind(this)} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+				{this.state.descripIds ? <DetailsModelsTable descripIds={this.state.descripIds}/> : <Loader/>}
 			</div>
 		)
 	}

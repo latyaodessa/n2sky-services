@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux'
 import Loader from './../../core/loader/loader'
 import DescriptionsOverview from './components/description-overview'
-import AvailableNetworksOverview from './components/available-networks-overview'
 
 import {getCopiedDescriptions} from './../../../actions/n2sky/neural-network-actions'
 
@@ -13,7 +12,8 @@ const label_all_networks = "All Networks";
 
 @connect((store) => {
 	return {
-		savedDescriptionsByUser: store.savedDescriptionsByUser
+		savedDescriptionsByUser: store.savedDescriptionsByUser,
+		modelsByDescId: store.modelsByDescId.models
 	}
 })
 export default class N2SkyDashboard extends React.Component {
@@ -25,7 +25,8 @@ export default class N2SkyDashboard extends React.Component {
 		this.props.dispatch(getCopiedDescriptions(localStorage.getItem("user")));
 
 		this.state = {
-			activeTab: label_ynn
+			activeTab: label_ynn,
+			isChainMode: false
 		};
 	}
 
@@ -44,26 +45,30 @@ export default class N2SkyDashboard extends React.Component {
 		})
 	}
 
+	getInstanceId = (descriptionId) => {
+		console.log(descriptionId)
+	};
+
 	getActiveTab() {
 		if (this.state.activeTab === label_ynn) {
 			let reqParams = {
 				createdBy: localStorage.getItem("user")
 			};
-			return <DescriptionsOverview reqParams={reqParams}/>
+			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_running) {
 			let reqParams = {
 				createdBy: localStorage.getItem("user"),
 				isRunning: true
 			};
-			return <DescriptionsOverview reqParams={reqParams}/>
+			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_all_networks) {
 			let reqParams = {};
-			return <DescriptionsOverview reqParams={reqParams}/>
+			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_saved) {
 			let reqParams = {
 				_id: {$in: this.props.savedDescriptionsByUser.saved.descriptionsId}
 			};
-			return <DescriptionsOverview reqParams={reqParams}/>
+			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
 
 		}
 
@@ -79,7 +84,6 @@ export default class N2SkyDashboard extends React.Component {
 					</ul>
 				</nav>
 				{this.state.activeTab ? this.getActiveTab() : <Loader/>}
-				aaa
 			</div>
 		)
 	}

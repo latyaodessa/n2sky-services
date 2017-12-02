@@ -1,0 +1,15 @@
+.header-nn-details {
+  padding: 0 15px 15px 15px;
+  & tr {
+    & td:first-child {
+      width: 200px;
+    }
+    & td:last-child {
+      width: 200px;
+    }
+  }
+}
+
+.table-details {
+  padding: 0 15px 15px 15px;
+}

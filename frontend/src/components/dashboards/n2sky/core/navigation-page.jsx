@@ -3,6 +3,9 @@ import RightIcon from './../../../../../res/img/icons/double-angle-arrow-pointin
 import LeftIcon from './../../../../../res/img/icons/double-left-angle-arrows.svg'
 import GreenRightIcon from './../../../../../res/img/icons/right-green.svg'
 import GreenLeftIcon from './../../../../../res/img/icons/left-green.svg'
+import ChainedIcon from './../../../../../res/img/icons/link.svg'
+import UnchainedIcon from './../../../../../res/img/icons/broken-link.svg'
+
 import style from './style.scss'
 
 export default class NavigationPage extends React.Component {
@@ -38,6 +41,7 @@ export default class NavigationPage extends React.Component {
 				<div className="page-nav">
 					<img onClick={this.prevPage.bind(this)} onMouseOver={() => this.setState({left: GreenLeftIcon})}
 							 onMouseLeave={() => this.setState({left: LeftIcon})} src={this.state.left}/>
+					{this.props.chained ? <img onClick={this.props.getModelModeListener.bind(this)} src={ChainedIcon}/> :  <img onClick={this.props.getModelModeListener.bind(this)} src={UnchainedIcon}/>  }
 					<img onClick={this.nextPage.bind(this)} onMouseOver={() => this.setState({right: GreenRightIcon})}
 							 onMouseLeave={() => this.setState({right: RightIcon})} src={this.state.right}/>
 				</div>
