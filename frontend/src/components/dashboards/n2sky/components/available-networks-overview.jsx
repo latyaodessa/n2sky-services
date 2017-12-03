@@ -21,6 +21,7 @@ import {
 } from './../../../../actions/n2sky/neural-network-actions'
 
 const offsetSize = 9;
+const WAIT_INTERVAL = 1000;
 
 @connect((store) => {
 	return {
@@ -30,6 +31,14 @@ const offsetSize = 9;
 	}
 })
 export default class AvailableNetworksOverview extends React.Component {
+
+	state = {
+		name: null,
+		createdBy: null,
+		domain: null,
+		isRunning: false,
+		isCloudify: null
+	};
 
 	constructor(props) {
 		super(props);
@@ -44,9 +53,25 @@ export default class AvailableNetworksOverview extends React.Component {
 	geDescriptonWithOffset(from) {
 		let user = localStorage.getItem("user");
 		this.props.dispatch(getCopiedDescriptions(user)).then(() => {
-			let reqParams = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
 
-			this.props.dispatch(getDescriptions(reqParams, from, offsetSize));
+			new Promise((res, rej) => {
+
+				// let filters = this.state;
+
+				let reqParams = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
+
+				// let reqParams = {
+				// 	ids: this.props.descripIds,
+				// 	filters: this.state
+				// };
+				res(reqParams);
+			}).then(reqParams => {
+				this.props.dispatch(getDescriptions(reqParams, from, offsetSize)).then(() => {
+					console.log(this.props);
+				});
+			});
+
+			// this.props.dispatch(getDescriptions(reqParams, from, offsetSize));
 		});
 	}
 
@@ -54,19 +79,38 @@ export default class AvailableNetworksOverview extends React.Component {
 		return <nav className="topbar">
 			<ul>
 				<li><span className="no-action">Available Neural Networks</span></li>
-				{/*<li className="right-float">*/}
-				{/*<div className="standard-nav-item">*/}
-				{/*<span onClick={this.showCloseModal.bind(this)} className="button" role="button">*/}
-				{/*<span>Train a model</span>*/}
-				{/*<div className="icon">*/}
-				{/*<img src={TrainIcon}/>*/}
-				{/*</div>*/}
-				{/*</span>*/}
-				{/*</div>*/}
-				{/*</li>*/}
 			</ul>
 		</nav>
 	};
+
+	handleChange(event) {
+		clearTimeout(this.timer);
+
+		this.setState({[event.target.name]: event.target.value});
+
+		// this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+	}
+
+	handleClick() {
+		clearTimeout(this.timer);
+
+		let isRunning = !this.state.isRunning;
+
+		this.setState({isRunning: isRunning});
+
+		if (!isRunning) {
+			this.setState({isCloudify: null});
+		}
+		// this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+
+	}
+
+	handleRadio(isCloudify) {
+		clearTimeout(this.timer);
+		this.setState({isCloudify: isCloudify});
+		// this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+
+	}
 
 	getSaveButton = (d) => {
 		console.log(d._id);
@@ -141,16 +185,42 @@ export default class AvailableNetworksOverview extends React.Component {
 		return <NoOwnNNComponent/>
 	};
 
+	getTableFilter = () => {
+		return <div className="table-filter">
+			<form className="pure-form">
+				<fieldset>
+					<input onChange={this.handleChange} name="name" type="text" placeholder="Name"/>
+					<input onChange={this.handleChange} name="createdBy" type="text" placeholder="Owner"/>
+					<input onChange={this.handleChange} name="domain" type="text" placeholder="Domain"/>
+					<label>
+						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Is Running
+					</label>
+					{this.state.isRunning ? <div className="radio-buttons">
+						<label className="pure-radio header-label-radio">
+							<input onClick={this.handleRadio.bind(this, true)} id="option-two" type="radio" name="optionsRadios"
+										 value="option1"/> on N2Sky
+						</label>
+
+						<label className="pure-radio header-label-radio">
+							<input onClick={this.handleRadio.bind(this, false)} id="option-three" type="radio" name="optionsRadios"
+										 value="option2"/> on external environment
+						</label>
+					</div> : null}
+				</fieldset>
+			</form>
+		</div>
+	};
 
 	render() {
 		return (
 			<div>
 				{this.getNavbar()}
+				{this.getTableFilter()}
 				<div className="pure-g">
 					{this.props.done ? this.getDescription() : <Loader/>}
 				</div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() : null}
-				<NavigationPage method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+				<NavigationPage chainButtonVisible={false} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
 			</div>
 		)
 	}

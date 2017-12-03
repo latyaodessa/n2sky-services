@@ -57,16 +57,25 @@ export default class DescriptionsOverview extends React.Component {
 	}
 
 	getDescriptionIds = (id = null) => {
-		this.setState({descripIds: null});
-		console.log(this.state);
 
-		if(id) {
-			this.setState({descripIds : new Array(id)});
-		} else {
-			let descripIds = [];
-			this.props.descriptions.map(desc => descripIds.push(desc._id));
-			this.setState({descripIds: descripIds});
-		}
+
+		new Promise((resolve, reject) => {
+			this.setState({descripIds: null});
+			resolve(this.state);
+		}).then(r => {
+			if(id && this.state.chained) {
+				this.setState({descripIds : new Array(id)});
+				console.log(this.state);
+			} else {
+				let descripIds = [];
+				this.props.descriptions.map(desc => descripIds.push(desc._id));
+				this.setState({descripIds: descripIds});
+			}
+			})
+			.catch(err => this.setState({violated: true}));
+
+
+
 	};
 
 
@@ -139,7 +148,7 @@ export default class DescriptionsOverview extends React.Component {
 					{this.props.done ? this.getDescription() : <Loader/>}
 				</div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() : null}
-				<NavigationPage chained={this.state.chained} getModelModeListener={this.getModelModeListener.bind(this)} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+				<NavigationPage chainButtonVisible={true} chained={this.state.chained} getModelModeListener={this.getModelModeListener.bind(this)} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
 				{this.state.descripIds ? <DetailsModelsTable descripIds={this.state.descripIds}/> : <Loader/>}
 			</div>
 		)

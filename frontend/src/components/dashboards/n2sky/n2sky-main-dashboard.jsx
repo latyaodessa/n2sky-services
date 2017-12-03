@@ -45,30 +45,26 @@ export default class N2SkyDashboard extends React.Component {
 		})
 	}
 
-	getInstanceId = (descriptionId) => {
-		console.log(descriptionId)
-	};
-
 	getActiveTab() {
 		if (this.state.activeTab === label_ynn) {
 			let reqParams = {
 				createdBy: localStorage.getItem("user")
 			};
-			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
+			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_running) {
 			let reqParams = {
 				createdBy: localStorage.getItem("user"),
 				isRunning: true
 			};
-			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
+			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_all_networks) {
 			let reqParams = {};
-			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
+			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_saved) {
 			let reqParams = {
 				_id: {$in: this.props.savedDescriptionsByUser.saved.descriptionsId}
 			};
-			return <DescriptionsOverview getInstanceId={this.getInstanceId} reqParams={reqParams}/>
+			return <DescriptionsOverview reqParams={reqParams}/>
 
 		}
 

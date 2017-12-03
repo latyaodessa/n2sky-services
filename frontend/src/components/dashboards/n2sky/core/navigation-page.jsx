@@ -34,6 +34,11 @@ export default class NavigationPage extends React.Component {
 		this.props.method(newFrom);
 	}
 
+	getChainedButton = () => {
+		return this.props.chained ? <img onClick={this.props.getModelModeListener.bind(this)} src={ChainedIcon}/> :
+			<img onClick={this.props.getModelModeListener.bind(this)} src={UnchainedIcon}/>
+	};
+
 
 	render() {
 		return (
@@ -41,7 +46,7 @@ export default class NavigationPage extends React.Component {
 				<div className="page-nav">
 					<img onClick={this.prevPage.bind(this)} onMouseOver={() => this.setState({left: GreenLeftIcon})}
 							 onMouseLeave={() => this.setState({left: LeftIcon})} src={this.state.left}/>
-					{this.props.chained ? <img onClick={this.props.getModelModeListener.bind(this)} src={ChainedIcon}/> :  <img onClick={this.props.getModelModeListener.bind(this)} src={UnchainedIcon}/>  }
+					{this.props.chainButtonVisible ? this.getChainedButton() : null}
 					<img onClick={this.nextPage.bind(this)} onMouseOver={() => this.setState({right: GreenRightIcon})}
 							 onMouseLeave={() => this.setState({right: RightIcon})} src={this.state.right}/>
 				</div>

@@ -5,6 +5,8 @@ import TrainIconGrey from './../../../../../../res/img/icons/flask_grey.svg'
 import {getModelsByReqParams} from './../../../../../actions/n2sky/neural-network-actions'
 import Loader from "../../../../core/loader/loader";
 
+const WAIT_INTERVAL = 1000;
+
 @connect((store) => {
 	return {
 		modelsByDescId: store.modelsByDescId.models
@@ -13,17 +15,49 @@ import Loader from "../../../../core/loader/loader";
 export default class DetailsModelsTable extends React.Component {
 
 
-	state = {};
+	state = {
+				name: null,
+				trainedBy: null,
+				accuracy: null,
+				isCopy: false
+	};
 
 	constructor(props) {
 		super(props);
-		this.getModelsByDescId(this.props.descripIds)
+		this.getModelsByDescId()
+		this.handleChange = ::this.handleChange;
 	}
 
-	getModelsByDescId = (descripIds) => {
-		this.props.dispatch(getModelsByReqParams(descripIds, 0, 999)).then(() => {
-			console.log(this.props);
+	handleChange(event) {
+		clearTimeout(this.timer);
+
+		this.setState({[event.target.name]: event.target.value});
+
+		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+	}
+
+	handleClick(){
+		clearTimeout(this.timer);
+		this.setState({isCopy: !this.state.isCopy});
+		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+
+	}
+
+	getModelsByDescId = () => {
+
+
+		new Promise((res, rej)=> {
+			let reqParams = {
+				ids: this.props.descripIds,
+				filters : this.state
+			};
+			res(reqParams);
+		}).then(reqParams => {
+			this.props.dispatch(getModelsByReqParams(reqParams, 0, 999)).then(() => {
+				console.log(this.props);
+			});
 		});
+
 	};
 
 	getTrainedModelsTalbe = () => {
@@ -67,9 +101,25 @@ export default class DetailsModelsTable extends React.Component {
 		return <ul>{lies}</ul>;
 	}
 
+	getTableFilter = () => {
+		return <div className="table-filter">
+			<form className="pure-form">
+				<fieldset>
+					<input onChange={this.handleChange} name="name" type="text" placeholder="Model Name"/>
+					<input onChange={this.handleChange} name="trainedBy" type="text" placeholder="Trained By"/>
+					<input onChange={this.handleChange} name="accuracy" type="text" placeholder="Accuracy"/>
+					<label>
+						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Only Copy
+					</label>
+				</fieldset>
+			</form>
+		</div>
+	};
+
 	render() {
 		return (
 			<div className="table-details">
+				{this.getTableFilter()}
 				{this.props.modelsByDescId ? this.getTrainedModelsTalbe() : <Loader/>}
 			</div>
 		)
