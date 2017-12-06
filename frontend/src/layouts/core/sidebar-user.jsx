@@ -4,6 +4,8 @@ import UserIcon from './../../../res/img/icons/user.svg'
 import N2SkyIcon from './../../../res/img/logo-white.svg'
 import CloudCreate from './../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../res/img/icons/network.svg'
+import ModelsIcon from './../../../res/img/icons/cube.svg'
+
 import {browserHistory} from 'react-router'
 
 
@@ -44,6 +46,12 @@ export default class UserSidebar extends React.Component {
 							<Link to="/n2sky/available" className="sidebar-link">
 								<img className="sibar-icon" src={Networkcon}/>
 								<span>Available neural networks</span>
+							</Link>
+						</li>
+						<li>
+							<Link to="/n2sky/models" className="sidebar-link">
+								<img className="sibar-icon" src={ModelsIcon}/>
+								<span>Models repository</span>
 							</Link>
 						</li>
 						<li>

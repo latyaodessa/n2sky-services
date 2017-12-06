@@ -46,6 +46,22 @@
         font-weight: 600;
         letter-spacing: .1em;
         text-decoration: none; }
+      .topbar ul li .tab {
+        padding: 18px;
+        color: #fdfdfd;
+        font-family: Lekton;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        overflow: hidden;
+        margin: 0 0;
+        letter-spacing: .1em;
+        text-decoration: none;
+        cursor: pointer; }
+        .topbar ul li .tab:hover {
+          box-shadow: 0 0 0px 0px rgba(0, 0, 0, 0.1), inset 0 0 4px 0px rgba(255, 255, 255, 0.6);
+          background: #ffffff;
+          color: #777; }
     .topbar ul .right-float {
       float: right; }
     .topbar ul .left-float {

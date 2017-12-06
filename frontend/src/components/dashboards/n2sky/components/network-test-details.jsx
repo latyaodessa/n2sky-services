@@ -184,7 +184,7 @@ export default class NetworkTestDetails extends React.Component {
 			{this.getRow()}
 			</tbody>
 		</table>
-	}
+	};
 
 
 	render() {

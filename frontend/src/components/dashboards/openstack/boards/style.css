@@ -56,6 +56,8 @@ tbody tr:hover {
     .container-header-panel .is-running-header img {
       height: 35px;
       padding: 0 20px 0 15px; }
+  .container-header-panel .button-in-header {
+    width: 250px; }
 
 .raw-model {
   max-height: 150px;
