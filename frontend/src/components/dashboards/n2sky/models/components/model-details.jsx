@@ -40,7 +40,7 @@ export default class ModeDetails extends React.Component {
 
 			<div className="pure-g">
 				{this.props.model ? this.getParamDetails() : <Loader/>}
-				{this.getTabs()}
+				{/*{this.getTabs()}*/}
 				{this.props.model ? this.getRawModel() : <Loader/>}
 			</div>
 		</div>

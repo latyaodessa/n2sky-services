@@ -34,16 +34,15 @@ export default class AvailableNetworksOverview extends React.Component {
 
 	state = {
 		name: null,
-		createdBy: null,
 		domain: null,
-		isRunning: false,
-		isCloudify: null
+		inputDimensions: null,
+		inputType: null
 	};
 
 	constructor(props) {
 		super(props);
 		this.geDescriptonWithOffset = this.geDescriptonWithOffset.bind(this);
-
+		this.handleChange = ::this.handleChange;
 	}
 
 	componentDidMount() {
@@ -56,14 +55,10 @@ export default class AvailableNetworksOverview extends React.Component {
 
 			new Promise((res, rej) => {
 
-				// let filters = this.state;
+				let reqParams =  {};
+						reqParams.static_filters = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
+						reqParams.filters = this.state;
 
-				let reqParams = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
-
-				// let reqParams = {
-				// 	ids: this.props.descripIds,
-				// 	filters: this.state
-				// };
 				res(reqParams);
 			}).then(reqParams => {
 				this.props.dispatch(getDescriptions(reqParams, from, offsetSize)).then(() => {
@@ -71,7 +66,6 @@ export default class AvailableNetworksOverview extends React.Component {
 				});
 			});
 
-			// this.props.dispatch(getDescriptions(reqParams, from, offsetSize));
 		});
 	}
 
@@ -88,7 +82,7 @@ export default class AvailableNetworksOverview extends React.Component {
 
 		this.setState({[event.target.name]: event.target.value});
 
-		// this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+		this.timer = setTimeout(::this.geDescriptonWithOffset(0), WAIT_INTERVAL);
 	}
 
 	handleClick() {
@@ -190,22 +184,9 @@ export default class AvailableNetworksOverview extends React.Component {
 			<form className="pure-form">
 				<fieldset>
 					<input onChange={this.handleChange} name="name" type="text" placeholder="Name"/>
-					<input onChange={this.handleChange} name="createdBy" type="text" placeholder="Owner"/>
 					<input onChange={this.handleChange} name="domain" type="text" placeholder="Domain"/>
-					<label>
-						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Is Running
-					</label>
-					{this.state.isRunning ? <div className="radio-buttons">
-						<label className="pure-radio header-label-radio">
-							<input onClick={this.handleRadio.bind(this, true)} id="option-two" type="radio" name="optionsRadios"
-										 value="option1"/> on N2Sky
-						</label>
-
-						<label className="pure-radio header-label-radio">
-							<input onClick={this.handleRadio.bind(this, false)} id="option-three" type="radio" name="optionsRadios"
-										 value="option2"/> on external environment
-						</label>
-					</div> : null}
+					<input onChange={this.handleChange} name="inputDimensions" type="text" placeholder="Input Dimensions"/>
+					<input onChange={this.handleChange} name="inputType" type="text" placeholder="Input Type"/>
 				</fieldset>
 			</form>
 		</div>

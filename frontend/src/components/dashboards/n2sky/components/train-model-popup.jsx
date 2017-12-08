@@ -99,7 +99,7 @@ export default class TrainModelPopup extends React.Component {
 
 
 				<a onClick={this.submitForm} className="button" role="button">
-					<span>Create</span>
+					<span>Train</span>
 					<div className="icon">
 						<img src={AddIcon}/>
 					</div>

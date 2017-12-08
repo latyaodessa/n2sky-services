@@ -7,6 +7,7 @@ import OwnIcon from './../../../../../../res/img/icons/pc-coding.svg'
 import AvalIcon from './../../../../../../res/img/icons/cloud-code.svg'
 import RefreshIcon from './../../../../../../res/img/icons/refresh-button.svg'
 import SaveIconBlack from './../../../../../../res/img/icons/copy-list.svg'
+import CopyModelPopup from './copy-model-popup'
 import style from './style.scss'
 
 const WAIT_INTERVAL = 1000;
@@ -25,7 +26,9 @@ export default class ModelsTable extends React.Component {
 		accuracy: null,
 		isCopy: false,
 		model: null,
-		load: 3
+		load: 3,
+		modelCopy: null,
+		showModal: false
 	};
 
 	constructor(props) {
@@ -55,7 +58,7 @@ export default class ModelsTable extends React.Component {
 		new Promise((res, rej) => {
 
 			let filters = {
-				name : this.state.name,
+				name: this.state.name,
 				isCopy: this.state.isCopy,
 				trainedBy: this.state.trainedBy
 			};
@@ -67,7 +70,6 @@ export default class ModelsTable extends React.Component {
 			res(reqParams);
 		}).then(reqParams => {
 			this.props.dispatch(getModelsByReqParams(reqParams, 0, this.state.load)).then(() => {
-				console.log(this.props);
 			});
 		});
 
@@ -93,13 +95,12 @@ export default class ModelsTable extends React.Component {
 
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
-			console.log(m);
 			return <tr onClick={this.props.setModel.bind(this, m)} key={m._id} className="pure-table clickable">
 				<td>{m.name}</td>
 				<td>{m.trainedBy}</td>
 				<td>{m.endpoint}</td>
 				<td>{m.tests.length}</td>
-				<td><img className="icon-button-in-table" src={SaveIconBlack}/></td>
+				<td onClick={this.showCloseModal.bind(this, m)}><img className="icon-button-in-table" src={SaveIconBlack}/></td>
 				{/*<td>*/}
 				{/*<Link to={"/n2sky/network/" + m.descriptionId + "/test/" + m._id} className="icon-button-container"><img*/}
 				{/*src={TrainIconGrey}/></Link>*/}
@@ -132,12 +133,12 @@ export default class ModelsTable extends React.Component {
 
 	increaseLoad = () => {
 		let newLoad = this.state.load + this.state.load;
-		this.setState({load: newLoad})
+		this.setState({load: newLoad});
 		this.getModelsByDescId();
 	};
 
 	changetrainedByFilter(isAll) {
-		if(isAll) {
+		if (isAll) {
 			this.setState({trainedBy: null});
 			this.getModelsByDescId();
 		} else {
@@ -145,6 +146,13 @@ export default class ModelsTable extends React.Component {
 			this.getModelsByDescId();
 		}
 
+	}
+
+	showCloseModal(modelCopy = null) {
+		this.setState({
+			modelCopy: modelCopy,
+			showModal: !this.state.showModal
+		})
 	}
 
 	render() {
@@ -169,6 +177,8 @@ export default class ModelsTable extends React.Component {
 				<div onClick={this.increaseLoad.bind(this)} className="refresh-button">
 					<img src={RefreshIcon}/>
 				</div>
+				{this.state.showModal ? <CopyModelPopup modelCopy={this.state.modelCopy}
+																								showCloseModal={this.showCloseModal.bind(this)}/> : null}
 			</div>
 		)
 	}
