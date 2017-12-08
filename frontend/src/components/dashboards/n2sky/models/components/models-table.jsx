@@ -95,7 +95,11 @@ export default class ModelsTable extends React.Component {
 
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
-			return <tr onClick={this.props.setModel.bind(this, m)} key={m._id} className="pure-table clickable">
+			let color = {
+				backgroundColor: m.isCopy? '#ffffaa' : '#fff'
+			};
+
+			return <tr style={color} onClick={this.props.setModel.bind(this, m)} key={m._id} className="pure-table clickable">
 				<td>{m.name}</td>
 				<td>{m.trainedBy}</td>
 				<td>{m.endpoint}</td>
