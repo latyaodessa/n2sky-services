@@ -5,22 +5,59 @@ import OpenStackIcon from './../../../res/img/icons/openstack.png'
 import CloudifyIcon from './../../../res/img/icons/cloudify.png'
 import N2SkyIcon from './../../../res/img/logo-white.svg'
 import SettingsIcon from './../../../res/img/icons/settings.svg'
-import HomeIcon from './../../../res/img/icons/home.svg'
 import AlertIcon from './../../../res/img/icons/bell.svg'
 import CloudCreate from './../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../res/img/icons/network.svg'
+import AdminIcon from './../../../res/img/icons/algorithm.svg'
 import {browserHistory} from 'react-router'
+import ModelsIcon from './../../../res/img/icons/cube.svg'
 
 
 export default class Sidebar extends React.Component {
 
 	state = {
-		type: localStorage.getItem("type")
+		type: localStorage.getItem("type"),
+		showSettings: false
 	};
 
 	logout() {
 		localStorage.removeItem("user");
 		browserHistory.push('/');
+	}
+
+
+	getAdministrationSettings() {
+		return <div className="admin-options">
+			<li>
+				<Link to="/openstack">
+					<img className="sibar-icon" src={OpenStackIcon}/>
+					<span>OpenStack Dashboard</span>
+				</Link>
+			</li>
+
+			<li>
+				<a href="#">
+					<img className="sibar-icon" src={CloudifyIcon}/>
+					<span>Cloudify Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<Link to="/alert">
+					<img className="sibar-icon" src={AlertIcon}/>
+					<span>Alert System</span>
+				</Link>
+			</li>
+			<li>
+				<a onClick={this.props.showCloseModal} href="#">
+					<img className="sibar-icon" src={SettingsIcon}/>
+					<span>Dashboards Settigns</span>
+				</a>
+			</li>
+		</div>
+	}
+
+	showSettings(isShow) {
+		this.setState({showSettings: isShow})
 	}
 
 	render() {
@@ -39,32 +76,16 @@ export default class Sidebar extends React.Component {
 								</div>
 							</Link>
 						</li>
-						<li>
-							<Link to="/overview">
-								<img className="sibar-icon" src={HomeIcon}/>
-								<span>Main Dashboard</span>
-							</Link>
-						</li>
-
-						<li>
-							<Link to="/openstack">
-								<img className="sibar-icon" src={OpenStackIcon}/>
-								<span>OpenStack Dashboard</span>
-							</Link>
-						</li>
-
-						<li>
-							<a href="#">
-								<img className="sibar-icon" src={CloudifyIcon}/>
-								<span>Cloudify Dashboard</span>
-							</a>
-						</li>
-						<li>
-							<Link to="/alert">
-								<img className="sibar-icon" src={AlertIcon}/>
-								<span>Alert System</span>
-							</Link>
-						</li>
+						{this.state.type === 'admin' ?
+							<div onMouseOver={this.showSettings.bind(this, true)} onMouseLeave={this.showSettings.bind(this, false)}>
+								<li>
+									<Link to="/overview">
+										<img className="sibar-icon" src={AdminIcon}/>
+										<span>Administration</span>
+									</Link>
+								</li>
+								{this.state.showSettings ? this.getAdministrationSettings() : null}
+							</div> : null}
 						<li>
 							<Link to="/n2sky">
 								<img className="sibar-icon" src={N2SkyIcon}/>
@@ -78,16 +99,16 @@ export default class Sidebar extends React.Component {
 							</Link>
 						</li>
 						<li>
-							<div className="sidebar-link" onClick={this.props.showCloseModal}>
+							<Link to="/n2sky/models" className="sidebar-link">
+								<img className="sibar-icon" src={ModelsIcon}/>
+								<span>Models repository</span>
+							</Link>
+						</li>
+						<li>
+							<div className="sidebar-link" onClick={this.props.showCloseNewNNModal}>
 								<img className="sibar-icon" src={CloudCreate}/>
 								<span>Add neural network</span>
 							</div>
-						</li>
-						<li>
-							<a onClick={this.props.showCloseModal} href="#">
-								<img className="sibar-icon" src={SettingsIcon}/>
-								<span>Dashboards Settigns</span>
-							</a>
 						</li>
 					</ul>
 				</nav>

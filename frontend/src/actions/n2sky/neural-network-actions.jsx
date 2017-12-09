@@ -20,7 +20,9 @@ import {
 	FETCH_SAVED_DESCRIPTIONS_FULFILLED,
 	FETCH_SAVED_DESCRIPTIONS_REJECTED,
 	RUN_INSTANCE_DESCRIPTION_FULFILLED,
-	RUN_INSTANCE_DESCRIPTION_REJECTED
+	RUN_INSTANCE_DESCRIPTION_REJECTED,
+	GENERATE_VINNSL_REJECTED,
+	GENERATE_VINNSL_FULFILLED
 } from "../../constants/n2sky/n2sky-constants"
 
 
@@ -145,6 +147,19 @@ export function getDescriptionById(id) {
 			})
 			.catch((err) => {
 				dispatch({type: FETCH_DESCRIPTION_BY_ID_REJECTED, payload: err})
+			})
+	}
+}
+
+export function generateVinnslByDescripId(id) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "vinnsl_descriptions" + "/" + id;
+	return function (dispatch) {
+		return axios.get(endpoint)
+			.then((res) => {
+				dispatch({type: GENERATE_VINNSL_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: GENERATE_VINNSL_REJECTED, payload: err})
 			})
 	}
 }

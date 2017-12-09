@@ -22,11 +22,11 @@ export default class ModelsTable extends React.Component {
 
 	state = {
 		name: null,
-		trainedBy: null,
+		trainedBy: localStorage.getItem("user"),
 		accuracy: null,
 		isCopy: false,
 		model: null,
-		load: 3,
+		load: 6,
 		modelCopy: null,
 		showModal: false
 	};
@@ -59,13 +59,17 @@ export default class ModelsTable extends React.Component {
 
 			let filters = {
 				name: this.state.name,
-				isCopy: this.state.isCopy,
-				trainedBy: this.state.trainedBy
+				isCopy: this.state.isCopy
+			};
+
+			let static_filters = {
+				trainedBy: this.state.trainedBy ? this.state.trainedBy : {$ne: localStorage.getItem("user")}
 			};
 
 			let reqParams = {
 				ids: this.props.descripIds,
-				filters: filters
+				filters: filters,
+				static_filters: static_filters
 			};
 			res(reqParams);
 		}).then(reqParams => {
@@ -76,7 +80,7 @@ export default class ModelsTable extends React.Component {
 	};
 
 	getTrainedModelsTalbe = () => {
-		return <table className="full-width pure-table">
+		return <table className="custom-table">
 			<thead>
 			<tr>
 				<th>Model Name</th>
@@ -96,10 +100,10 @@ export default class ModelsTable extends React.Component {
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
 			let color = {
-				backgroundColor: m.isCopy? '#ffffaa' : '#fff'
+				backgroundColor: m.isCopy ? 'rgb(239, 233, 233)' : '#fff'
 			};
 
-			return <tr style={color} onClick={this.props.setModel.bind(this, m)} key={m._id} className="pure-table clickable">
+			return <tr style={color} onClick={this.props.setModel.bind(this, m)} key={m._id} className="clickable">
 				<td>{m.name}</td>
 				<td>{m.trainedBy}</td>
 				<td>{m.endpoint}</td>
@@ -142,13 +146,23 @@ export default class ModelsTable extends React.Component {
 	};
 
 	changetrainedByFilter(isAll) {
-		if (isAll) {
-			this.setState({trainedBy: null});
+
+
+		new Promise((res, rej) => {
+
+			if (isAll) {
+				this.setState({trainedBy: null});
+
+			} else {
+				this.setState({trainedBy: localStorage.getItem("user")});
+			}
+			res(this.setState.trainedBy);
+		}).then(trainedBy => {
+			console.log(trainedBy);
 			this.getModelsByDescId();
-		} else {
-			this.setState({trainedBy: localStorage.getItem("user")});
-			this.getModelsByDescId();
-		}
+
+		});
+
 
 	}
 

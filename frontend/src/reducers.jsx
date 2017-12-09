@@ -21,7 +21,7 @@ import {getUserByIdentity} from './reducers/administration/user-reducer'
 import neuralNetwork from './reducers/n2sky/neural-network-reducer'
 import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 
-import {getDescriptionsReducer, descriptionById, savedDescriptionsByUser} from './reducers/n2sky/description-reducer'
+import {getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl} from './reducers/n2sky/description-reducer'
 import {getAlerts} from './reducers/alert/alerts-reducer'
 import {modelsByDescId, modelById, trainedModel} from './reducers/n2sky/models-reducer'
 
@@ -43,7 +43,7 @@ export default combineReducers({
 	login, reg, getUserByIdentity,
 	neuralNetwork,
 	dockerHub,
-	getDescriptionsReducer, descriptionById, savedDescriptionsByUser,
+	getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl,
 	getAlerts,
 	modelsByDescId, modelById, trainedModel
 });

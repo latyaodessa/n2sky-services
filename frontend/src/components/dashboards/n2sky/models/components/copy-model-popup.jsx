@@ -105,7 +105,7 @@ export default class CopyModelPopup extends React.Component {
 			<form className="pure-form modal-content-container">
 				<fieldset className="pure-group">
 					<input type="text" name="name" onChange={this.handleReqChange} className="pure-input-1-1 full-width"
-								 placeholder="Model Name" defaultValue={this.props.modelCopy.name + " - Copy"}/>
+								 placeholder="Model Name" defaultValue={this.props.modelCopy.name + " : Copy"}/>
 				</fieldset>
 				{this.props.descriptionById.modelParameters.map(p => {
 					return <fieldset className="pure-group" key={p.parameter}>

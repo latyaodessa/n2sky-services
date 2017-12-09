@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import style from './style.scss'
+import {browserHistory} from 'react-router'
 import {getUserByIdentity} from './../../actions/administration/user-actions'
-import UserIcon from './../../../res/img/icons/android.svg'
+import UserIcon from './../../../res/img/icons/seo.svg'
 
 @connect((store) => {
 	return {
@@ -28,58 +29,22 @@ export default class UserProfile extends React.Component {
 		return localStorage.getItem("user");
 	};
 
+	logout() {
+		localStorage.removeItem("user");
+		browserHistory.push('/');
+	}
+
+
 
 	render() {
 		return (
-			<aside className="profile-card">
-				<header>
-					<a target="_blank" href="#">
-						<img src="http://lorempixel.com/150/150/people/" className="hoverZoomLink"/>
-					</a>
-
-					<h1>
-						John Doe
-					</h1>
-
-					<h2>
-						Better Visuals
-					</h2>
-
-				</header>
-
-				<div className="profile-bio">
-
-					<p>
-						It takes monumental improvement for us to change how we live our lives. Design is the way we access that
-						improvement.
-					</p>
-
+			<div className="profile-container">
+				<img src={UserIcon} className="profile-img" />
+				<div className="profile-text">
+					<h1 className="profile-name">{this.getName()}</h1>
+					<span onClick={this.logout.bind(this)} className="profile-title">Logout</span>
 				</div>
-
-				<ul className="profile-social-links">
-					<li>
-						<a target="_blank" href="https://www.facebook.com/creativedonut">
-							<i className="fa fa-facebook"/>
-						</a>
-					</li>
-					<li>
-						<a target="_blank" href="https://twitter.com/dropyourbass">
-							<i className="fa fa-twitter"/>
-						</a>
-					</li>
-					<li>
-						<a target="_blank" href="https://github.com/vipulsaxena">
-							<i className="fa fa-github"/>
-						</a>
-					</li>
-					<li>
-						<a target="_blank" href="https://www.behance.net/vipulsaxena">
-
-							<i className="fa fa-behance"/>
-						</a>
-					</li>
-				</ul>
-			</aside>
+			</div>
 		)
 	}
 }

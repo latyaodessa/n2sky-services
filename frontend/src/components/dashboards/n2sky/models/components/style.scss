@@ -110,3 +110,26 @@
     transform: scale(1.1);
   }
 }
+
+.custom-table {
+  & thead {
+    & tr {
+      & th {
+        padding: 10px;
+      }
+    }
+  }
+  & tbody {
+
+      & td {
+        padding: 5px;
+        text-align: center;
+      }
+
+      & tr:hover {
+        background-color: #d1d1d1;
+      }
+
+  }
+
+}

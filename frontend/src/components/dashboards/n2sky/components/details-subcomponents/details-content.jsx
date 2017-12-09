@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import LogoWhite from './../../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../../res/img/logo-grey.svg'
 import CheckIcon from './../../../../../../res/img/icons/tick-inside-circle.svg'
+import VinnslIcon from './../../../../../../res/img/icons/coding_xml.svg'
+import GenerateVinnnslPopup from './generate-vinnsl-popup'
 
 import style from './style.scss'
 
@@ -12,7 +14,9 @@ import style from './style.scss'
 export default class DetailsContent extends React.Component {
 
 
-	state = {};
+	state = {
+		showModal: false
+	};
 
 	constructor(props) {
 		super(props);
@@ -33,6 +37,12 @@ export default class DetailsContent extends React.Component {
 					<li>Input Dimentions: {this.props.descriptionById.inputDimensions}</li>
 					<li>Input Type: {this.props.descriptionById.inputType}</li>
 				</ul>
+				<a onClick={this.showCloseModal.bind(this)} className="button" role="button">
+					<span>Generate ViNNSL Model</span>
+					<div className="icon">
+						<img src={VinnslIcon}/>
+					</div>
+				</a>
 			</div>
 		</div>
 	};
@@ -128,12 +138,20 @@ export default class DetailsContent extends React.Component {
 		</div>
 	};
 
+	showCloseModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		})
+	}
 
 	render() {
 		return (
 			<div>
 				{this.props.descriptionById.isRunning ? this.getIsRunningheaderStatus() : null}
 				{this.getContent()}
+				{this.state.showModal && this.props.descriptionById ?
+					<GenerateVinnnslPopup descriptionById={this.props.descriptionById}
+														showCloseModal={this.showCloseModal.bind(this)}/> : null}
 			</div>
 		)
 	}

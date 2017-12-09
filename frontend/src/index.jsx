@@ -43,7 +43,7 @@ render((
 				<Route path="/openstack/vitrage/:templateId" component={VitrageDetailsView}/>
 				<Route path="/alert" component={AlertDashboard}/>
 			</Route>
-			<Route component={AbstractUserN2SkyLayout}>
+			<Route component={AbstractDashboardLayout}>
 				<Route path="/n2sky" component={N2SkyDashboard}/>
 				<Route path="/n2sky/available" components={AvailableNetworksOverview}/>
 				<Route path="/n2sky/models" components={ModelsRepository}/>

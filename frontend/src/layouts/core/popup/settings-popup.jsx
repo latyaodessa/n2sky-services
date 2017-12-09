@@ -28,16 +28,20 @@ export default class SettingsPopUp extends React.Component {
 
 	getMainMenu() {
 		return <ul className="settings-list">
-			<li onClick={this.showCloseModal.bind(this,"showCreateOpenstackDashlet")}><img src={LaptopIcon}/> <span>Create Openstack Monitoring Dashlet</span></li>
-			<li onClick={this.showCloseModal.bind(this,"showCreateAlertPopup")}><img src={BellIcon}/> <span>Create an Alert</span></li>
+			<li onClick={this.showCloseModal.bind(this, "showCreateOpenstackDashlet")}><img src={LaptopIcon}/> <span>Create Openstack Monitoring Dashlet</span>
+			</li>
+			<li onClick={this.showCloseModal.bind(this, "showCreateAlertPopup")}><img src={BellIcon}/>
+				<span>Create an Alert</span></li>
 		</ul>
 	}
 
 	getContent() {
 		return <div>
 			{this.getMainMenu()}
-			{this.state.showCreateOpenstackDashlet ? <OpenStackCreateMetricPopUp showCloseModal={this.showCloseModal.bind(this,"showCreateOpenstackDashlet")} />: null}
-			{this.state.showCreateAlertPopup ? <CreateAlertPopup showCloseModal={this.showCloseModal.bind(this,"showCreateAlertPopup")}/> : null}
+			{this.state.showCreateOpenstackDashlet ? <OpenStackCreateMetricPopUp
+				showCloseModal={this.showCloseModal.bind(this, "showCreateOpenstackDashlet")}/> : null}
+			{this.state.showCreateAlertPopup ?
+				<CreateAlertPopup showCloseModal={this.showCloseModal.bind(this, "showCreateAlertPopup")}/> : null}
 		</div>
 	}
 

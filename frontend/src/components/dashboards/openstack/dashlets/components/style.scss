@@ -45,3 +45,18 @@
     }
   }
 }
+
+.xml-pretty {
+  font-family: monospace;
+
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+
+  -ms-word-wrap: break-word;
+  -moz-word-break: break-word;
+  -o-word-break: break-word;
+  word-break: break-word;
+  word-wrap: break-word;
+}

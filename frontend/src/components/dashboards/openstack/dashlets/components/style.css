@@ -1,35 +1,41 @@
-.dashlet-header {
-  display: flex; }
-  .dashlet-header .left-side {
-    margin: 0 0 0 20px; }
-    .dashlet-header .left-side span {
-      margin: 0;
-      text-transform: capitalize; }
-  .dashlet-header .right-side {
-    margin-left: auto;
-    padding-right: 20px; }
-    .dashlet-header .right-side img {
-      height: 35px;
-      margin: 15px 0 0 0;
-      cursor: pointer; }
-  .dashlet-header .additional-field label {
-    cursor: pointer; }
-  .dashlet-header .additional-field img {
-    height: 20px;
-    margin: 0 0 0 15px; }
+/*
+Error: Invalid CSS after ".xml-pretty": expected "{", was ""
+        on line 50 of style.scss
 
-.simple-input {
-  top: 0 !important;
-  border-radius: 0 !important;
-  margin: 0 !important; }
+45:     }
+46:   }
+47: }
+48: 
+49: .xml-pretty
 
-.modal-content-container {
-  margin-top: 10px;
-  margin-bottom: 10px; }
-  .modal-content-container .popup-label-content {
-    display: flex;
-    justify-content: center; }
-    .modal-content-container .popup-label-content h1 {
-      color: black; }
-
-/*# sourceMappingURL=style.css.map */
+Backtrace:
+style.scss:50
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:1189:in `expected'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:1125:in `expected'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:1120:in `tok!'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:656:in `block'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:649:in `ruleset'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:675:in `block_child'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:668:in `block_contents'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:125:in `stylesheet'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/scss/parser.rb:41:in `parse'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/engine.rb:406:in `_to_tree'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/engine.rb:381:in `_render_with_sourcemap'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/engine.rb:298:in `render_with_sourcemap'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:492:in `update_stylesheet'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:209:in `each'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/plugin.rb:82:in `update_stylesheets'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/exec/sass_scss.rb:51:in `process_result'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/exec/base.rb:52:in `parse'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/lib/sass/exec/base.rb:19:in `parse!'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0/gems/sass-3.4.22/bin/scss:13:in `<top (required)>'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/bin/scss:23:in `load'
+/Users/andrefedorenko/.rbenv/versions/2.2.3/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \".xml-pretty\": expected \"{\", was \"\"\A         on line 50 of style.scss\A \A 45:     }\A 46:   }\A 47: }\A 48: \A 49: .xml-pretty"; }

@@ -104,10 +104,10 @@ $pad: 0.925rem;
   z-index: 1;
   background: rgba(19, 26, 7, 0.14);
   transition: width 400ms;
-  li:last-child {
-    position: absolute;
-    bottom: 0;
-  }
+  //li:last-child {
+  //  position: absolute;
+  //  bottom: 0;
+  //}
   &:hover {
     width: 326px;
     & + .wrap-all-the-things {
@@ -171,7 +171,7 @@ $pad: 0.925rem;
   }
   background-size: cover;
   background-position: center center;
-  transition: transform 400ms, opacity 400ms;
+  //transition: transform 400ms, opacity 400ms;
   @media screen and (max: 480px) {
     padding: {
       left: 70px;
@@ -182,5 +182,11 @@ $pad: 0.925rem;
 .wrap-all-the-things-right {
   padding: {
     right: 85px;
+  }
+}
+
+.admin-options {
+  & li {
+    background-color: #3c3b3b;
   }
 }
