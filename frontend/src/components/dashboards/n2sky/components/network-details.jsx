@@ -34,7 +34,7 @@ export default class NetworkDetails extends React.Component {
 				{this.props.descriptionById ? <DetailsNavbar descriptionById={this.props.descriptionById}/> : null}
 				{this.props.descriptionById ? <DetailsContent descriptionById={this.props.descriptionById}/> : <Loader/>}
 				{this.props.descriptionById ? <DetailsNavbarInstances descriptionById={this.props.descriptionById}/> : null}
-				{this.props.descriptionById ? <DetailsModelsTable descripIds={new Array(this.props.params.id)}/> : <Loader/>}
+				{this.props.descriptionById ? <DetailsModelsTable descriptionById={this.props.descriptionById} descripIds={new Array(this.props.params.id)}/> : <Loader/>}
 
 			</div>
 		)

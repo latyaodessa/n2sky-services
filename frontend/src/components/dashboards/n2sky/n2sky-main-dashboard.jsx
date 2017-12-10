@@ -55,13 +55,14 @@ export default class N2SkyDashboard extends React.Component {
 	getActiveTab() {
 		if (this.state.activeTab === label_ynn) {
 			let reqParams = {
-				createdBy: localStorage.getItem("user")
+				static_filters: {createdBy: localStorage.getItem("user")}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_running) {
 			let reqParams = {
-				createdBy: localStorage.getItem("user"),
-				isRunning: true
+				static_filters: {
+					createdBy: localStorage.getItem("user"),
+					isRunning: true}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_all_networks) {
@@ -69,7 +70,9 @@ export default class N2SkyDashboard extends React.Component {
 			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_saved) {
 			let reqParams = {
-				_id: {$in: this.props.savedDescriptionsByUser.saved.descriptionsId}
+				static_filters: {
+					_id: {$in: this.props.savedDescriptionsByUser.saved.descriptionsId}
+				}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>
 

@@ -16,10 +16,11 @@ export default class DetailsModelsTable extends React.Component {
 
 
 	state = {
-				name: null,
-				trainedBy: null,
-				accuracy: null,
-				isCopy: false
+		name: null,
+		trainedBy: null,
+		accuracy: null,
+		isCopy: false,
+		showAll: false
 	};
 
 	constructor(props) {
@@ -36,7 +37,7 @@ export default class DetailsModelsTable extends React.Component {
 		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
 	}
 
-	handleClick(){
+	handleClick() {
 		clearTimeout(this.timer);
 		this.setState({isCopy: !this.state.isCopy});
 		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
@@ -46,10 +47,27 @@ export default class DetailsModelsTable extends React.Component {
 	getModelsByDescId = () => {
 
 
-		new Promise((res, rej)=> {
+		new Promise((res, rej) => {
+
+
+			let static_filters = {};
+
+			if (!this.state.showAll) {
+				static_filters.trainedBy = localStorage.getItem("user");
+			}
+
+
+			let filters = {
+				name: this.state.name,
+				trainedBy: this.state.trainedBy,
+				accuracy: this.state.accuracy,
+				isCopy: this.state.isCopy
+			};
+
 			let reqParams = {
+				static_filters: static_filters,
 				ids: this.props.descripIds,
-				filters : this.state
+				filters: filters
 			};
 			res(reqParams);
 		}).then(reqParams => {
@@ -111,12 +129,24 @@ export default class DetailsModelsTable extends React.Component {
 					<label>
 						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Only Copy
 					</label>
+					{(this.props.descriptionById && this.props.descriptionById.createdBy === localStorage.getItem('user')) || localStorage.getItem('type') === 'admin' ?
+						<label>
+							<input onClick={this.handleShowAllModels.bind(this)} type="checkbox"/> Show others models
+						</label> : null}
 				</fieldset>
 			</form>
 		</div>
 	};
 
+	handleShowAllModels() {
+		clearTimeout(this.timer);
+		this.setState({showAll: !this.state.showAll});
+		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
+
+	}
+
 	render() {
+		console.log(this.props);
 		return (
 			<div className="table-details">
 				{this.getTableFilter()}

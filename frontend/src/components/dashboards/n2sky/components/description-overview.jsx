@@ -65,7 +65,6 @@ export default class DescriptionsOverview extends React.Component {
 		}).then(r => {
 			if(id && this.state.chained) {
 				this.setState({descripIds : new Array(id)});
-				console.log(this.state);
 			} else {
 				let descripIds = [];
 				this.props.descriptions.map(desc => descripIds.push(desc._id));
