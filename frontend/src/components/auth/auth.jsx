@@ -18,12 +18,14 @@ export default class Auth extends React.Component {
 
 
 	state = {
-		form: "profile",
+		// form: "profile",
+		form: "profile--open",
 		username: '',
 		password: '',
 		violated: false,
 		violatedMessage: '',
-		logo: LogoWhite
+		// logo: LogoWhite
+		logo: LogoBlack
 	};
 
 	constructor(props) {
