@@ -336,16 +336,39 @@ export default class NNStructure extends React.Component {
 				})
 
 			});
-            //
-			// if (this.state.hidden.length > 1) {
-            //
-			// 	for (let i = 1; i <= this.state.hidden; i++) {
-            //
-			// 		let id = i + "-" + event.target.name;
-			// 		array.push({data: {id: id}, position: {x: xPost, y: initYPost + i * 20}});
-			// 	}
 
-			// }20
+			if (this.state.hidden.length > 1) {
+				for (let i = 0; i < this.state.hidden.length; i++) {
+
+					if (i + 1 < this.state.hidden.length) {
+						this.state.hidden[i].nodes.map(hd1 => {
+							this.state.hidden[i + 1].nodes.map(hd2 => {
+								edges.push({
+									data: {
+										id: hd1.data.id + hd2.data.id,
+										source: hd1.data.id,
+										target: hd2.data.id
+									}
+								})
+							});
+						});
+					}
+				}
+			}
+
+			this.state.output.map(outputNode => {
+				this.state.hidden[this.state.hidden.length-1].nodes.map(hiddenNode => {
+					edges.push({
+						data: {
+							id: hiddenNode.data.id + outputNode.data.id,
+							source: hiddenNode.data.id,
+							target: outputNode.data.id
+						}
+					})
+				})
+
+			});
+
 
 			this.setState({edges: edges});
 			resolve(this.state);
@@ -354,6 +377,9 @@ export default class NNStructure extends React.Component {
 				console.log(this.state)
 			}
 		);
+
+
+
 
 
 	}
