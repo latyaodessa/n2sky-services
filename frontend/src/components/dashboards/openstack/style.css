@@ -46,6 +46,8 @@
         font-weight: 600;
         letter-spacing: .1em;
         text-decoration: none; }
+        .topbar ul li .no-action img {
+          height: 24px; }
       .topbar ul li .tab {
         padding: 18px;
         color: #fdfdfd;

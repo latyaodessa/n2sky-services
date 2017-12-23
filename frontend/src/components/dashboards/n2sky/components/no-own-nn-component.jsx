@@ -28,12 +28,12 @@ export default class NoOwnNNComponent extends React.Component {
 						<div className="header-label">
 							<h1>You do not have any neural network yet</h1>
 						</div>
-						<a onClick={this.showCloseNewNNModal.bind(this)} className="button" role="button">
-							<span>Import own Network</span>
-							<div className="icon">
-								<img src={ImportIcon}/>
-							</div>
-						</a>
+						{/*<a onClick={this.showCloseNewNNModal.bind(this)} className="button" role="button">*/}
+							{/*<span>Import own Network</span>*/}
+							{/*<div className="icon">*/}
+								{/*<img src={ImportIcon}/>*/}
+							{/*</div>*/}
+						{/*</a>*/}
 					</div>
 				</div>
 				{this.state.showNNModal ? <NewDescriptionPopup showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}

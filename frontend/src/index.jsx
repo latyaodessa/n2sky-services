@@ -28,6 +28,7 @@ import AvailableNetworksOverview from './components/dashboards/n2sky/components/
 import NetworkDetails from './components/dashboards/n2sky/components/network-details'
 import NetworkTestDetails from './components/dashboards/n2sky/components/network-test-details'
 import ModelsRepository from './components/dashboards/n2sky/models/model-repository'
+import AddNNFromParadigm from './components/dashboards/n2sky/paradigm/add-nn-from-paradigm'
 
 render((
 	<Provider store={store}>
@@ -47,6 +48,7 @@ render((
 				<Route path="/n2sky" component={N2SkyDashboard}/>
 				<Route path="/n2sky/available" components={AvailableNetworksOverview}/>
 				<Route path="/n2sky/models" components={ModelsRepository}/>
+				<Route path="/n2sky/paradigm/create" components={AddNNFromParadigm}/>
 				<Route path="/n2sky/network/:id" component={NetworkDetails}/>
 				<Route path="/n2sky/network/:id/test/:model_id" component={NetworkTestDetails}/>
 			</Route>

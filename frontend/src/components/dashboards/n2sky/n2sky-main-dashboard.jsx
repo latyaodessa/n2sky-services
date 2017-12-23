@@ -7,6 +7,7 @@ import DescriptionsOverview from './components/description-overview'
 import CloudCreate from './../../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../../res/img/icons/network.svg'
 import ModelsIcon from './../../../../res/img/icons/cube.svg'
+import CloudFromParadigmIcon from './../../../../res/img/icons/cloud-search.svg'
 import NewDescriptionPopup from './../../dashboards/n2sky/components/new-description-popup'
 
 import {getCopiedDescriptions} from './../../../actions/n2sky/neural-network-actions'
@@ -92,7 +93,7 @@ export default class N2SkyDashboard extends React.Component {
 		return <div>
 
 			<div className="pure-g admin-tools-container">
-				<div className="pure-u-1-3">
+				<div className="pure-u-1-4">
 					<Link to="/n2sky/available">
 						<div>
 							<img className="sibar-icon" src={Networkcon}/>
@@ -100,7 +101,7 @@ export default class N2SkyDashboard extends React.Component {
 						<span>Available neural networks</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-3">
+				<div className="pure-u-1-4">
 					<Link to="/n2sky/models">
 						<div>
 							<img className="sibar-icon" src={ModelsIcon}/>
@@ -108,12 +109,20 @@ export default class N2SkyDashboard extends React.Component {
 						<span>Models repository</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-3">
+				<div className="pure-u-1-4">
+					<Link to="/n2sky/paradigm/create">
+						<div>
+							<img className="sibar-icon" src={CloudFromParadigmIcon}/>
+						</div>
+						<span>Add neural network from paradigm</span>
+					</Link>
+				</div>
+				<div className="pure-u-1-4">
 					<a onClick={this.showCloseNewNNModal.bind(this)}>
 						<div>
 							<img className="sibar-icon" src={CloudCreate}/>
 						</div>
-						<span>Add neural network</span>
+						<span>Add neural network from scratch</span>
 					</a>
 				</div>
 			</div>

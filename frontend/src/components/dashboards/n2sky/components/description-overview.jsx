@@ -42,7 +42,7 @@ export default class DescriptionsOverview extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (JSON.stringify(this.props.reqParams) !== JSON.stringify(nextProps.reqParams)) {
-			this.setState({descripIds : null});
+			this.setState({descripIds: null});
 			this.geDescriptonWithOffset(0, nextProps.reqParams);
 		}
 	}
@@ -63,16 +63,15 @@ export default class DescriptionsOverview extends React.Component {
 			this.setState({descripIds: null});
 			resolve(this.state);
 		}).then(r => {
-			if(id && this.state.chained) {
-				this.setState({descripIds : new Array(id)});
+			if (id && this.state.chained) {
+				this.setState({descripIds: new Array(id)});
 			} else {
 				let descripIds = [];
 				this.props.descriptions.map(desc => descripIds.push(desc._id));
 				this.setState({descripIds: descripIds});
 			}
-			})
+		})
 			.catch(err => this.setState({violated: true}));
-
 
 
 	};
@@ -80,16 +79,13 @@ export default class DescriptionsOverview extends React.Component {
 
 	getModelModeListener = () => {
 		let newStatus = !this.state.chained;
-		if(newStatus) {
+		if (newStatus) {
 			this.setState({descripIds: null})
 		} else {
 			this.getDescriptionIds();
 		}
 		this.setState({chained: newStatus})
 	};
-
-
-
 
 
 	getDescription = () => {
@@ -143,12 +139,17 @@ export default class DescriptionsOverview extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className="pure-g">
-					{this.props.done ? this.getDescription() : <Loader/>}
-				</div>
-				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() : null}
-				<NavigationPage chainButtonVisible={true} chained={this.state.chained} getModelModeListener={this.getModelModeListener.bind(this)} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
-				{this.state.descripIds ? <DetailsModelsTable descripIds={this.state.descripIds}/> : <Loader/>}
+				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() :
+					<div>
+						<div className="pure-g">
+							{this.props.done ? this.getDescription() : <Loader/>}
+						</div>
+						<NavigationPage chainButtonVisible={true} chained={this.state.chained}
+														getModelModeListener={this.getModelModeListener.bind(this)}
+														method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+						{this.state.descripIds ? <DetailsModelsTable descripIds={this.state.descripIds}/> : <Loader/>}
+					</div>
+				}
 			</div>
 		)
 	}

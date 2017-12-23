@@ -28,9 +28,10 @@
     "react": "^15.6.1",
     "react-c3js": "^0.1.19",
     "react-chartjs": "^0.8.0",
-    "react-d3-basic": "^1.6.11",
+    "react-cytoscape": "^1.0.6",
     "react-dom": "^15.4.2",
     "react-moment": "^0.6.5",
+    "react-shapes": "^0.1.0",
     "react-timeseries-charts": "^0.12.8",
     "rickshaw": "^1.6.3",
     "sass-loader": "^6.0.2"
