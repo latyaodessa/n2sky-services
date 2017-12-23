@@ -39,7 +39,7 @@ export default class Auth extends React.Component {
 		if (e.key === 'Enter') {
 			this.authonize();
 		}
-	}
+	};
 
 	authonize() {
 		if (!this.state.username || !this.state.password) {

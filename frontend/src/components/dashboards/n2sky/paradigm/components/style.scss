@@ -5,6 +5,11 @@
     max-width: 500px;
     padding: 20px;
   }
+  & span {
+    text-transform: none;
+    color: white;
+    padding: 10px;
+  }
 }
 
 .paradigm-back-title {
@@ -48,12 +53,8 @@
   width: 100%;
   height: 400px;
 }
-//#cy {
-//  position: static;
-//  left: 0;
-//  top: 0;
-//  right: 0;
-//  bottom: 0;
-//  //max-height: 500px;
-//  z-index: 999;
-//}
+
+.inline-input {
+  display: inline !important;
+  margin: 5px !important;
+}

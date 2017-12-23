@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {Circle, Ellipse, Line, Polyline, CornerBox, Triangle} from 'react-shapes';
 import {ReactCytoscape, cytoscape} from 'react-cytoscape';
+import FullyConnectedIcon from './../../../../../../res/img/icons/fullconnected.svg'
+import AddShortcutIcon from './../../../../../../res/img/icons/shortcuts.svg'
 
-const WAIT_INTERVAL = 1000;
 const initYPost = -250;
 
 
@@ -17,7 +17,11 @@ export default class NNStructure extends React.Component {
 		input: [],
 		output: [],
 		hidden: [],
-		edges: []
+		edges: [],
+		isShortcut: false,
+		selectedInput: null,
+		selectedShortcut: null,
+		shortcuts: []
 	};
 
 	constructor(props) {
@@ -26,25 +30,9 @@ export default class NNStructure extends React.Component {
 		this.handleChange = ::this.handleChange;
 		this.handleHiddenDim = ::this.handleHiddenDim;
 		this.handleHiddenNode = ::this.handleHiddenNode;
+		this.handleShortcutsInput = ::this.handleShortcutsInput;
 	}
 
-	drawCircle = (type, nodeId) => {
-
-		let color = "#FFF";
-
-		if (type === 'input') {
-			color = "#00a2b3"
-		}
-
-		if (type === 'hidden') {
-			color = "#d1bedd"
-		}
-
-		let stroke = {
-			"color": "#c2c2c2"
-		};
-		return <div key={nodeId} id={nodeId}><Circle r={20} fill={{"color": color}} stroke={stroke} strokeWidth={2}/></div>
-	};
 
 	getTitles = () => {
 		return <div className="pure-g circle-grid">
@@ -61,52 +49,6 @@ export default class NNStructure extends React.Component {
 			</div>
 		</div>
 	};
-
-	// getNodes = () => {
-	// 	console.log(this.state);
-	// 	return <div className="pure-g circle-grid">
-	// 		<div className="pure-u-1-3 grid-table">
-	// 			{this.state.input.map(item => {
-	// 				{
-	// 					return this.drawCircle('input', item)
-	// 				}
-	//
-	// 			})}
-	// 		</div>
-	//
-	// 		<div className="pure-u-1-3 grid-table">
-	//
-	// 			<div className="pure-g">
-	//
-	// 				{this.state.hidden.map(item => {
-	// 					{
-	//
-	// 						return <div className={"pure-u-1-" + this.state.hidden.length + " grid-table"}>
-	// 							<h1>{item.id}</h1>
-	// 							{item.nodes.map(node => {
-	// 								return this.drawCircle('hidden', node)
-	//
-	// 							})
-	// 							}
-	//
-	// 						</div>
-	// 					}
-	//
-	// 				})}
-	// 			</div>
-	// 		</div>
-
-
-	// 		<div className="pure-u-1-3 grid-table">
-	// 			{this.state.output.map(item => {
-	// 				{
-	// 					return this.drawCircle('output', item)
-	// 				}
-	// 			})}
-	// 		</div>
-	// 	</div>
-	// };
-
 
 	handleChange(event) {
 
@@ -147,18 +89,6 @@ export default class NNStructure extends React.Component {
 
 	}
 
-	// handleChange(event) {
-	//
-	// 	let array = [];
-	//
-	// 	for (let i = 1; i <= event.target.value; i++) {
-	// 		array.push(i + "-" + event.target.name)
-	// 	}
-	//
-	//
-	// 	this.setState({[event.target.name]: array});
-	//
-	// }
 
 	handleHiddenDim(event) {
 
@@ -207,8 +137,6 @@ export default class NNStructure extends React.Component {
 				console.log(this.state)
 			}
 		);
-
-
 	}
 
 
@@ -244,33 +172,6 @@ export default class NNStructure extends React.Component {
 		</div>
 	};
 
-	// execFullConnection = () => {
-	// 	console.log(this.state);
-	// 	return <div>
-	// 		<Line x1={85} y1={150} x2={350} y2={350} stroke={{color: '#E65243'}} strokeWidth={3}/>
-	// 	</div>
-	// };
-
-	//
-	// getElements() {
-	// 	return {
-	// 		nodes: [
-	// 			{data: {id: 'a'}, position: {x: -400, y: -200}},
-	// 			{data: {id: 'b'}, position: {x: -400, y: -80}},
-	// 			{data: {id: 'c'}, position: {x: -200, y: -80}},
-	// 			{data: {id: 'e'}, position: {x: 0, y: -80}}
-	// 		],
-	//
-	// 		edges: [
-	// 			// {data: {id: 'ae', source: 'a', target: 'e'}},
-	// 			// {data: {id: 'ab', source: 'a', target: 'b'}},
-	// 			// {data: {id: 'be', source: 'b', target: 'e'}},
-	// 			// {data: {id: 'bc', source: 'b', target: 'c'}},
-	// 			// {data: {id: 'ce', source: 'c', target: 'e'}}
-	// 		]
-	// 	};
-	// }
-
 
 	getVisualizations() {
 
@@ -295,6 +196,22 @@ export default class NNStructure extends React.Component {
 					'target-arrow-color': '#ccc',
 					'target-arrow-shape': 'triangle'
 				}
+			},
+			{
+				"selector": "edge.unbundled-bezier-up",
+				"style": {
+					"curve-style": "unbundled-bezier",
+					"control-point-distances": -120,
+					"control-point-weights": 0.5
+				}
+			},
+			{
+				"selector": "edge.unbundled-bezier-down",
+				"style": {
+					"curve-style": "unbundled-bezier",
+					"control-point-distances": 120,
+					"control-point-weights": 0.1
+				}
 			}
 		];
 
@@ -315,8 +232,22 @@ export default class NNStructure extends React.Component {
 		cy.on('tap', 'node', function (evt) {
 			let node = evt.target;
 			console.log('tapped ' + node.id());
+
 		});
 	}
+
+
+	removeAllEdges = (edgeNodeId) => {
+		console.log(edgeNodeId);
+		return new Promise((resolve, reject) => {
+			let edges = this.state.edges.filter(edge => edge.data.source !== edgeNodeId);
+			this.setState({edges: edges})
+			resolve(this.state);
+		}).then(r => {
+			this.rerenderLayouts();
+			console.log(this.state)
+		})
+	};
 
 	execFullyConnected() {
 
@@ -357,7 +288,7 @@ export default class NNStructure extends React.Component {
 			}
 
 			this.state.output.map(outputNode => {
-				this.state.hidden[this.state.hidden.length-1].nodes.map(hiddenNode => {
+				this.state.hidden[this.state.hidden.length - 1].nodes.map(hiddenNode => {
 					edges.push({
 						data: {
 							id: hiddenNode.data.id + outputNode.data.id,
@@ -377,25 +308,151 @@ export default class NNStructure extends React.Component {
 				console.log(this.state)
 			}
 		);
+	}
+
+	isAllLayersFilled = () => {
+		return this.state.input.length > 0 && this.state.output.length > 0 && this.state.hidden.length > 0
+	};
+
+	getConnectionNavbar = () => {
+		return <nav className="topbar">
+			<ul>
+				<li><span className="no-action">Neural network connection</span></li>
+			</ul>
+		</nav>
+	};
+
+	getConnectionContent = () => {
+		return <div className="pure-g circle-grid">
+			<div className="pure-u-1-3 grid-table">
+				<div className="pure-g circle-grid">
+					<div className="pure-u-1-2 grid-table">
+						<a onClick={this.execFullyConnected.bind(this)} className="button" role="button">
+							<span>Execute full connection</span>
+							<div className="icon">
+								<img src={FullyConnectedIcon}/>
+							</div>
+						</a>
+					</div>
+					<div className="pure-u-1-2 grid-table">
+						<form className="pure-form">
+							<label className="pure-checkbox container-paradigm-wrapper">
+								<input onClick={this.changeShortcut.bind(this)} id="option-one" type="checkbox" value=""/>
+								<span>Make shortcuts</span>
+							</label>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div className="pure-u-1-2 grid-table">
+				{this.state.isShortcut ? this.getShotcutsForm() : null}
+			</div>
+		</div>
+	};
+
+	getShotcutsForm = () => {
+		return <div className="pure-g circle-grid">
+			<div className="pure-u-1-2 grid-table">
+				<div>
+					{this.state.shortcuts.map(sc => {
+						return <div><h1>Shortcut: from {sc.from} to {sc.to}</h1></div>
+					})}
+				</div>
+				<form className="pure-form">
+					<fieldset>
+						<select onChange={this.handleShortcutsInput} name="selectedInput" className="pure-input-1-2">
+							<option disabled selected value> -- select input node --</option>
+							{this.state.input.map(inputNode =>
+								<option key={inputNode.data.id} value={inputNode.data.id}>{inputNode.data.id}</option>
+							)}
+						</select>
+						<select onChange={this.handleShortcutsInput} name="selectedShortcut" className="pure-input-1-2">
+							<option disabled selected value> -- select input node --</option>
+							{this.state.hidden.map(hidden =>
+								<option key={hidden.id} value={hidden.id}>{hidden.id}</option>
+							)}
+							<option value="output">output layer</option>
+
+						</select>
+					</fieldset>
+				</form>
+			</div>
+			<div className="pure-u-1-2 grid-table">
+				<a onClick={this.executeAddShortCut.bind(this)} className="button" role="button">
+					<span>Add shortcut</span>
+					<div className="icon">
+						<img src={AddShortcutIcon}/>
+					</div>
+				</a>
+			</div>
+		</div>
+	};
+
+	handleShortcutsInput(event) {
+		console.log(event.target.value);
+		this.setState({[event.target.name]: event.target.value});
+	}
+
+	executeAddShortCut = () => {
+		if (this.state.selectedInput && this.state.selectedShortcut) {
+			this.removeAllEdges(this.state.selectedInput).then(r => {
+
+				let toBlockNodes = [];
+
+				if (this.state.selectedShortcut === 'output') {
+					toBlockNodes = this.state.output;
+				} else {
+					toBlockNodes = this.state.hidden.filter(h => h.id === this.state.selectedShortcut)[0].nodes;
+				}
+
+				console.log(toBlockNodes);
 
 
+				let edges = this.state.edges;
 
+				console.log(this.state.selectedInput.match(/\d+/g).map(Number));
+				console.log( this.state.selectedInput);
 
+				let edgeStyle = this.state.input.length / 2 > this.state.selectedInput.match(/\d+/g).map(Number)[0] ? "unbundled-bezier-up" : "unbundled-bezier-down";
 
+				toBlockNodes.map(toNode => {
+					edges.push({
+						data: {
+							id: this.state.selectedInput + toNode.data.id,
+							source: this.state.selectedInput,
+							target: toNode.data.id
+						},
+						classes: edgeStyle
+					})
+				});
+
+			}).then(r => {
+				this.rerenderLayouts();
+				console.log(this.state)
+			}).then(r => {
+				let shortcuts = this.state.shortcuts;
+				shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut});
+				this.setState({shortcuts: shortcuts, selectedInput: null, selectedShortcut: null})
+			});
+		}
+	};
+
+	changeShortcut() {
+		this.setState({isShortcut: !this.state.isShortcut})
 	}
 
 
 	render() {
 		return (
 			<div>
-
-				<input onClick={this.execFullyConnected.bind(this)} type="button" value="aaa"/>
-
 				{this.getTitles()}
 				{this.getButtonLayout()}
-				{this.getVisualizations()}
-				{/*{this.getNodes()}*/}
-				{/*{this.execFullConnection()}*/}
+				{this.isAllLayersFilled() ? this.getConnectionNavbar() : null}
+				{this.isAllLayersFilled() ? this.getConnectionContent() : null}
+				{this.isAllLayersFilled() ? this.getVisualizations() :
+					<div className="container-paradigm-wrapper">
+						<h1>Please fill up layers to visualise neural network structure</h1>
+					</div>}
 
 
 			</div>
