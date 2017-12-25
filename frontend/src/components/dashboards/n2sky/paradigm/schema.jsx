@@ -37,7 +37,7 @@ export const SCHEMA = {
 	"structure": {
 		"inputLayer": {
 			"result": {
-				"neuronsId": []
+				"nodesId": []
 			},
 			"config": {
 				"dimensions": {
@@ -53,8 +53,8 @@ export const SCHEMA = {
 		"hiddenLayer": {
 			"result": {
 				"dimensions": [{
-					"blockId": null,
-					"neuronsId": []
+					"id": null,
+					"nodesId": []
 				}]
 			},
 			"config": {
@@ -68,9 +68,9 @@ export const SCHEMA = {
 				}
 			}
 		},
-		"ourputLayer": {
+		"outputLayer": {
 			"result": {
-				"neuronsId": []
+				"nodesId": []
 			},
 			"config": {
 				"dimensions": {
@@ -84,18 +84,14 @@ export const SCHEMA = {
 			}
 		},
 		"connections": {
-			"fullconnected": {
-				"isconnected": true,
-				"connections": [{
-					"fromBlock": 0,
-					"toBlock": 0
-				}]
+			"fullyConnected": {
+				"isConnected": null
 			},
 			"shortcuts": {
-				"isconnected": true,
+				"isConnected": null,
 				"connections": [{
-					"fromNeuron": 0,
-					"toNeuron": 0
+					"fromNode": 0,
+					"toNode": 0
 				}]
 			}
 		}

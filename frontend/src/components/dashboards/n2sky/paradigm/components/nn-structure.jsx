@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {ReactCytoscape, cytoscape} from 'react-cytoscape';
 import FullyConnectedIcon from './../../../../../../res/img/icons/fullconnected.svg'
 import AddShortcutIcon from './../../../../../../res/img/icons/shortcuts.svg'
+import RightArrowIcon from './../../../../../../res/img/icons/right-arrow-white.svg'
+import NNGraph from './structure-components/graph'
 
 const initYPost = -250;
 
@@ -172,71 +174,6 @@ export default class NNStructure extends React.Component {
 		</div>
 	};
 
-
-	getVisualizations() {
-
-		let style = [ // the stylesheet for the graph
-			{
-				selector: 'node',
-				style: {
-					'background-color': '#d1d1d1',
-					'height': "15px",
-					"width": "15px",
-					// 'label': 'data(id)',
-					'color': '#FFF',
-					'font-size': "10px"
-				}
-			},
-
-			{
-				selector: 'edge',
-				style: {
-					'width': 1,
-					'line-color': '#ccc',
-					'target-arrow-color': '#ccc',
-					'target-arrow-shape': 'triangle'
-				}
-			},
-			{
-				"selector": "edge.unbundled-bezier-up",
-				"style": {
-					"curve-style": "unbundled-bezier",
-					"control-point-distances": -120,
-					"control-point-weights": 0.5
-				}
-			},
-			{
-				"selector": "edge.unbundled-bezier-down",
-				"style": {
-					"curve-style": "unbundled-bezier",
-					"control-point-distances": 120,
-					"control-point-weights": 0.1
-				}
-			}
-		];
-
-		return <div className="cyt-container"><ReactCytoscape containerID="cy"
-																													elements={this.state.elements}
-																													cyRef={(cy) => {
-																														this.cyRef(cy)
-																													}}
-																													cytoscapeOptions={{wheelSensitivity: 0.1}}
-																													style={style}
-																													pan={{x: 0, y: 0}}
-																													layout={{name: 'preset'}}/>
-		</div>
-	}
-
-	cyRef(cy) {
-		this.cy = cy;
-		cy.on('tap', 'node', function (evt) {
-			let node = evt.target;
-			console.log('tapped ' + node.id());
-
-		});
-	}
-
-
 	removeAllEdges = (edgeNodeId) => {
 		console.log(edgeNodeId);
 		return new Promise((resolve, reject) => {
@@ -307,7 +244,13 @@ export default class NNStructure extends React.Component {
 				this.rerenderLayouts();
 				console.log(this.state)
 			}
-		);
+		).then(r => {
+			this.setState({
+				selectedInput: null,
+				selectedShortcut: null,
+				shortcuts: []
+			})
+		});
 	}
 
 	isAllLayersFilled = () => {
@@ -315,11 +258,69 @@ export default class NNStructure extends React.Component {
 	};
 
 	getConnectionNavbar = () => {
+		let buttonStyle = {
+			width: "300px"
+		};
 		return <nav className="topbar">
 			<ul>
 				<li><span className="no-action">Neural network connection</span></li>
+				<li className="right-float">
+					<div style={buttonStyle} className="standard-nav-item">
+					<span onClick={this.nextToTraining.bind(this)} className="button" role="button">
+						<span>Next to NN Training</span>
+						<div className="icon">
+							<img src={RightArrowIcon}/>
+						</div>
+					</span>
+					</div>
+				</li>
 			</ul>
 		</nav>
+	};
+
+
+	nextToTraining = () => {
+		new Promise((resolve, reject) => {
+			if (this.state.input.length <= 0 || this.state.output.length <= 0 || this.state.hidden.length <= 0) {
+				reject("All layers has to be filled");
+			}
+			if (this.state.isShortcut && this.state.shortcuts.length <= 0) {
+				reject("Make a shortcut or uncheck the checkbox");
+			}
+
+			let input = [];
+			this.state.input.map(item => {
+				input.push(item.data.id)
+			});
+
+			let output = [];
+			this.state.output.map(item => {
+				output.push(item.data.id)
+			});
+
+			let dimensions = [];
+			this.state.hidden.map(item => {
+				let nodes = [];
+				let dim = {id: item.id};
+				item.nodes.map(n => {
+					nodes.push(n.data.id)
+				});
+				dim.nodesId = nodes;
+				dimensions.push(dim)
+			});
+
+			let obj = {
+				input: input,
+				output: output,
+				hidden: dimensions,
+				isShortcut: this.state.isShortcut,
+				shortcuts: this.state.shortcuts
+			};
+			resolve(obj);
+		}).then(obj => {
+				this.props.commitStructure(obj);
+			}
+		);
 	};
 
 	getConnectionContent = () => {
@@ -411,7 +412,7 @@ export default class NNStructure extends React.Component {
 				let edges = this.state.edges;
 
 				console.log(this.state.selectedInput.match(/\d+/g).map(Number));
-				console.log( this.state.selectedInput);
+				console.log(this.state.selectedInput);
 
 				let edgeStyle = this.state.input.length / 2 > this.state.selectedInput.match(/\d+/g).map(Number)[0] ? "unbundled-bezier-up" : "unbundled-bezier-down";
 
@@ -432,7 +433,7 @@ export default class NNStructure extends React.Component {
 			}).then(r => {
 				let shortcuts = this.state.shortcuts;
 				shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut});
-				this.setState({shortcuts: shortcuts, selectedInput: null, selectedShortcut: null})
+				this.setState({shortcuts: shortcuts})
 			});
 		}
 	};
@@ -449,7 +450,7 @@ export default class NNStructure extends React.Component {
 				{this.getButtonLayout()}
 				{this.isAllLayersFilled() ? this.getConnectionNavbar() : null}
 				{this.isAllLayersFilled() ? this.getConnectionContent() : null}
-				{this.isAllLayersFilled() ? this.getVisualizations() :
+				{this.isAllLayersFilled() ? <NNGraph elements={this.state.elements}/> :
 					<div className="container-paradigm-wrapper">
 						<h1>Please fill up layers to visualise neural network structure</h1>
 					</div>}

@@ -20,14 +20,15 @@ export const label_nn_training = "Neural Network Training";
 export default class AddNNFromParadigm extends React.Component {
 
 	state = {
-		activeTab: label_nn_structure, //label_nn_desc
+		activeTab: label_nn_structure,
 		schema: null
 	};
 
 	constructor(props) {
 		super(props);
-		this.commitCreatorMetadataProblemDomain =::this.commitCreatorMetadataProblemDomain;
-		this.changeActiveTab =::this.changeActiveTab;
+		this.commitCreatorMetadataProblemDomain = ::this.commitCreatorMetadataProblemDomain;
+		this.commitStructure = ::this.commitStructure;
+		this.changeActiveTab = ::this.changeActiveTab;
 	}
 
 	componentDidMount() {
@@ -72,6 +73,35 @@ export default class AddNNFromParadigm extends React.Component {
 		return this.state.schema;
 	}
 
+
+	commitStructure(obj) {
+		console.log(obj);
+
+		this.setState(prevState => ({
+			...prevState,
+			schema: {
+				...prevState.schema,
+				structure: {
+					...prevState.schema.structure,
+					inputLayer: {
+						...prevState.schema.structure.inputLayer,
+						result: {nodesId: obj.input}
+					},
+					outputLayer: {
+						...prevState.schema.structure.outputLayer,
+						result: {nodesId: obj.output}
+					},
+					hiddenLayer: {
+						...prevState.schema.structure.outputLayer,
+						result: {dimensions: obj.hidden}
+					}
+				}
+			}
+		}));
+
+		return this.state.schema;
+	}
+
 	changeActiveTab = (activeTab) => {
 		this.setState({activeTab: activeTab})
 	};
@@ -81,8 +111,11 @@ export default class AddNNFromParadigm extends React.Component {
 			<div>
 				{this.state.schema ? <div>
 						{this.getActiveTab()}
-						{this.state.activeTab === label_nn_desc ? <NNDescription changeActiveTab={this.changeActiveTab} commitCreatorMetadataProblemDomain={this.commitCreatorMetadataProblemDomain} schema={this.state.schema}/> : null}
-						{this.state.activeTab === label_nn_structure ? <NNStructure/> : null}
+						{this.state.activeTab === label_nn_desc ? <NNDescription changeActiveTab={this.changeActiveTab}
+																																		 commitCreatorMetadataProblemDomain={this.commitCreatorMetadataProblemDomain}
+																																		 schema={this.state.schema}/> : null}
+						{this.state.activeTab === label_nn_structure ?
+							<NNStructure changeActiveTab={this.changeActiveTab} commitStructure={this.commitStructure}/> : null}
 					</div>
 					: <Loader/>}
 
