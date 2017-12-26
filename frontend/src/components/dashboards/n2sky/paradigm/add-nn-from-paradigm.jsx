@@ -8,6 +8,7 @@ import RightArrowIcon from './../../../../../res/img/icons/right-arrow-white.svg
 import NNDescription from './components/nn-description'
 import NNStructure from './components/nn-structure'
 import Loader from "../../../core/loader/loader";
+import NNTraining from "./components/nn-training";
 
 export const label_nn_desc = "Neural network Description";
 export const label_nn_structure = "Neural Network Structure";
@@ -39,7 +40,6 @@ export default class AddNNFromParadigm extends React.Component {
 		let activeStyle = {
 			backgroundColor: 'dimgrey'
 		};
-		console.log(this.state);
 		return <nav className="topbar">
 			<ul>
 				{this.state.activeTab === label_nn_desc ?
@@ -75,8 +75,6 @@ export default class AddNNFromParadigm extends React.Component {
 
 
 	commitStructure(obj) {
-		console.log(obj);
-
 		this.setState(prevState => ({
 			...prevState,
 			schema: {
@@ -94,11 +92,11 @@ export default class AddNNFromParadigm extends React.Component {
 					hiddenLayer: {
 						...prevState.schema.structure.outputLayer,
 						result: {dimensions: obj.hidden}
-					}
+					},
+					connections: obj.connections
 				}
 			}
 		}));
-
 		return this.state.schema;
 	}
 
@@ -116,6 +114,9 @@ export default class AddNNFromParadigm extends React.Component {
 																																		 schema={this.state.schema}/> : null}
 						{this.state.activeTab === label_nn_structure ?
 							<NNStructure changeActiveTab={this.changeActiveTab} commitStructure={this.commitStructure}/> : null}
+
+							{this.state.activeTab === label_nn_training ?
+							<NNTraining/> : null}
 					</div>
 					: <Loader/>}
 

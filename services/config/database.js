@@ -1,8 +1,10 @@
-// 'database': 'mongodb://131.130.37.22:8101/n2sky',
+const db_endpoint = "mongodb://192.168.0.79:27017/n2sky";
+// const db_endpoint = "mongodb://192.168.0.104:27017/n2sky";
 
-    module.exports = {
+module.exports = {
 
-    'database': 'mongodb://192.168.0.79:27017/n2sky',
+    'secret': 'testsecret',
+    'database': db_endpoint,
     'options': {
         useMongoClient: true,
         db: {native_parser: true},

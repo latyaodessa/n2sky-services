@@ -7,6 +7,7 @@ import RightArrowIcon from './../../../../../../res/img/icons/right-arrow-white.
 import NNGraph from './structure-components/graph'
 
 const initYPost = -250;
+export const label_nn_training = "Neural Network Training";
 
 
 @connect((store) => {
@@ -309,12 +310,21 @@ export default class NNStructure extends React.Component {
 				dimensions.push(dim)
 			});
 
+			let connections = {
+				fullyConnected: {
+					isConnected: !this.state.isShortcut
+				},
+				shortcuts: {
+					isConnected: this.state.isShortcut,
+					connections: this.state.shortcuts
+				}
+			};
+
 			let obj = {
 				input: input,
 				output: output,
 				hidden: dimensions,
-				isShortcut: this.state.isShortcut,
-				shortcuts: this.state.shortcuts
+				connections: connections
 			};
 			resolve(obj);
 		}).then(obj => {
@@ -429,11 +439,12 @@ export default class NNStructure extends React.Component {
 
 			}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}).then(r => {
-				let shortcuts = this.state.shortcuts;
+				let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
 				shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut});
 				this.setState({shortcuts: shortcuts})
+			}).then(r => {
+				this.props.changeActiveTab(label_nn_training);
 			});
 		}
 	};

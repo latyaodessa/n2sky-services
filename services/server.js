@@ -22,5 +22,5 @@ app.use('/api', router);
 require('./routes')(router);
 
 
-app.listen(9595);
-console.log("running n2sky services on 9595");
+app.listen(8080);
+console.log("running n2sky services on 8080");

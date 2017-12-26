@@ -1,4 +1,4 @@
-export const SCHEMA = {
+{
 	"metadata": {
 		"name": null,
 		"description": null,
@@ -36,8 +36,8 @@ export const SCHEMA = {
 	}],
 	"structure": {
 		"inputLayer": {
-			"result": {
-				"nodesId": []
+			"result": {	
+					"neuronsId": []
 			},
 			"config": {
 				"dimensions": {
@@ -53,8 +53,8 @@ export const SCHEMA = {
 		"hiddenLayer": {
 			"result": {
 				"dimensions": [{
-					"id": null,
-					"nodesId": []
+					"blockId": null,
+					"neuronsId": []
 				}]
 			},
 			"config": {
@@ -68,10 +68,10 @@ export const SCHEMA = {
 				}
 			}
 		},
-		"outputLayer": {
+		"ourputLayer": {
 			"result": {
-				"nodesId": []
-			},
+					"neuronsId": []
+							},
 			"config": {
 				"dimensions": {
 					"min": 1,
@@ -84,24 +84,28 @@ export const SCHEMA = {
 			}
 		},
 		"connections": {
-			"fullyConnected": {
-				"isConnected": null
+			"fullconnected": {
+				"isconnected": true,
+				"connections": [{
+					"fromBlock": 0,
+					"toBlock": 0
+				}]
 			},
 			"shortcuts": {
-				"isConnected": null,
+				"isconnected": true,
 				"connections": [{
-					"from": null,
-					"to": null
+					"fromNeuron": 0,
+					"toNeuron": 0
 				}]
 			}
 		}
 	},
 	"parameters": {
 		"input": [{
-			"parameter": "learningrate",
-			"value": 0.4,
-			"possibleValues": [0.1, 0.2, 0.3, 0.4]
-		},
+				"parameter": "learningrate",
+				"value": 0.4,
+				"possibleValues": [0.1, 0.2, 0.3, 0.4]
+			},
 			{
 				"parameter": "biaInput",
 				"value": 1,
@@ -129,4 +133,4 @@ export const SCHEMA = {
 			}
 		]
 	}
-};
+}

@@ -10,15 +10,10 @@ module.exports = function (router) {
     const PROD_HOST = "192.168.0.79";
 
 
-    mongoose.connect(config.database, config.options);
-
-    let db = mongoose.connection;
-
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function () {
-        console.log("connected to mongo database");
+    mongoose.connect(config.database);
+    mongoose.connection.on('open', function (ref) {
+        console.log('Connected to Mongo server...');
     });
-
 
     router.post('/user/create/:userid', function (req, res) {
         let userDir = usersDir + '/' + req.params.userid;
