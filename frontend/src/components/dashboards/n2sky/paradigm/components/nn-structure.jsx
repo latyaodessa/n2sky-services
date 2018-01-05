@@ -268,7 +268,7 @@ export default class NNStructure extends React.Component {
 				<li className="right-float">
 					<div style={buttonStyle} className="standard-nav-item">
 					<span onClick={this.nextToTraining.bind(this)} className="button" role="button">
-						<span>Next to NN Training</span>
+						<span>Create Neural Network</span>
 						<div className="icon">
 							<img src={RightArrowIcon}/>
 						</div>
@@ -320,17 +320,29 @@ export default class NNStructure extends React.Component {
 				}
 			};
 
+			let structure_rep = {
+				input: this.state.input,
+				output: this.state.output,
+				hidden: this.state.hidden,
+				isShortcut: this.state.isShortcut,
+				edges: this.state.edges,
+				shortcuts: this.state.shortcuts
+			};
+
 			let obj = {
 				input: input,
 				output: output,
 				hidden: dimensions,
-				connections: connections
+				connections: connections,
+				structure_rep: structure_rep
 			};
 			resolve(obj);
 		}).then(obj => {
 				this.props.commitStructure(obj);
 			}
-		);
+		).then(r => {
+			this.props.createVinnslDescriptionFromParadigm();
+		});
 	};
 
 	getConnectionContent = () => {
@@ -349,7 +361,7 @@ export default class NNStructure extends React.Component {
 						<form className="pure-form">
 							<label className="pure-checkbox container-paradigm-wrapper">
 								<input onClick={this.changeShortcut.bind(this)} id="option-one" type="checkbox" value=""/>
-								<span>Make shortcuts</span>
+								<span className="no-trs">Make shortcuts</span>
 							</label>
 						</form>
 					</div>
@@ -443,9 +455,7 @@ export default class NNStructure extends React.Component {
 				let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
 				shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut});
 				this.setState({shortcuts: shortcuts})
-			}).then(r => {
-				this.props.changeActiveTab(label_nn_training);
-			});
+			})
 		}
 	};
 

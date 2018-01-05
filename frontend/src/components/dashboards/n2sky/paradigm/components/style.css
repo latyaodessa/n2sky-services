@@ -4,7 +4,7 @@
   .container-paradigm-wrapper .container-paradigm {
     max-width: 500px;
     padding: 20px; }
-  .container-paradigm-wrapper span {
+  .container-paradigm-wrapper .no-trs {
     text-transform: none;
     color: white;
     padding: 10px; }
@@ -43,6 +43,6 @@
 
 .inline-input {
   display: inline !important;
-  margin: 5px; }
+  margin: 5px !important; }
 
 /*# sourceMappingURL=style.css.map */

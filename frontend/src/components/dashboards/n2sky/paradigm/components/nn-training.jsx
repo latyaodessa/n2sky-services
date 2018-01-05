@@ -1,11 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import style from './style.scss'
 
-@connect((store) => {
-	return {}
-})
+
+import Loader from './../../../../core/loader/loader'
+
+import DetailsNavbar from './details-subcomponents/details-navbar'
+import TrainingForm from './details-subcomponents/training-form'
+
+
 export default class NNTraining extends React.Component {
+
 
 	constructor(props) {
 		super(props);
@@ -15,8 +19,8 @@ export default class NNTraining extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1> train </h1>
-
+				<DetailsNavbar descriptionById={this.props.description}/>
+				<TrainingForm descriptionById={this.props.description}/>
 			</div>
 		)
 	}

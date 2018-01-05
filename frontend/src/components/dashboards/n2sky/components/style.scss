@@ -9,3 +9,51 @@
     }
   }
 }
+
+.folder {
+  /*lowest level*/
+  display: block;
+  margin: 0 auto 70px auto;
+  position: relative;
+  width: 3.5em;
+  border-bottom: 1em solid #6f6f6f;
+  border-right: .5em solid transparent;
+  cursor: pointer;
+}
+
+.folder:before {
+  /*middle level*/
+  content: "\2585"; /*this is the secret, shhhhhh*/
+  text-indent: -0.05em;
+  font-size: 6em;
+  color: #6f6f6f;
+  line-height: .2em;
+  position: absolute;
+  overflow: visible;
+  width: .87em;
+  left: .05em;
+  top: 0.1em;
+  background: #fff;
+  transition: .218s ease;
+}
+
+.folder:after {
+  /*highest level*/
+  content: "";
+  position: absolute;
+  width: 3.5em;
+  top: .3em;
+  right: -3em;
+  border-bottom: 1em solid #6f6f6f;
+  border-left: .5em solid transparent;
+}
+
+.folder:hover:before {
+  line-height: .4em;
+  top: 0;
+}
+
+.projectLabel {
+  display: flex;
+  justify-content: center;
+}

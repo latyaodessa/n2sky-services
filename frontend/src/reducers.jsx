@@ -24,7 +24,8 @@ import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 import {getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl} from './reducers/n2sky/description-reducer'
 import {getAlerts} from './reducers/alert/alerts-reducer'
 import {modelsByDescId, modelById, trainedModel} from './reducers/n2sky/models-reducer'
-
+import {vinnslCreate} from './reducers/n2sky/vinnsl-redicers'
+import {projectCreate, projects} from './reducers/n2sky/project-reducers'
 
 export default combineReducers({
 	openstackProjectsReducer,
@@ -45,5 +46,7 @@ export default combineReducers({
 	dockerHub,
 	getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl,
 	getAlerts,
-	modelsByDescId, modelById, trainedModel
+	modelsByDescId, modelById, trainedModel,
+	vinnslCreate,
+	projectCreate, projects
 });

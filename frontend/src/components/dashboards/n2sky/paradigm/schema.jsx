@@ -8,7 +8,13 @@ export const SCHEMA = {
 		"name": null,
 		"contact": null
 	},
-	"peoblemDomain": {
+	"executionEnvironment": {
+		"isRunning": false,
+		"isPublic": false,
+		"hardware": null,
+		"lastRun": null
+	},
+	"problemDomain": {
 		"propagationType": {
 			"value": null,
 			"possibleValues": ["feedforward"],
@@ -25,7 +31,7 @@ export const SCHEMA = {
 			"value": null,
 			"possibleValues": ["Classifiers", "Approximators", "Memory", "Optimisation", "Clustering"]
 		},
-		"netoworkType": "Backpropagation"
+		"networkType": "Backpropagation"
 	},
 	"endpoints": [{
 		"name": "train",
@@ -99,34 +105,39 @@ export const SCHEMA = {
 	"parameters": {
 		"input": [{
 			"parameter": "learningrate",
-			"value": 0.4,
-			"possibleValues": [0.1, 0.2, 0.3, 0.4]
+			"defaultValue": 0.4,
+			"possibleValues": ["0.1", "0.2", "0.3", "0.4"]
 		},
 			{
 				"parameter": "biaInput",
-				"value": 1,
+				"defaultValue": 1,
 				"possibleValues": []
 			},
 			{
 				"parameter": "biasHidden",
-				"value": 1,
+				"defaultValue": 1,
 				"possibleValues": []
 			},
 			{
 				"parameter": "momentum",
-				"value": 0.1,
+				"defaultValue": 0.1,
 				"possibleValues": []
 			},
 			{
 				"parameter": "activationFunction",
-				"value": 0.1,
+				"defaultValue": 0.1,
 				"possibleValues": []
 			},
 			{
 				"parameter": "threshold",
-				"value": 0.000001,
+				"defaultValue": 0.000001,
 				"possibleValues": []
 			}
 		]
+	},
+	data: {
+		description: "CSV, comma separated",
+		tableDescription: ",",
+		fileDescription: "CSV"
 	}
 };

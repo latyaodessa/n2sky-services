@@ -5,6 +5,7 @@ import ArrowUpIcon from './../../../../../../res/img/icons/up-arrow-grey.svg'
 import RightArrowIcon from './../../../../../../res/img/icons/right-arrow-white.svg'
 import AbstractAlertPopUp from './../../../../core/popup/abstract-alert-popup'
 import {label_nn_structure} from './../add-nn-from-paradigm'
+import {getProjectsByParams} from './../../../../../actions/n2sky/project-actions'
 
 import Loader from './../../../../core/loader/loader'
 import style from './style.scss'
@@ -12,7 +13,9 @@ import style from './style.scss'
 const WAIT_INTERVAL = 1000;
 
 @connect((store) => {
-	return {}
+	return {
+		projects: store.projects.projects
+	}
 })
 export default class NNDescription extends React.Component {
 
@@ -31,8 +34,12 @@ export default class NNDescription extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		console.log(this.props.schema)
+		let params = {
+			static_filters: {createdBy: localStorage.getItem("user")}
+		};
+		this.props.dispatch(getProjectsByParams(params)).then(() => {
+			console.log(this.props);
+		});
 		this.handleChange = ::this.handleChange;
 	}
 
@@ -42,12 +49,8 @@ export default class NNDescription extends React.Component {
 
 
 	handleChange(event) {
-		// console.log(event);
 		clearTimeout(this.timer);
-
 		this.setState({[event.target.name]: event.target.value});
-
-		// this.timer = setTimeout(::this.getDockerHubUserProjects, WAIT_INTERVAL);
 	}
 
 	getParadigmsCombobox() {
@@ -60,7 +63,7 @@ export default class NNDescription extends React.Component {
 	getPropagationTypeCombobox() {
 		return (<select name='propagationType' onChange={this.handleChange} className="combobox full-width">
 			<option disabled selected value> -- select propagation type --</option>
-			{this.props.schema.peoblemDomain.propagationType.possibleValues.map(pt => {
+			{this.props.schema.problemDomain.propagationType.possibleValues.map(pt => {
 				return <option key={pt} name={pt} value={pt}>{pt}</option>
 			})
 			}
@@ -70,7 +73,7 @@ export default class NNDescription extends React.Component {
 	getLearningTypeCombobox() {
 		return (<select name='learningType' onChange={this.handleChange} className="combobox full-width">
 			<option disabled selected value> -- select learning type --</option>
-			{this.props.schema.peoblemDomain.propagationType.learningType.possibleValues.map(pt => {
+			{this.props.schema.problemDomain.propagationType.learningType.possibleValues.map(pt => {
 				return <option key={pt} name={pt} value={pt}>{pt}</option>
 			})
 			}
@@ -80,7 +83,7 @@ export default class NNDescription extends React.Component {
 	getApplicationFieldCombobox() {
 		return (<select name='applicationField' onChange={this.handleChange} className="combobox full-width">
 			<option disabled selected value> -- select application field --</option>
-			{this.props.schema.peoblemDomain.applicationField.possibleValues.map(pt => {
+			{this.props.schema.problemDomain.applicationField.possibleValues.map(pt => {
 				return <option key={pt} name={pt} value={pt}>{pt}</option>
 			})
 			}
@@ -90,7 +93,7 @@ export default class NNDescription extends React.Component {
 	getProblemTypeCombobox() {
 		return (<select name='problemType' onChange={this.handleChange} className="combobox full-width">
 			<option disabled selected value> -- select problem type --</option>
-			{this.props.schema.peoblemDomain.problemType.possibleValues.map(pt => {
+			{this.props.schema.problemDomain.problemType.possibleValues.map(pt => {
 				return <option key={pt} name={pt} value={pt}>{pt}</option>
 			})
 			}    </select>);
@@ -99,7 +102,7 @@ export default class NNDescription extends React.Component {
 	getForm = () => {
 		return <div>
 			<div className="paradigm-fixed-labels">
-				<h1>Network Type: {this.props.schema.peoblemDomain.netoworkType}</h1>
+				<h1>Network Type: {this.props.schema.problemDomain.networkType}</h1>
 				<h1>Creator: {localStorage.getItem("user")}</h1>
 			</div>
 			<form className="pure-form modal-content-container">
@@ -160,12 +163,12 @@ export default class NNDescription extends React.Component {
 			// creator
 			obj.creator = this.props.schema.creator;
 			obj.creator.name = localStorage.getItem("user");
-			//peoblemDomain
-			obj.peoblemDomain = this.props.schema.peoblemDomain;
-			obj.peoblemDomain.propagationType.value = nNDescription.propagationType;
-			obj.peoblemDomain.propagationType.learningType.value = nNDescription.learningType;
-			obj.peoblemDomain.applicationField.value = nNDescription.applicationField;
-			obj.peoblemDomain.problemType.value = nNDescription.problemType;
+			//problemDomain
+			obj.problemDomain = this.props.schema.problemDomain;
+			obj.problemDomain.propagationType.value = nNDescription.propagationType;
+			obj.problemDomain.propagationType.learningType.value = nNDescription.learningType;
+			obj.problemDomain.applicationField.value = nNDescription.applicationField;
+			obj.problemDomain.problemType.value = nNDescription.problemType;
 
 			res(obj)
 		});

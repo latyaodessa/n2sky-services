@@ -7,11 +7,12 @@ import DescriptionsOverview from './components/description-overview'
 import CloudCreate from './../../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../../res/img/icons/network.svg'
 import ModelsIcon from './../../../../res/img/icons/cube.svg'
+import FolderIcon from './../../../../res/img/icons/folder.svg'
 import CloudFromParadigmIcon from './../../../../res/img/icons/cloud-search.svg'
 import NewDescriptionPopup from './../../dashboards/n2sky/components/new-description-popup'
-
+import ProjectsList from './components/projects-list'
 import {getCopiedDescriptions} from './../../../actions/n2sky/neural-network-actions'
-
+import CreateProjectPopup from './components/create-project-popup'
 const label_ynn = "Your Networks";
 const label_y_running = "Your Running Networks";
 const label_y_saved = "Saved Networks";
@@ -34,7 +35,8 @@ export default class N2SkyDashboard extends React.Component {
 		this.state = {
 			activeTab: label_ynn,
 			isChainMode: false,
-			showNNModal: false
+			showNNModal: false,
+			showModal: false
 		};
 	}
 
@@ -63,7 +65,8 @@ export default class N2SkyDashboard extends React.Component {
 			let reqParams = {
 				static_filters: {
 					createdBy: localStorage.getItem("user"),
-					isRunning: true}
+					isRunning: true
+				}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_all_networks) {
@@ -89,11 +92,28 @@ export default class N2SkyDashboard extends React.Component {
 		</nav>
 	};
 
+
+	showCloseModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		})
+	}
+
+
+
+	getNavbarProjects = () => {
+		return <nav className="topbar">
+			<ul>
+				<li><span className="no-action">Your Projects</span></li>
+			</ul>
+		</nav>
+	};
+
 	getToolsLinks() {
 		return <div>
 
 			<div className="pure-g admin-tools-container">
-				<div className="pure-u-1-4">
+				<div className="pure-u-1-3">
 					<Link to="/n2sky/available">
 						<div>
 							<img className="sibar-icon" src={Networkcon}/>
@@ -101,7 +121,7 @@ export default class N2SkyDashboard extends React.Component {
 						<span>Available neural networks</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
+				<div className="pure-u-1-3">
 					<Link to="/n2sky/models">
 						<div>
 							<img className="sibar-icon" src={ModelsIcon}/>
@@ -109,20 +129,12 @@ export default class N2SkyDashboard extends React.Component {
 						<span>Models repository</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
-					<Link to="/n2sky/paradigm/create">
+				<div className="pure-u-1-3">
+					<a onClick={this.showCloseModal.bind(this)}>
 						<div>
-							<img className="sibar-icon" src={CloudFromParadigmIcon}/>
+							<img className="sibar-icon" src={FolderIcon}/>
 						</div>
-						<span>Add neural network from paradigm</span>
-					</Link>
-				</div>
-				<div className="pure-u-1-4">
-					<a onClick={this.showCloseNewNNModal.bind(this)}>
-						<div>
-							<img className="sibar-icon" src={CloudCreate}/>
-						</div>
-						<span>Add neural network from scratch</span>
+						<span>Create new project</span>
 					</a>
 				</div>
 			</div>
@@ -141,6 +153,8 @@ export default class N2SkyDashboard extends React.Component {
 			<div>
 				{this.getNavbar("N2Sky Dashboard")}
 				{this.getToolsLinks()}
+				{this.getNavbarProjects()}
+				<ProjectsList/>
 				<nav className="topbar">
 					<ul>
 						{this.getTabs()}
@@ -148,6 +162,8 @@ export default class N2SkyDashboard extends React.Component {
 				</nav>
 				{this.state.activeTab ? this.getActiveTab() : <Loader/>}
 				{this.state.showNNModal ? <NewDescriptionPopup showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}
+				{this.state.showModal ?
+					<CreateProjectPopup showCloseModal={this.showCloseModal.bind(this)}/> : null}
 			</div>
 		)
 	}

@@ -59,6 +59,9 @@ ul {
   -moz-background-size: 4px 4px;
   background-size: 4px 4px; }
 
+a {
+  text-decoration: none; }
+
 .button {
   display: block;
   height: 40px;

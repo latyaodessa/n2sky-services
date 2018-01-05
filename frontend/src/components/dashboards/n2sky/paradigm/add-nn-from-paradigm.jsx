@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import {browserHistory} from 'react-router'
 import {SCHEMA} from "./schema";
-
+import {createVinnslDescription, getVinnslDescriptionById} from "../../../../actions/n2sky/vinnsl_actions";
+import {addNNIdProject} from '../../../../actions/n2sky/project-actions'
 import RightArrowIcon from './../../../../../res/img/icons/right-arrow-white.svg'
 
 import NNDescription from './components/nn-description'
@@ -16,20 +17,31 @@ export const label_nn_training = "Neural Network Training";
 
 
 @connect((store) => {
-	return {}
+	return {
+		vinnslCreate: store.vinnslCreate,
+		descriptionById: store.descriptionById
+	}
 })
 export default class AddNNFromParadigm extends React.Component {
-
-	state = {
-		activeTab: label_nn_structure,
-		schema: null
-	};
 
 	constructor(props) {
 		super(props);
 		this.commitCreatorMetadataProblemDomain = ::this.commitCreatorMetadataProblemDomain;
 		this.commitStructure = ::this.commitStructure;
 		this.changeActiveTab = ::this.changeActiveTab;
+		this.createVinnslDescriptionFromParadigm = ::this.createVinnslDescriptionFromParadigm;
+
+		this.state = {
+			activeTab: this.props.route.readOnly ? label_nn_training : label_nn_desc,
+			schema: null,
+			nn_rep: {
+				structure_rep: {}
+			}
+		};
+		if (this.props.params.id && this.props.route.readOnly) {
+			this.props.dispatch(getVinnslDescriptionById(this.props.params.id)).then(() => {
+			})
+		}
 	}
 
 	componentDidMount() {
@@ -67,7 +79,7 @@ export default class AddNNFromParadigm extends React.Component {
 				...this.state.schema,
 				metadata: obj.metadata,
 				creator: obj.creator,
-				peoblemDomain: obj.peoblemDomain
+				problemDomain: obj.problemDomain
 			}
 		});
 		return this.state.schema;
@@ -95,10 +107,23 @@ export default class AddNNFromParadigm extends React.Component {
 					},
 					connections: obj.connections
 				}
+			},
+			nn_rep: {
+				...prevState.nn_rep,
+				structure_rep: obj.structure_rep
 			}
 		}));
 		return this.state.schema;
 	}
+
+	createVinnslDescriptionFromParadigm = () => {
+		this.props.dispatch(createVinnslDescription(this.state.schema)).then(() => {
+			this.props.dispatch(addNNIdProject(this.props.params.projectid, {nn_id: this.props.vinnslCreate.vinnsl.id}));
+			browserHistory.push('/n2sky/paradigm/nn/' + this.props.vinnslCreate.vinnsl.id);
+			location.reload();
+		});
+	};
+
 
 	changeActiveTab = (activeTab) => {
 		this.setState({activeTab: activeTab})
@@ -113,10 +138,12 @@ export default class AddNNFromParadigm extends React.Component {
 																																		 commitCreatorMetadataProblemDomain={this.commitCreatorMetadataProblemDomain}
 																																		 schema={this.state.schema}/> : null}
 						{this.state.activeTab === label_nn_structure ?
-							<NNStructure changeActiveTab={this.changeActiveTab} commitStructure={this.commitStructure}/> : null}
+							<NNStructure changeActiveTab={this.changeActiveTab}
+													 commitStructure={this.commitStructure}
+													 createVinnslDescriptionFromParadigm={this.createVinnslDescriptionFromParadigm}/> : null}
 
-							{this.state.activeTab === label_nn_training ?
-							<NNTraining/> : null}
+						{this.state.activeTab === label_nn_training && this.props.descriptionById.description ?
+							<NNTraining description={this.props.descriptionById.description}/> : null}
 					</div>
 					: <Loader/>}
 
