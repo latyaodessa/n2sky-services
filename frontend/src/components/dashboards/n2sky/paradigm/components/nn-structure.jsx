@@ -34,6 +34,18 @@ export default class NNStructure extends React.Component {
 		this.handleHiddenDim = ::this.handleHiddenDim;
 		this.handleHiddenNode = ::this.handleHiddenNode;
 		this.handleShortcutsInput = ::this.handleShortcutsInput;
+		this.setHiddenReadOnly = ::this.setHiddenReadOnly;
+		this.setReadData = ::this.setReadData;
+		this.setInputs = ::this.setInputs;
+	}
+
+	componentWillMount() {
+		if (this.props.description) {
+			console.log(this.state);
+			console.log(this.props);
+			this.setReadData();
+		}
+
 	}
 
 
@@ -464,19 +476,100 @@ export default class NNStructure extends React.Component {
 	}
 
 
+	setInputs = (amount, type) => {
+		let array = [];
+
+		let xPost = 0;
+		if (type === 'input') {
+			xPost = -400;
+		}
+
+		for (let i = 1; i <= amount; i++) {
+
+			let id = i + "-" + type;
+			array.push({data: {id: id}, position: {x: xPost, y: initYPost + i * 20}});
+		}
+
+
+		return new Promise((resolve, reject) => {
+			console.log(type);
+			this.setState({[type]: array});
+			resolve(this.state);
+		}).then(r => {
+				this.rerenderLayouts();
+				console.log(this.state)
+			}
+		);
+	};
+
+	setHiddenReadOnly = () => {
+
+		let layoutPosition = -350;
+		let array = [];
+		for (let i = 1; i <= this.props.description.structure.hiddenLayer.length; i++) {
+			let nodes = [];
+			console.log(this.props.description.structure.hiddenLayer[i - 1].nodesId);
+			for (let k = 1; k <= this.props.description.structure.hiddenLayer[i - 1].nodesId.length; k++) {
+				let id = k + "-node-" + this.props.description.structure.hiddenLayer[i - 1].id;
+				nodes.push({data: {id: id}, position: {x: layoutPosition + i * 100, y: initYPost + k * 20}});
+			}
+
+			let dem = {
+				id: this.props.description.structure.hiddenLayer[i - 1].id,
+				xPosition: layoutPosition + i * 100,
+				nodes: nodes
+			};
+			array.push(dem)
+		}
+		this.setState({hidden: array});
+	};
+
+	setReadData = () => {
+		return new Promise((resolve, reject) => {
+			this.setInputs(this.props.description.structure.inputLayer.amount, 'input');
+			this.setInputs(this.props.description.structure.outputLayer.amount, 'output');
+			this.setHiddenReadOnly();
+			resolve(this.state);
+		}).then(r => {
+				this.rerenderLayouts();
+				console.log(this.state)
+			}
+		).then(r => this.execFullyConnected())
+			.then(r => {
+				this.props.description.connections.shortcuts.connections.map(c => {
+					new Promise((r, rej)=> {
+						this.setState({selectedInput : c.from, selectedShortcut: c.to});
+						r(this.state);
+					}).then(r => {
+						this.executeAddShortCut();
+					})
+				})
+
+			});
+	};
+
+
 	render() {
 		return (
 			<div>
-				{this.getTitles()}
-				{this.getButtonLayout()}
-				{this.isAllLayersFilled() ? this.getConnectionNavbar() : null}
-				{this.isAllLayersFilled() ? this.getConnectionContent() : null}
-				{this.isAllLayersFilled() ? <NNGraph elements={this.state.elements}/> :
-					<div className="container-paradigm-wrapper">
-						<h1>Please fill up layers to visualise neural network structure</h1>
-					</div>}
+				{this.props.description ?
+					<div>
+						{/*{this.setReadData()}*/}
+						{this.isAllLayersFilled() ? <NNGraph elements={this.state.elements}/> : null}
+					</div>
+					:
 
-
+					<div>
+						{this.getTitles()}
+						{this.getButtonLayout()}
+						{this.isAllLayersFilled() ? this.getConnectionNavbar() : null}
+						{this.isAllLayersFilled() ? this.getConnectionContent() : null}
+						{this.isAllLayersFilled() ? <NNGraph elements={this.state.elements}/> :
+							<div className="container-paradigm-wrapper">
+								<h1>Please fill up layers to visualise neural network structure</h1>
+							</div>}
+					</div>
+				}
 			</div>
 
 		)

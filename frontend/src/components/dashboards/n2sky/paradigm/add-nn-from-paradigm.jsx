@@ -52,23 +52,28 @@ export default class AddNNFromParadigm extends React.Component {
 		let activeStyle = {
 			backgroundColor: 'dimgrey'
 		};
+
 		return <nav className="topbar">
 			<ul>
 				{this.state.activeTab === label_nn_desc ?
 					<li><span className="no-action" style={activeStyle}>{label_nn_desc}</span></li> :
-					<li><span className="no-action">{label_nn_desc}</span></li>}
+					<li><span className="no-action"
+										onClick={this.changeActiveTab.bind(this, label_nn_desc, true)}>{label_nn_desc}</span></li>}
 
 				<li><span className="no-action"><img src={RightArrowIcon}/></span></li>
 
 				{this.state.activeTab === label_nn_structure ?
 					<li><span className="no-action" style={activeStyle}>{label_nn_structure}</span></li> :
-					<li><span className="no-action">{label_nn_structure}</span></li>}
+					<li><span className="no-action"
+										onClick={this.changeActiveTab.bind(this, label_nn_structure, true)}>{label_nn_structure}</span>
+					</li>}
 
 				<li><span className="no-action"><img src={RightArrowIcon}/></span></li>
 
 				{this.state.activeTab === label_nn_training ?
 					<li><span className="no-action" style={activeStyle}>{label_nn_training}</span></li> :
-					<li><span className="no-action">{label_nn_training}</span></li>}
+					<li><span onClick={this.changeActiveTab.bind(this, label_nn_training, true)}
+										className="no-action">{label_nn_training}</span></li>}
 			</ul>
 		</nav>
 	};
@@ -125,8 +130,10 @@ export default class AddNNFromParadigm extends React.Component {
 	};
 
 
-	changeActiveTab = (activeTab) => {
-		this.setState({activeTab: activeTab})
+	changeActiveTab = (activeTab, isClick = false) => {
+		if (isClick && this.props.route.readOnly || !isClick) {
+			this.setState({activeTab: activeTab})
+		}
 	};
 
 	render() {
@@ -134,11 +141,14 @@ export default class AddNNFromParadigm extends React.Component {
 			<div>
 				{this.state.schema ? <div>
 						{this.getActiveTab()}
-						{this.state.activeTab === label_nn_desc ? <NNDescription changeActiveTab={this.changeActiveTab}
-																																		 commitCreatorMetadataProblemDomain={this.commitCreatorMetadataProblemDomain}
-																																		 schema={this.state.schema}/> : null}
+						{this.state.activeTab === label_nn_desc ?
+							<NNDescription readOnly={this.props.route.readOnly} description={this.props.route.readOnly ? this.props.descriptionById.description : null}
+														 changeActiveTab={this.changeActiveTab}
+														 commitCreatorMetadataProblemDomain={this.commitCreatorMetadataProblemDomain}
+														 schema={this.state.schema}/> : null}
 						{this.state.activeTab === label_nn_structure ?
-							<NNStructure changeActiveTab={this.changeActiveTab}
+							<NNStructure description={this.props.route.readOnly ? this.props.descriptionById.description : null}
+													 changeActiveTab={this.changeActiveTab}
 													 commitStructure={this.commitStructure}
 													 createVinnslDescriptionFromParadigm={this.createVinnslDescriptionFromParadigm}/> : null}
 

@@ -3,42 +3,39 @@ import {connect} from 'react-redux';
 import Loader from './../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
-import {train} from './../../../../actions/n2sky/neural-network-actions'
+import {createObject} from './../../../../actions/n2sky/project-actions'
 import AddIcon from './../../../../../res/img/icons/add.png'
-
+import {getProjectsByParams, addNNIdProject} from './../../../../actions/n2sky/project-actions'
 
 
 @connect((store) => {
 	return {
-		// model: store.neuralNetwork.success
+		projectCreate: store.projectCreate,
+		projects: store.projects.projects
 	}
 })
-export default class CreateProjectPopup extends React.Component {
+export default class CopyNNToProjectPopup extends React.Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			showCreateOpenstackDashlet: false,
-			params : {},
-			name: null
+			project: null
 		};
 
+		let params = {
+			static_filters: {createdBy: localStorage.getItem("user")}
+		};
+		this.props.dispatch(getProjectsByParams(params)).then(() => {
+			console.log(this.props);
+		});
 		this.handleChange = ::this.handleChange;
 		this.submitForm = ::this.submitForm;
 	}
 
 
 	handleChange(event) {
-		this.state.params[event.target.name] = event.target.value;
-	}
-
-
-
-	showCloseCreateOpenstackDashletModal() {
-		this.setState({
-			showCreateOpenstackDashlet: !this.state.showCreateOpenstackDashlet
-		})
+		this.setState({[event.target.name]: event.target.value});
 	}
 
 
@@ -49,15 +46,16 @@ export default class CreateProjectPopup extends React.Component {
 	}
 
 
-
-
 	submitForm() {
 		this.commit()
 			.then(r => {
-			this.props.dispatch(train(r)).then(() => {
-				location.reload();
-			});
-		}).catch(err => this.setState({violated: true}));
+				this.props.dispatch(addNNIdProject(r.project, r.nn_id)).then(() => {
+					location.reload();
+				});
+			}).catch(err => {
+			this.setState({violated: true});
+			console.log(err);
+		});
 
 	}
 
@@ -65,30 +63,34 @@ export default class CreateProjectPopup extends React.Component {
 		return new Promise((resolve, reject) => {
 
 			let obj = {
-				name: this.state.name,
-				description: this.state.description,
-				createdBy : localStorage.getItem("user")
-
+				nn_id: {nn_id: this.props.selectedDescId},
+				project: this.state.project
 			};
-			resolve(train);
+
+			if(!this.props.selectedDescId || !this.state.project) {
+				reject(obj)
+			}
+			resolve(obj);
 		})
 	}
-
 
 
 	getContent = () => {
 		return (
 			<form className="pure-form modal-content-container">
 				<fieldset className="pure-group">
-					<input type="text" name="name" onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Project Name"/>
-					<input type="text" name="description" onChange={this.handleChange} className="pure-input-1-1 full-width"
-								 placeholder="Project Description"/>
+					<select name='project' onChange={this.handleChange} className="combobox full-width">
+						<option disabled selected value> -- select your project --</option>
+						{this.props.projects && this.props.projects.length > 0 ?
+							this.props.projects.map(s => {
+								return <option key={s._id} name={s.name} value={s._id}>{s.name}</option>;
+							}) : null}
+					</select>
 				</fieldset>
 
 
 				<a onClick={this.submitForm} className="button" role="button">
-					<span>Train</span>
+					<span>Copy To Project</span>
 					<div className="icon">
 						<img src={AddIcon}/>
 					</div>
@@ -106,7 +108,7 @@ export default class CreateProjectPopup extends React.Component {
 														content="All fields are mandatory!"/> : null}
 			<OpenStackMonitoringModal showCloseModal={this.props.showCloseModal}
 																content={!this.state.loader ? this.getContent() : <Loader/>}
-																title="Create new project"/>
+																title="Copy network to your project"/>
 		</div>)
 	}
 }

@@ -11,14 +11,16 @@ import LockedIcon from './../../../../../res/img/icons/locked.svg'
 import UnlockedIcon from './../../../../../res/img/icons/unlocked.svg'
 import StarColoredIcon from './../../../../../res/img/icons/star_color.svg'
 import StartWhiteIcnon from './../../../../../res/img/icons/star_white.svg'
-
+import CopyNNToProjectPopup from './copy-nn-to-project-popup'
 
 import {
-	getDescriptions,
-	copyModelDescription,
-	getCopiedDescriptions,
 	removeCopyModelDescription
 } from './../../../../actions/n2sky/neural-network-actions'
+import {
+	getProjectsByParams, removeNNIdProject
+} from './../../../../actions/n2sky/project-actions'
+import {getVinnslDescriptions} from './../../../../actions/n2sky/vinnsl_actions'
+
 
 const offsetSize = 9;
 const WAIT_INTERVAL = 1000;
@@ -27,7 +29,7 @@ const WAIT_INTERVAL = 1000;
 	return {
 		descriptions: store.getDescriptionsReducer.descriptions,
 		done: store.getDescriptionsReducer.done,
-		savedDescriptionsByUser: store.savedDescriptionsByUser
+		projects: store.projects.projects
 	}
 })
 export default class AvailableNetworksOverview extends React.Component {
@@ -36,7 +38,10 @@ export default class AvailableNetworksOverview extends React.Component {
 		name: null,
 		domain: null,
 		inputDimensions: null,
-		inputType: null
+		description: null,
+		isCopyPopUp: false,
+		selectedDescId: null,
+		projectsId: []
 	};
 
 	constructor(props) {
@@ -51,18 +56,36 @@ export default class AvailableNetworksOverview extends React.Component {
 
 	geDescriptonWithOffset(from) {
 		let user = localStorage.getItem("user");
-		this.props.dispatch(getCopiedDescriptions(user)).then(() => {
+		let params = {
+			static_filters: {createdBy: localStorage.getItem("user")}
+		};
+
+		this.props.dispatch(getProjectsByParams(params)).then(() => {
+
+			this.props.projects.map(pr => {
+				this.setState({projectsId: this.state.projectsId.concat(pr.nn_descriptions_id)})
+			});
 
 			new Promise((res, rej) => {
 
-				let reqParams =  {};
-						reqParams.static_filters = {isRunning: true, isPublic: true, createdBy: {$ne: user}};
-						reqParams.filters = this.state;
+				let reqParams = {};
+				reqParams.static_filters = {
+					"executionEnvironment.isRunning": true,
+					"executionEnvironment.isPublic": true,
+					"creator.name": {$ne: user}
+				};
+				reqParams.filters = {
+					"metadata.name": this.state.name,
+					"metadata.description": this.state.description,
+					"problemDomain.problemType": this.state.domain,
+					// "parameters.input.parameter" : this.state.inputDimensions
+				};
+
 
 				res(reqParams);
 			}).then(reqParams => {
-				this.props.dispatch(getDescriptions(reqParams, from, offsetSize)).then(() => {
-					console.log(this.props);
+				this.props.dispatch(getVinnslDescriptions(reqParams, from, offsetSize)).then(() => {
+					console.log(this.props)
 				});
 			});
 
@@ -107,9 +130,8 @@ export default class AvailableNetworksOverview extends React.Component {
 	}
 
 	getSaveButton = (d) => {
-		console.log(d._id);
-		console.log(this.props);
-		return this.props.savedDescriptionsByUser.saved && this.props.savedDescriptionsByUser.saved.descriptionsId.includes(d._id) ?
+
+		return this.props.projects && this.state.projectsId.includes(d._id) ?
 			<img onClick={this.removeCopyToUser.bind(this, d._id)} className="header-panel-icon" src={StarColoredIcon}/>
 			:
 			<img onClick={this.copyToUser.bind(this, d)} className="header-panel-icon" src={StartWhiteIcnon}/>
@@ -120,22 +142,20 @@ export default class AvailableNetworksOverview extends React.Component {
 			return <div key={d._id} className="container-panel pure-u-1-3">
 				<div className="container-nn">
 					<div className="container-header-panel">
-
 						{this.getSaveButton(d)}
-
-						<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
-						<h1>{d.name}</h1>
-						{this.getRunningStatus(d.isRunning)}
+						<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>
+						<h1>{d.metadata.name}</h1>
+						{this.getRunningStatus(d.executionEnvironment.isRunning)}
 					</div>
 					<ul>
-						<li>Owner: {d.createdBy}</li>
-						<li>Created On: {d.createdOn}</li>
-						<li>Domain: {d.domain}</li>
-						<li>Input Dimentions: {d.inputDimensions}</li>
-						<li>Input Type: {d.inputType}</li>
+						<li>Description: {d.metadata.description}</li>
+						<li>Application Field: {d.problemDomain.applicationField.toString()}</li>
+						<li>Network Type: {d.problemDomain.networkType}</li>
+						<li>Problem Type: {d.problemDomain.problemType}</li>
+						<li>Created By: {d.creator.name}</li>
 					</ul>
 					<div>
-						<Link to={"/n2sky/network/" + d._id} className="button" role="button">
+						<Link to={"/n2sky/paradigm/nn/" + d._id} className="button" role="button">
 							<span>Details and actions</span>
 							<div className="icon">
 								<img src={Enter}/>
@@ -148,16 +168,22 @@ export default class AvailableNetworksOverview extends React.Component {
 	};
 
 	copyToUser(desc) {
-		desc.user = localStorage.getItem("user");
-		this.props.dispatch(copyModelDescription(desc)).then(() => {
-			location.reload();
-		});
+		this.setState({isCopyPopUp: !this.state.isCopyPopUp, selectedDescId: desc._id})
+		// desc.user = localStorage.getItem("user");
+		// this.props.dispatch(copyModelDescription(desc)).then(() => {
+		// 	location.reload();
+		// });
 	}
 
 	removeCopyToUser(id) {
-		this.props.dispatch(removeCopyModelDescription(localStorage.getItem("user"), id)).then(() => {
-			location.reload();
-		});
+		this.props.projects.map(pr => {
+			if (pr.nn_descriptions_id.includes(id)) {
+				this.props.dispatch(removeNNIdProject(pr._id, {nn_id: id})).then(() => {
+					location.reload();
+				});
+			}
+		})
+
 	}
 
 	getRunningStatus = (isRunning) => {
@@ -185,8 +211,8 @@ export default class AvailableNetworksOverview extends React.Component {
 				<fieldset>
 					<input onChange={this.handleChange} name="name" type="text" placeholder="Name"/>
 					<input onChange={this.handleChange} name="domain" type="text" placeholder="Domain"/>
-					<input onChange={this.handleChange} name="inputDimensions" type="text" placeholder="Input Dimensions"/>
-					<input onChange={this.handleChange} name="inputType" type="text" placeholder="Input Type"/>
+					{/*<input onChange={this.handleChange} name="inputDimensions" type="text" placeholder="Input Dimensions"/>*/}
+					<input onChange={this.handleChange} name="description" type="text" placeholder="Description"/>
 				</fieldset>
 			</form>
 		</div>
@@ -202,6 +228,8 @@ export default class AvailableNetworksOverview extends React.Component {
 				</div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() : null}
 				<NavigationPage chainButtonVisible={false} method={this.geDescriptonWithOffset} offsetSize={offsetSize}/>
+				{this.state.isCopyPopUp ? <CopyNNToProjectPopup selectedDescId={this.state.selectedDescId}
+																												showCloseModal={this.copyToUser.bind(this)}/> : null}
 			</div>
 		)
 	}

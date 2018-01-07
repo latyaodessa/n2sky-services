@@ -120,8 +120,9 @@ export default class TrainingForm extends React.Component {
 		return <div className="pure-g">
 			<div className="pure-u-1-3 container-panel">{this.getActionsDetails()}</div>
 			<div className="pure-u-1-3 container-panel"/>
-			<div className="pure-u-1-3 container-panel">{this.getSettingsDetails()}</div>
-
+			{this.props.descriptionById.creator.name === localStorage.getItem('user') ?
+				<div className="pure-u-1-3 container-panel">{this.getSettingsDetails()}</div>
+				: null}
 		</div>
 	};
 
@@ -158,9 +159,9 @@ export default class TrainingForm extends React.Component {
 	};
 
 	deleteNeuralNetwork = () => {
-			this.props.dispatch(deleteNNFromProject(this.props.descriptionById._id)).then(() => {
-				browserHistory.push('/n2sky');
-			});
+		this.props.dispatch(deleteNNFromProject(this.props.descriptionById._id)).then(() => {
+			browserHistory.push('/n2sky');
+		});
 	};
 
 	downloadVinnsl = (format) => {
@@ -194,7 +195,9 @@ export default class TrainingForm extends React.Component {
 				{this.getInfoForm()}
 				{this.state.isTrain ? this.getTrainForm() : null}
 				{this.getNavbarInstances()}
-				{this.props.descriptionById ? <DetailsModelsTable descriptionById={this.props.descriptionById} descripIds={new Array(this.props.descriptionById._id)}/> : <Loader/>}
+				{this.props.descriptionById ? <DetailsModelsTable descriptionById={this.props.descriptionById}
+																													descripIds={new Array(this.props.descriptionById._id)}/> :
+					<Loader/>}
 			</div>
 		)
 	}

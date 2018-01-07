@@ -12,7 +12,7 @@ import LockedIcon from './../../../../../res/img/icons/locked.svg'
 import UnlockedIcon from './../../../../../res/img/icons/unlocked.svg'
 
 
-import {getDescriptions} from './../../../../actions/n2sky/neural-network-actions'
+import {getVinnslDescriptions} from './../../../../actions/n2sky/vinnsl_actions'
 
 const offsetSize = 3;
 
@@ -48,7 +48,7 @@ export default class DescriptionsOverview extends React.Component {
 	}
 
 	geDescriptonWithOffset(from, reqParams = this.props.reqParams) {
-		this.props.dispatch(getDescriptions(
+		this.props.dispatch(getVinnslDescriptions(
 			reqParams,
 			from,
 			offsetSize)).then(() => {
@@ -90,27 +90,52 @@ export default class DescriptionsOverview extends React.Component {
 
 	getDescription = () => {
 		return this.props.descriptions.map(d => {
-			return <div onClick={this.getDescriptionIds.bind(this, d._id)} key={d._id}
-									className="container-panel pure-u-1-3">
+			console.log(d);
+			// return <div onClick={this.getDescriptionIds.bind(this, d._id)} key={d._id}
+			// 						className="container-panel pure-u-1-3">
+			// 	<div className="container-nn">
+			// 		<div className="container-header-panel">
+			// 			<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
+			// 			<h1>{d.name}</h1>
+			// 			{this.getRunningStatus(d.isRunning)}
+			// 		</div>
+			// 		<ul>
+			// 			<li>Owner: {d.createdBy}</li>
+			// 			<li>Created On: {d.createdOn}</li>
+			// 			<li>Domain: {d.domain}</li>
+			// 			<li>Input Dimentions: {d.inputDimensions}</li>
+			// 			<li>Input Type: {d.inputType}</li>
+			// 		</ul>
+			// 		<Link to={"/n2sky/network/" + d._id} className="button" role="button">
+			// 			<span>Details and actions</span>
+			// 			<div className="icon">
+			// 				<img src={Enter}/>
+			// 			</div>
+			// 		</Link>
+			// 	</div>
+			// </div>
+			return <div key={d._id} className="container-panel pure-u-1-3">
 				<div className="container-nn">
 					<div className="container-header-panel">
-						<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
-						<h1>{d.name}</h1>
-						{this.getRunningStatus(d.isRunning)}
+						<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>
+						<h1>{d.metadata.name}</h1>
+						{this.getRunningStatus(d.executionEnvironment.isRunning)}
 					</div>
 					<ul>
-						<li>Owner: {d.createdBy}</li>
-						<li>Created On: {d.createdOn}</li>
-						<li>Domain: {d.domain}</li>
-						<li>Input Dimentions: {d.inputDimensions}</li>
-						<li>Input Type: {d.inputType}</li>
+						<li>Description: {d.metadata.description}</li>
+						<li>Application Field: {d.problemDomain.applicationField.toString()}</li>
+						<li>Network Type: {d.problemDomain.networkType}</li>
+						<li>Problem Type: {d.problemDomain.problemType}</li>
+						<li>Created By: {d.creator.name}</li>
 					</ul>
-					<Link to={"/n2sky/network/" + d._id} className="button" role="button">
-						<span>Details and actions</span>
-						<div className="icon">
-							<img src={Enter}/>
-						</div>
-					</Link>
+					<div>
+						<Link to={"/n2sky/paradigm/nn/" + d._id} className="button" role="button">
+							<span>Details and actions</span>
+							<div className="icon">
+								<img src={Enter}/>
+							</div>
+						</Link>
+					</div>
 				</div>
 			</div>
 		})

@@ -58,14 +58,14 @@ export default class N2SkyDashboard extends React.Component {
 	getActiveTab() {
 		if (this.state.activeTab === label_ynn) {
 			let reqParams = {
-				static_filters: {createdBy: localStorage.getItem("user")}
+				static_filters: {"creator.name": localStorage.getItem("user")}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>
 		} else if (this.state.activeTab === label_y_running) {
 			let reqParams = {
 				static_filters: {
-					createdBy: localStorage.getItem("user"),
-					isRunning: true
+					"creator.name": localStorage.getItem("user"),
+					"executionEnvironment.isRunning": true
 				}
 			};
 			return <DescriptionsOverview reqParams={reqParams}/>

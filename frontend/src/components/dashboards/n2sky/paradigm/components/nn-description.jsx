@@ -190,13 +190,30 @@ export default class NNDescription extends React.Component {
 	}
 
 
+	getReadForm = () => {
+		return <div>
+			<div className="paradigm-fixed-labels">
+				<h1>Name: {this.props.description.metadata.name}</h1>
+				<h1>Description: {this.props.description.metadata.description}</h1>
+				<h1>Paradigm: {this.props.description.metadata.paradigm}</h1>
+				<h1>Application Field: {this.props.description.problemDomain.applicationField}</h1>
+				<h1>Creator: {this.props.description.creator.name}</h1>
+			</div>
+		</div>
+	};
+
+
 	render() {
 		return (
 			<div>
 				<div className="container-paradigm-wrapper">
 					<div className="container-paradigm">
-						{this.getParadigmsCombobox()}
-						{this.state.paradigm ? this.getForm() : this.getNoSelection()}
+						{this.props.description && this.props.readOnly ? this.getReadForm() :
+							<div>
+								{this.getParadigmsCombobox()}
+								{this.state.paradigm ? this.getForm() : this.getNoSelection()}
+							</div>
+						}
 					</div>
 				</div>
 				{this.state.violated ? <AbstractAlertPopUp type='warning' validation={this.changeValidation.bind(this)}
