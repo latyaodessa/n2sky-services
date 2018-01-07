@@ -34,6 +34,13 @@ tbody tr:hover {
 .container-panel ul {
   background: #FFF;
   padding: 15px; }
+  .container-panel ul .link {
+    cursor: pointer; }
+    .container-panel ul .link img {
+      height: 35px;
+      margin-right: 8px; }
+    .container-panel ul .link:hover {
+      background-color: #e0e0e0; }
   .container-panel ul li {
     padding: 0 0 5px 10px; }
     .container-panel ul li span {

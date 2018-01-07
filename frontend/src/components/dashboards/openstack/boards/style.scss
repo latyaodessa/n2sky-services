@@ -25,9 +25,11 @@
 tr {
   background-color: #FFF;
 }
+
 tbody tr:hover {
   background-color: #efefef;
 }
+
 .header-container-panel {
   padding: 20px;
   text-transform: capitalize;
@@ -40,6 +42,16 @@ tbody tr:hover {
   & ul {
     background: #FFF;
     padding: 15px;
+    & .link {
+      cursor: pointer;
+      & img {
+        height: 35px;
+        margin-right: 8px;
+      }
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
     & li {
       padding: 0 0 5px 10px;
       & span {

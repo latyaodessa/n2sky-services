@@ -104,12 +104,12 @@ export default class Sidebar extends React.Component {
 								<span>Models repository</span>
 							</Link>
 						</li>
-						<li>
-							<div className="sidebar-link" onClick={this.props.showCloseNewNNModal}>
-								<img className="sibar-icon" src={CloudCreate}/>
-								<span>Add neural network</span>
-							</div>
-						</li>
+						{/*<li>*/}
+							{/*<div className="sidebar-link" onClick={this.props.showCloseNewNNModal}>*/}
+								{/*<img className="sibar-icon" src={CloudCreate}/>*/}
+								{/*<span>Add neural network</span>*/}
+							{/*</div>*/}
+						{/*</li>*/}
 					</ul>
 				</nav>
 			</header>

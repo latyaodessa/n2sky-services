@@ -100,15 +100,6 @@ export default class N2SkyDashboard extends React.Component {
 	}
 
 
-
-	getNavbarProjects = () => {
-		return <nav className="topbar">
-			<ul>
-				<li><span className="no-action">Your Projects</span></li>
-			</ul>
-		</nav>
-	};
-
 	getToolsLinks() {
 		return <div>
 
@@ -153,7 +144,6 @@ export default class N2SkyDashboard extends React.Component {
 			<div>
 				{this.getNavbar("N2Sky Dashboard")}
 				{this.getToolsLinks()}
-				{this.getNavbarProjects()}
 				<ProjectsList/>
 				<nav className="topbar">
 					<ul>

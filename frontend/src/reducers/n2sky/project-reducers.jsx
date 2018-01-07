@@ -33,10 +33,10 @@ export function projectCreate(state =
 }
 
 export function projects(state =
-																{
-																	projects: null,
-																	done: false
-																}
+													 {
+														 projects: null,
+														 done: false
+													 }
 	, action) {
 	switch (action.type) {
 		case FETCH_PROJECTS_REJECTED: {

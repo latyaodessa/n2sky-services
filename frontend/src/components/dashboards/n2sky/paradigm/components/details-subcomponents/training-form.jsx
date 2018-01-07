@@ -1,14 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {
-	updateDescription,
-	stopInstanceDescription
-} from '../../../../../../actions/n2sky/neural-network-actions'
-import StopIcon from './../../../../../../../res/img/icons/stop.svg'
-import RunIcon from './../../../../../../../res/img/icons/rocket.svg'
-import PrivateIcon from './../../../../../../../res/img/icons/locked.svg'
-import PublicIcon from './../../../../../../../res/img/icons/unlocked.svg'
-import RunInstancePopup from './run-instance-popup'
+import {deleteNNFromProject} from '../../../../../../actions/n2sky/project-actions'
+import TrainIcon from './../../../../../../../res/img/icons/knowledge-transfer.svg'
+import VinnslIcon from './../../../../../../../res/img/icons/settings-vinnsl.svg'
+import DeleteIcon from './../../../../../../../res/img/icons/delete-button-red.svg'
+import {browserHistory} from 'react-router'
+import DetailsModelsTable from './../../../components/details-subcomponents/details-models-tabel'
 
 @connect((store) => {
 	return {}
@@ -24,9 +21,10 @@ export default class TrainingForm extends React.Component {
 			initObj[p.parameter] = p.defaultValue;
 		});
 
-		this.state = initObj;
+		this.state = {inputParams: initObj, isTrain: false};
 
-		console.log(initObj);
+		this.handleChange = ::this.handleChange;
+
 	}
 
 
@@ -65,14 +63,6 @@ export default class TrainingForm extends React.Component {
 						}
 					})}
 				</fieldset>
-
-				{/*<a onClick={this.submitForm} className="button" role="button">*/}
-				{/*<span>Next</span>*/}
-				{/*<div className="icon">*/}
-				{/*/!*<img src={RightArrowIcon}/>*!/*/}
-				{/*</div>*/}
-				{/*</a>*/}
-
 			</form>
 		</div>
 	};
@@ -93,7 +83,7 @@ export default class TrainingForm extends React.Component {
 				<a onClick={this.submitForm} className="button" role="button">
 					<span>Train the neural network</span>
 					<div className="icon">
-						{/*<img src={RightArrowIcon}/>*/}
+						<img src={TrainIcon}/>
 					</div>
 				</a>
 
@@ -102,20 +92,109 @@ export default class TrainingForm extends React.Component {
 	};
 
 	handleChange(event) {
-		this.setState({[event.target.name]: event.target.value});
+
+		console.log(event.target.name);
+
+		this.setState(prevState => ({
+			...prevState,
+			inputParams: {
+				...prevState.inputParams,
+				[event.target.name]: event.target.value
+			}
+		}));
+
 	}
 
 	submitForm = () => {
 		console.log(JSON.stringify(this.state));
 	};
 
+	getTrainForm = () => {
+		return <div className="pure-g">
+			<div className="pure-u-1-2 table-details">{this.getForm()}</div>
+			<div className="pure-u-1-2 table-details">{this.getUploadFileForm()}</div>
+		</div>
+	};
+
+	getInfoForm = () => {
+		return <div className="pure-g">
+			<div className="pure-u-1-3 container-panel">{this.getActionsDetails()}</div>
+			<div className="pure-u-1-3 container-panel"/>
+			<div className="pure-u-1-3 container-panel">{this.getSettingsDetails()}</div>
+
+		</div>
+	};
+
+	getActionsDetails = () => {
+		return <div className="container-nn">
+			<div className="container-header-panel">
+				<h1>Actions</h1>
+			</div>
+			<ul>
+				<li className="link" onClick={() => this.setState({isTrain: !this.state.isTrain})}>
+					<img src={TrainIcon}/> {this.state.isTrain ? 'Hide' : 'Show'} training form
+				</li>
+				<li className="link" onClick={this.downloadVinnsl.bind(this, 'xml')}>
+					<img src={VinnslIcon}/> Download ViNNSL XML format
+				</li>
+				<li className="link" onClick={this.downloadVinnsl.bind(this, 'json')}>
+					<img src={VinnslIcon}/> Download ViNNSL JSON format
+				</li>
+			</ul>
+		</div>
+	};
+
+	getSettingsDetails = () => {
+		return <div className="container-nn">
+			<div className="container-header-panel">
+				<h1>Administration</h1>
+			</div>
+			<ul>
+				<li className="link" onClick={this.deleteNeuralNetwork.bind(this)}>
+					<img src={DeleteIcon}/> Delete Neural Network
+				</li>
+			</ul>
+		</div>
+	};
+
+	deleteNeuralNetwork = () => {
+			this.props.dispatch(deleteNNFromProject(this.props.descriptionById._id)).then(() => {
+				browserHistory.push('/n2sky');
+			});
+	};
+
+	downloadVinnsl = (format) => {
+
+		let element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.props.descriptionById, null, '\t')));
+		element.setAttribute('download', this.props.descriptionById.metadata.name + '.' + format);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+
+		// console.log(JSON.stringify(JSON.parse(this.props.descriptionById),null,2));
+	};
+
+	getNavbarInstances = () => {
+		return <nav className="topbar">
+			<ul>
+				<li><span className="no-action">Trained Models</span></li>
+			</ul>
+		</nav>
+	};
+
+
 	render() {
 		return (
 			<div>
-				<div className="pure-g">
-					<div className="pure-u-1-2 table-details">{this.getForm()}</div>
-					<div className="pure-u-1-2 table-details">{this.getUploadFileForm()}</div>
-				</div>
+				{this.getInfoForm()}
+				{this.state.isTrain ? this.getTrainForm() : null}
+				{this.getNavbarInstances()}
+				{this.props.descriptionById ? <DetailsModelsTable descriptionById={this.props.descriptionById} descripIds={new Array(this.props.descriptionById._id)}/> : <Loader/>}
 			</div>
 		)
 	}

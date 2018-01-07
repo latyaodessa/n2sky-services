@@ -4,7 +4,7 @@ import Loader from './../../../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
 import AddIcon from './../../../../../../../res/img/icons/add.png'
-import {runInstanceDescription} from './../../../../../../actions/n2sky/neural-network-actions'
+import {runVinnslInstanceDescription} from './../../../../../../actions/n2sky/vinnsl_actions'
 
 const N2SY = 'n2sky';
 const OWN = 'own';
@@ -49,13 +49,37 @@ export default class RunInstancePopup extends React.Component {
 	submitForm() {
 		this.commit()
 			.then(r => {
-				this.props.dispatch(runInstanceDescription(r, this.props.descriptionById._id)).then(() => {
+				this.props.dispatch(runVinnslInstanceDescription(r, this.props.descriptionById._id)).then(() => {
 					location.reload();
 				});
 			})
 			.catch(err => this.setState({violated: true}));
 	}
 
+// OLD COMMIT
+	// commit() {
+	// 	return new Promise((resolve, reject) => {
+    //
+	// 		let reqParams = {};
+    //
+	// 		if (this.state.deployment === N2SY) {
+	// 			reqParams = {
+	// 				isRunning: true,
+	// 				isCloudify: true
+	// 			};
+	// 		} else {
+	// 			if (!this.state.endpoint) {
+	// 				reject(reqParams)
+	// 			}
+	// 			reqParams = {
+	// 				isRunning: true,
+	// 				isCloudify: false,
+	// 				endpoint: this.state.endpoint
+	// 			};
+	// 		}
+	// 		resolve(reqParams);
+	// 	})
+	// }
 
 	commit() {
 		return new Promise((resolve, reject) => {

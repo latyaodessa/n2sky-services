@@ -12,7 +12,11 @@ export const SCHEMA = {
 		"isRunning": false,
 		"isPublic": false,
 		"hardware": null,
-		"lastRun": null
+		"lastRun": null,
+		"image": {
+			"imageType": null,
+			"details": null
+		}
 	},
 	"problemDomain": {
 		"propagationType": {

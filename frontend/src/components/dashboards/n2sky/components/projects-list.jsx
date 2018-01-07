@@ -41,15 +41,26 @@ export default class ProjectsList extends React.Component {
 	};
 
 
+	getNavbarProjects = () => {
+		return <nav className="topbar">
+			<ul>
+				<li><span className="no-action">Your Projects</span></li>
+			</ul>
+		</nav>
+	};
+
 	render() {
 		return (
 			<div>
 
-				{this.props.projects ?
-					<div className="pure-g">
-						{this.props.projects.map(p => this.getFolder(p.name, p._id))}
+				{this.props.projects && this.props.projects.length > 0 ?
+					<div>
+						{this.getNavbarProjects()}
+						<div className="pure-g">
+							{this.props.projects.map(p => this.getFolder(p.name, p._id))}
+						</div>
 					</div>
-					: <Loader/>}
+					: null}
 			</div>
 		)
 	}

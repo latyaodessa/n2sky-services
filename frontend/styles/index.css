@@ -33,6 +33,13 @@ h1 {
   letter-spacing: .1em;
   text-decoration: none; }
 
+h2 {
+  font-family: Lekton;
+  font-weight: 600;
+  font-size: .9em;
+  letter-spacing: .1em;
+  text-decoration: none; }
+
 ul {
   list-style-type: none;
   padding: 0; }

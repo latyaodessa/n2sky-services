@@ -2,14 +2,20 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import Loader from './../../core/loader/loader'
+import {browserHistory} from 'react-router'
 
 import CloudCreate from './../../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../../res/img/icons/network.svg'
 import ModelsIcon from './../../../../res/img/icons/cube.svg'
 import CloudFromParadigmIcon from './../../../../res/img/icons/cloud-search.svg'
-import CreateProjectPopup from './../n2sky/components/create-project-popup'
-import {getProjectById} from './../../../actions/n2sky/project-actions'
-import NewDescriptionPopup from './../n2sky/components/new-description-popup'
+import {getProjectById, deleteProjectById} from './../../../actions/n2sky/project-actions'
+import UploadVinnslPopup from './../n2sky/components/upload-vinnsl-popup'
+import Enter from './../../../../res/img/icons/right-arrow.png'
+import LockedIcon from './../../../../res/img/icons/locked.svg'
+import UnlockedIcon from './../../../../res/img/icons/unlocked.svg'
+import LogoWhite from './../../../../res/img/logo-white.svg'
+import LogoGrey from './../../../../res/img/logo-grey.svg'
+import RemoveIcon from './../../../../res/img/icons/delete.svg'
 
 @connect((store) => {
 	return {
@@ -32,12 +38,29 @@ export default class ProjectDashboard extends React.Component {
 	}
 
 
-	getNavbar = (text) => {
+	getNavbar = (text, isDelete) => {
 		return <nav className="topbar">
 			<ul>
 				<li><span className="no-action">{text}</span></li>
+				{isDelete ? <li className="right-float">
+					<div className="standard-nav-item">
+							<span onClick={this.deleteProject.bind(this)} className="button" role="button">
+						<span>Delete</span>
+						<div className="icon">
+							<img src={RemoveIcon}/>
+						</div>
+					</span>
+					</div>
+				</li> : null}
 			</ul>
 		</nav>
+	};
+
+	deleteProject = () => {
+		this.props.dispatch(deleteProjectById(this.props.params.id)).then(() => {
+			console.log(this.props);
+			browserHistory.push('/n2sky')
+		});
 	};
 
 
@@ -76,23 +99,71 @@ export default class ProjectDashboard extends React.Component {
 						<span>Add neural network from paradigm</span>
 					</Link>
 				</div>
+				{/*<div className="pure-u-1-4">*/}
+				{/*<a onClick={this.showCloseNewNNModal.bind(this)}>*/}
+				{/*<div>*/}
+				{/*<img className="sibar-icon" src={CloudCreate}/>*/}
+				{/*</div>*/}
+				{/*<span>Add neural network from scratch</span>*/}
+				{/*</a>*/}
+				{/*</div>*/}
 				<div className="pure-u-1-4">
 					<a onClick={this.showCloseNewNNModal.bind(this)}>
 						<div>
 							<img className="sibar-icon" src={CloudCreate}/>
 						</div>
-						<span>Add neural network from scratch</span>
+						<span>Upload own network in ViNNSL format</span>
 					</a>
 				</div>
 			</div>
 		</div>
 	}
 
+
+	getRunningStatus = (isRunning) => {
+		if (isRunning) {
+			return <div className="is-running-header">
+
+				<h1>Running</h1>
+				<img id="spin" src={LogoWhite}/>
+			</div>
+		} else {
+			return <div className="is-running-header">
+				<h1>Not Running</h1>
+				<img src={LogoGrey}/>
+			</div>
+		}
+	};
+
 	getNeuralNetworks = () => {
 		return <div className="pure-g">
-			<div className="pure-u-1-4">
-
-			</div>
+			{this.props.projects.nns.map(d => {
+				return <div key={d._id} className="container-panel pure-u-1-3">
+					<div className="container-nn">
+						<div className="container-header-panel">
+							<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>
+							<h1>{d.metadata.name}</h1>
+							{this.getRunningStatus(d.executionEnvironment.isRunning)}
+						</div>
+						<ul>
+							<li>Description: {d.metadata.description}</li>
+							<li>Application Field: {d.problemDomain.applicationField.toString()}</li>
+							<li>Network Type: {d.problemDomain.networkType}</li>
+							<li>Problem Type: {d.problemDomain.problemType}</li>
+							<li>Created By: {d.creator.name}</li>
+						</ul>
+						<div>
+							<Link to={"/n2sky/paradigm/nn/" + d._id} className="button" role="button">
+								<span>Details and actions</span>
+								<div className="icon">
+									<img src={Enter}/>
+								</div>
+							</Link>
+						</div>
+					</div>
+				</div>
+			})
+			}
 		</div>
 	};
 
@@ -102,15 +173,16 @@ export default class ProjectDashboard extends React.Component {
 			<div>
 				{this.props.projects ?
 					<div>
-						{this.getNavbar("Project: " + this.props.projects.name)}
+						{this.getNavbar("Project: " + this.props.projects.name, true)}
 						{this.getToolsLinks()}
 						{this.props.projects.nns ?
 							<div>
-							{this.getNavbar("Neural networks")}
-						</div>
+								{this.getNavbar("Neural networks", false)}
+								{this.getNeuralNetworks()}
+							</div>
 							: null}
 						{this.state.showNNModal ?
-							<NewDescriptionPopup showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}
+							<UploadVinnslPopup projectId={this.props.params.id} showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}
 					</div> : <Loader/>}
 			</div>
 		)

@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {
-	updateDescription,
-	stopInstanceDescription
-} from '../../../../../../actions/n2sky/neural-network-actions'
+	runVinnslInstanceDescription, updateVinnslDescription
+} from '../../../../../../actions/n2sky/vinnsl_actions'
 import StopIcon from './../../../../../../../res/img/icons/stop.svg'
 import RunIcon from './../../../../../../../res/img/icons/rocket.svg'
 import PrivateIcon from './../../../../../../../res/img/icons/locked.svg'
@@ -32,7 +31,7 @@ export default class DetailsNavbar extends React.Component {
 	}
 
 	stopInstance = () => {
-		this.props.dispatch(stopInstanceDescription({}, this.props.descriptionById._id)).then(() => {
+		this.props.dispatch(runVinnslInstanceDescription({isRunning: false}, this.props.descriptionById._id)).then(() => {
 			location.reload();
 		})
 	};
@@ -85,9 +84,9 @@ export default class DetailsNavbar extends React.Component {
 
 	changePublishStatus = () => {
 		let reqParams = {
-			isPublic: !this.props.descriptionById.isPublic
+			"executionEnvironment.isPublic": !this.props.descriptionById.executionEnvironment.isPublic
 		};
-		this.props.dispatch(updateDescription(this.props.descriptionById._id, reqParams)).then(() => {
+		this.props.dispatch(updateVinnslDescription(this.props.descriptionById._id, reqParams)).then(() => {
 			location.reload();
 		})
 	};
