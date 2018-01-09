@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Loader from './../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
-import {train} from './../../../../actions/n2sky/neural-network-actions'
+import {createObject} from './../../../../actions/n2sky/project-actions'
 import AddIcon from './../../../../../res/img/icons/add.png'
 
 
@@ -20,8 +20,8 @@ export default class CreateProjectPopup extends React.Component {
 
 		this.state = {
 			showCreateOpenstackDashlet: false,
-			params : {},
-			name: null
+			name: null,
+			description: null
 		};
 
 		this.handleChange = ::this.handleChange;
@@ -30,7 +30,7 @@ export default class CreateProjectPopup extends React.Component {
 
 
 	handleChange(event) {
-		this.state.params[event.target.name] = event.target.value;
+		this.setState({[event.target.name]: event.target.value});
 	}
 
 
@@ -54,7 +54,7 @@ export default class CreateProjectPopup extends React.Component {
 	submitForm() {
 		this.commit()
 			.then(r => {
-			this.props.dispatch(train(r)).then(() => {
+			this.props.dispatch(createObject(r)).then(() => {
 				location.reload();
 			});
 		}).catch(err => this.setState({violated: true}));
@@ -70,7 +70,7 @@ export default class CreateProjectPopup extends React.Component {
 				createdBy : localStorage.getItem("user")
 
 			};
-			resolve(train);
+			resolve(obj);
 		})
 	}
 
@@ -88,7 +88,7 @@ export default class CreateProjectPopup extends React.Component {
 
 
 				<a onClick={this.submitForm} className="button" role="button">
-					<span>Train</span>
+					<span>Create project</span>
 					<div className="icon">
 						<img src={AddIcon}/>
 					</div>
