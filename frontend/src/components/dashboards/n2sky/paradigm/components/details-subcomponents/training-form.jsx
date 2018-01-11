@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {deleteNNFromProject} from '../../../../../../actions/n2sky/project-actions'
+import {train} from '../../../../../../actions/n2sky/vinnsl_models_actions'
 import TrainIcon from './../../../../../../../res/img/icons/knowledge-transfer.svg'
 import VinnslIcon from './../../../../../../../res/img/icons/settings-vinnsl.svg'
 import DeleteIcon from './../../../../../../../res/img/icons/delete-button-red.svg'
@@ -16,9 +17,17 @@ export default class TrainingForm extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let initObj = {};
+		let initObj = [];
+		// this.props.descriptionById.parameters.input.map(p => {
+		// 	initObj[p.parameter] = p.defaultValue;
+		// });
+
 		this.props.descriptionById.parameters.input.map(p => {
-			initObj[p.parameter] = p.defaultValue;
+			let par = {
+				parameter: p.parameter,
+				value: p.defaultValue
+			};
+			initObj.push(par);
 		});
 
 		this.state = {inputParams: initObj, isTrain: false};
@@ -92,21 +101,25 @@ export default class TrainingForm extends React.Component {
 	};
 
 	handleChange(event) {
-
-		console.log(event.target.name);
-
-		this.setState(prevState => ({
-			...prevState,
-			inputParams: {
-				...prevState.inputParams,
-				[event.target.name]: event.target.value
-			}
-		}));
-
+		let inputParams = this.state.inputParams.filter(p => p.parameter !== event.target.name);
+		inputParams.push({parameter: event.target.name, value: event.target.value});
+		this.setState({inputParams: inputParams});
 	}
 
 	submitForm = () => {
-		console.log(JSON.stringify(this.state));
+		new Promise((res, rej) => {
+			let obj = {
+				vinnslDescriptionId: this.props.descriptionById._id,
+				trainedBy: localStorage.getItem("user"),
+				parameters: {
+					input: this.state.inputParams
+				},
+				endpoints: this.props.descriptionById.endpoints
+			};
+
+			console.log(obj);
+			res(obj)
+		}).then(obj => this.props.dispatch(train(obj)).then(() => location.reload()));
 	};
 
 	getTrainForm = () => {

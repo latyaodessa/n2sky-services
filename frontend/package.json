@@ -30,6 +30,7 @@
     "react-chartjs": "^0.8.0",
     "react-cytoscape": "^1.0.6",
     "react-dom": "^15.4.2",
+    "react-easy-chart": "^1.0.0",
     "react-moment": "^0.6.5",
     "react-shapes": "^0.1.0",
     "react-timeseries-charts": "^0.12.8",

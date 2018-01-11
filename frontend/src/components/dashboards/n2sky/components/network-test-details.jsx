@@ -1,33 +1,30 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import TestModelPopup from './test-model-popup'
-import {getDescriptionById, getModelsById} from '../../../../actions/n2sky/neural-network-actions'
+import {getModels} from './../../../../actions/n2sky/vinnsl_models_actions'
 import Loader from './../../../core/loader/loader'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
 import DownloadIcon from './../../../../../res/img/icons/download.svg'
 import TestIcon from './../../../../../res/img/icons/flask_white.svg'
-
+import TrainingChart from './training-chart'
 
 @connect((store) => {
 	return {
-		descriptionById: store.descriptionById.description,
-		model: store.modelById.model
+		modelsByDescId: store.modelsByDescId.models
 	}
 })
 export default class NetworkTestDetails extends React.Component {
 
 	state = {
-		showModal: false
+		showModal: false,
+		chartData: []
 	};
 
 	constructor(props) {
 		super(props);
-		this.props.dispatch(getDescriptionById(this.props.params.id));
-		this.props.dispatch(getModelsById(this.props.params.model_id));
-
-		console.log(this.props.params.id);
-		console.log(this.props.params.model_id);
+		this.props.dispatch(getModels({static_filters: {_id: this.props.params.model_id}}, 0, 999))
+			.then(() => this.generateChartData(this.props.modelsByDescId[0].logs));
 
 	}
 
@@ -40,15 +37,15 @@ export default class NetworkTestDetails extends React.Component {
 	getNavbar = () => {
 		return <nav className="topbar">
 			<ul>
-				<li><a>Neural Network {this.props.descriptionById.name}</a></li>
+				<li><a>Training results and model testing</a></li>
 			</ul>
 		</nav>
 	};
 
 	getContent = () => {
 		return <div className="pure-g">
-			{this.props.model ? this.getRawModel() : <Loader/>}
-			{this.props.model ? this.getParamDetails() : <Loader/>}
+			{this.props.modelsByDescId[0].rawModel ? this.getRawModel() : null}
+			{this.getParamDetails()}
 			{this.getMainDetails()}
 		</div>
 	};
@@ -57,15 +54,14 @@ export default class NetworkTestDetails extends React.Component {
 		return <div className="container-panel pure-u-1-3">
 			<div className="container-nn">
 				<div className="container-header-panel">
-					<h1>{this.props.descriptionById.name}</h1>
-					{this.getRunningStatus(this.props.descriptionById.isRunning)}
+					<h1>Trained Model Details</h1>
 				</div>
 				<ul>
-					<li>Owner: {this.props.descriptionById.createdBy}</li>
-					<li>Created On: {this.props.descriptionById.createdOn}</li>
-					<li>Domain: {this.props.descriptionById.domain}</li>
-					<li>Input Dimentions: {this.props.descriptionById.inputDimensions}</li>
-					<li>Input Type: {this.props.descriptionById.inputType}</li>
+					<li>Trained By: {this.props.modelsByDescId[0].trainedBy}</li>
+					<li>Trained On: {this.props.modelsByDescId[0].trainedOn}</li>
+					<li>Tests Count: {this.props.modelsByDescId[0].tests.length}</li>
+					<li>Is Copy: {this.props.modelsByDescId[0].isCopy ? "Yes" : "No"}</li>
+					<li>Is training Finished: {this.props.modelsByDescId[0].isTrainingDone ? "Trained" : "Processing"}</li>
 				</ul>
 			</div>
 		</div>
@@ -75,37 +71,17 @@ export default class NetworkTestDetails extends React.Component {
 		return <div className="container-panel pure-u-1-3">
 			<div className="container-nn">
 				<div className="container-header-panel">
-					<h1>Model: {this.props.model.name}</h1>
+					<h1>Training parameters</h1>
 				</div>
 				<ul>
-					<li><span>Trained By: </span> {this.props.model.trainedBy}</li>
-					<li><span>Location: </span> {this.props.model.endpoint}</li>
-					<li><span>Trained on: </span> {this.props.model.trainedOn}</li>
-					<li/>
-					<li/>
-					<li><span>Parameters:</span></li>
-					{this.props.descriptionById.modelParameters.map(p => {
-						return <li key={p._id}>{p.parameter} : {p.defaultValue}</li>
+					{this.props.modelsByDescId[0].parameters.input.map(p => {
+						return <li key={p.parameter}>{p.parameter} : {p.value}</li>
 					})}
 				</ul>
 			</div>
 		</div>
 	};
 
-	getRunningStatus = (isRunning) => {
-		if (isRunning) {
-			return <div className="is-running-header">
-
-				<h1>Running</h1>
-				<img id="spin" src={LogoWhite}/>
-			</div>
-		} else {
-			return <div className="is-running-header">
-				<h1>Not Running</h1>
-				<img src={LogoGrey}/>
-			</div>
-		}
-	};
 
 	getRawModel = () => {
 		return <div className="container-panel pure-u-1-3">
@@ -114,11 +90,10 @@ export default class NetworkTestDetails extends React.Component {
 					<h1>RAW MODEL in JSON Format</h1>
 				</div>
 				<pre className="raw-model">
-					{JSON.stringify(this.props.model.model, null, 2)}
+					{JSON.stringify(this.props.modelsByDescId[0].rawModel, null, 2)}
 				</pre>
-				{console.log(this.props)}
 				<a onClick={this.download.bind(this)} className="button" role="button">
-					<span>Download JSON file</span>
+					<span>Download raw model </span>
 					<div className="icon">
 						<img src={DownloadIcon}/>
 					</div>
@@ -159,7 +134,7 @@ export default class NetworkTestDetails extends React.Component {
 	};
 
 	getRow = () => {
-		return this.props.model.tests.map(m => {
+		return this.props.modelsByDescId[0].tests.map(m => {
 			return <tr key={m._id} className="pure-table">
 				<td>{m.user}</td>
 				<td>{m.testing_data}</td>
@@ -186,17 +161,36 @@ export default class NetworkTestDetails extends React.Component {
 		</table>
 	};
 
+	generateChartData = (logs) => {
+		new Promise((res, rej) => {
+			let data = [];
+			logs.map(d => {
+				let obj = {
+					x: parseInt(d.epoch),
+					y: parseFloat(d.loss)
+				};
+				data.push(obj);
+				res(data)
+			})
+		}).then(data => this.setState({chartData: data}));
+
+	};
+
 
 	render() {
 		return (
 			<div>
-				{console.log(this.props.model)}
-				{this.props.descriptionById ? this.getNavbar() : null}
-				{this.props.descriptionById ? this.getContent() : <Loader/>}
-				{this.getTestsNavbar()}
-				{this.state.showModal ? <TestModelPopup modelName={this.props.model.name} modelId={this.props.params.model_id}
-												showCloseModal={this.showCloseModal.bind(this)}/> : null}
-				{this.props.model ? this.getTestsTable() : null}
+
+				{this.props.modelsByDescId ? <div>
+						{this.getNavbar()}
+						{this.getContent()}
+						{this.state.chartData.length > 0 ? <TrainingChart data={this.state.chartData}/> : <Loader/>}
+						{this.getTestsNavbar()}
+						{this.getTestsTable()}
+					</div>
+					: <Loader/>}
+				{this.state.showModal ?
+					<TestModelPopup modelName="Test the model" modelId={this.props.modelsByDescId[0]._id}/> : null}
 			</div>
 		)
 	}
