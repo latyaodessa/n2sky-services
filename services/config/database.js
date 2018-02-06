@@ -1,5 +1,5 @@
-const db_endpoint = "mongodb://localhost:27017/n2sky";
-// const db_endpoint = "mongodb://192.168.0.102:27017/n2sky";
+// const db_endpoint = "mongodb://localhost:27017/n2sky";
+const db_endpoint = "mongodb://192.168.0.102:27017/n2sky";
 
 module.exports = {
 
