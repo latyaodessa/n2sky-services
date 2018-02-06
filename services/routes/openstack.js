@@ -4,14 +4,14 @@ module.exports = function (router) {
         request = require('request'),
         OSWrap = require('openstack-wrapper');
 
-    let IP = '131.130.37.10';
-    let user = 'admin';
-    let password = 'wstcloud';
-
-
-    // let IP = '192.168.0.102';
+    // let IP = '131.130.37.10';
     // let user = 'admin';
-    // let password = 'admin';
+    // let password = 'wstcloud';
+
+
+    let IP = '192.168.0.105';
+    let user = 'admin';
+    let password = 'nomoresecret';
 
     let keystone = new OSWrap.Keystone('http://' + IP + '/identity/v3');
     const HOST = 'http://' + IP + '/';
