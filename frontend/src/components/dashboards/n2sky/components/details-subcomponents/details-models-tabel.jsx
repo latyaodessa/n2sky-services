@@ -55,18 +55,36 @@ export default class DetailsModelsTable extends React.Component {
 
 			let static_filters = {};
 
-			if (!this.state.showAll) {
-				static_filters.trainedBy = localStorage.getItem("user");
+
+			let filters = {};
+			if(this.props.projectId) {
+				 filters = {
+					name: this.state.name,
+					trainedBy: this.state.trainedBy,
+					accuracy: this.state.accuracy,
+					isCopy: this.state.isCopy,
+					_id: this.props.projectId
+				};
+			} else if(this.props.descripIds) {
+				if (!this.state.showAll) {
+					static_filters.trainedBy = localStorage.getItem("user");
+				}
+				filters = {
+					name: this.state.name,
+					trainedBy: this.state.trainedBy,
+					accuracy: this.state.accuracy,
+					isCopy: this.state.isCopy,
+					vinnslDescriptionId: this.props.descripIds
+				};
+			} else if(this.props.setModel) {
+				filters = {
+					name: this.state.name,
+					trainedBy: this.state.trainedBy,
+					accuracy: this.state.accuracy,
+					isCopy: this.state.isCopy,
+					isTrainingDone: true
+				};
 			}
-
-
-			let filters = {
-				name: this.state.name,
-				trainedBy: this.state.trainedBy,
-				accuracy: this.state.accuracy,
-				isCopy: this.state.isCopy,
-				vinnslDescriptionId: this.props.descripIds
-			};
 
 			let reqParams = {
 				static_filters: static_filters,
@@ -101,9 +119,14 @@ export default class DetailsModelsTable extends React.Component {
 		</table>
 	};
 
+	setModelListener(m){
+		if(this.props.setModel){
+			this.props.setModel(m);
+		}
+	}
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
-			return <tr key={m._id} className="pure-table">
+			return <tr onClick={this.setModelListener.bind(this,m)} key={m._id} className="pure-table">
 				<td>{m.trainedOn}</td>
 				<td>{m.trainedBy}</td>
 				<td>{m.tests.length}</td>

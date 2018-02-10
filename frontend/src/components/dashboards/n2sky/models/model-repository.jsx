@@ -4,6 +4,7 @@ import {Link} from 'react-router'
 import ModeDetails from './components/model-details'
 import ModelsTable from './components/models-table'
 import EmptyModelDetails from './components/empty-model-details'
+import DetailsModelsTable from './../components/details-subcomponents/details-models-tabel'
 
 @connect((store) => {
 	return {
@@ -46,7 +47,10 @@ export default class ModelsRepository extends React.Component {
 			<div>
 				{this.getNavbar()}
 				<div className="pure-g">
-					<div className={style}><ModelsTable setModel={this.setModel}/></div>
+					<div className={style}>
+						{/*<ModelsTable setModel={this.setModel}/>*/}
+					<DetailsModelsTable setModel={this.setModel}/>
+					</div>
 					<div className={style}>
 						{this.state.model ? <ModeDetails model={this.state.model}/> : <EmptyModelDetails/>}
 					</div>

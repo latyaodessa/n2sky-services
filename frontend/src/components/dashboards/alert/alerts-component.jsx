@@ -7,7 +7,8 @@ import CreateAlertPopup from './create-alert-popup'
 
 @connect((store) => {
 	return {
-		alerts: store.getAlerts.alerts
+		alerts: store.getAlerts.alerts,
+		browser: store.browser
 	}
 })
 export default class AlertsComponent extends React.Component {
@@ -46,9 +47,15 @@ export default class AlertsComponent extends React.Component {
 	};
 
 	getAlerts = () => {
+		let style = "pure-u-1-3";
+		if (this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		}
 		return <div className="pure-g">
 			{this.props.alerts.map(a => {
-				return <div key={a.fingerprint} className="container-panel pure-u-1-3">
+				return <div key={a.fingerprint} className={`container-panel ${style}`}>
 					<div className="container-nn"><h1>{a.labels.alertname}</h1>
 						<ul className="draw-border" style={{backgroundColor: this.getAlertyType(a.labels.severity)}}>
 							<li><span>Summary:</span> {a.annotations.summary}</li>

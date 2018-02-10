@@ -6,8 +6,10 @@ import Loader from './../../../core/loader/loader'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
 import DownloadIcon from './../../../../../res/img/icons/download.svg'
+import CopyIcon from './../../../../../res/img/icons/copy.svg'
 import TestIcon from './../../../../../res/img/icons/flask_white.svg'
 import TrainingChart from './training-chart'
+import CopyModelToProjectPopup from './copy-model-to-project-popup'
 
 @connect((store) => {
 	return {
@@ -20,7 +22,8 @@ export default class NetworkTestDetails extends React.Component {
 
 	state = {
 		showModal: false,
-		chartData: []
+		chartData: [],
+		isCopyPopUp: false
 	};
 
 	constructor(props) {
@@ -52,6 +55,16 @@ export default class NetworkTestDetails extends React.Component {
 		return <nav className="topbar">
 			<ul>
 				<li><a>Training results and model testing</a></li>
+					<li className="right-float">
+					<div style={{width: '250px'}} className="standard-nav-item">
+							<span onClick={this.showCloseCopyToUser.bind(this)} className="button" role="button">
+						<span>Copy this model</span>
+						<div className="icon">
+							<img src={CopyIcon}/>
+						</div>
+					</span>
+					</div>
+				</li>
 			</ul>
 		</nav>
 	};
@@ -196,6 +209,10 @@ export default class NetworkTestDetails extends React.Component {
 
 	};
 
+	showCloseCopyToUser() {
+		this.setState({isCopyPopUp: !this.state.isCopyPopUp})
+	}
+
 
 	render() {
 		console.log(this.props.modelsByDescId);
@@ -210,6 +227,8 @@ export default class NetworkTestDetails extends React.Component {
 						{this.getTestsTable()}
 					</div>
 					: <Loader/>}
+				{this.state.isCopyPopUp ? <CopyModelToProjectPopup model={this.props.modelsByDescId[0]}
+																												showCloseModal={this.showCloseCopyToUser.bind(this)}/> : null}
 				{this.state.showModal && this.props.modelsByDescId[0] ?
 					<TestModelPopup modelName="Test the model" showCloseModal={this.showCloseModal.bind(this)} modelsByDescId={this.props.modelsByDescId[0]}/> : null}
 			</div>

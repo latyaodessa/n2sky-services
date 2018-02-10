@@ -59,7 +59,6 @@ export default class DescriptionsOverview extends React.Component {
 
 	getDescriptionIds = (id = null) => {
 
-
 		new Promise((resolve, reject) => {
 			this.setState({descripIds: null});
 			resolve(this.state);
@@ -96,8 +95,10 @@ export default class DescriptionsOverview extends React.Component {
 		} else if (this.props.browser.is.medium || this.props.browser.large) {
 			style = "pure-u-1-2";
 		}
+		let chainStyle = this.state.chained ? {cursor: 'pointer'} : {};
 		return this.props.descriptions.map(d => {
-			return <div key={d._id} className={`container-panel ${style}`}>
+			console.log(d);
+			return <div style={chainStyle} onClick={this.getDescriptionIds.bind(this, d._id)} key={d._id} className={`container-panel ${style}`}>
 				<div className="container-nn">
 					<div className="container-header-panel">
 						<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>
@@ -145,7 +146,7 @@ export default class DescriptionsOverview extends React.Component {
 
 
 	render() {
-		console.log(this.props.browser);
+		console.log(this.state);
 		return (
 			<div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() :

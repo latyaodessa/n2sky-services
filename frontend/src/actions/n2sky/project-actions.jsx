@@ -75,6 +75,19 @@ export function removeNNIdProject(id, nnId) {
 	}
 }
 
+export function addModelIdProject(id, modelId) {
+	let endpoint = HOST_MODEL_REPO_SERVICE + "project/add_model_id/" + id;
+	return function (dispatch) {
+		return axios.post(endpoint, modelId)
+			.then((res) => {
+				dispatch({type: ADD_NN_ID_TO_PROJECT_FULFILLED, payload: res.data})
+			})
+			.catch((err) => {
+				dispatch({type: ADD_NN_ID_TO_PROJECT_REJECTED, payload: err})
+			})
+	}
+}
+
 export function deleteProjectById(id) {
 	return function (dispatch) {
 		return axios.delete(HOST_MODEL_REPO_SERVICE + "project/" + id, {})

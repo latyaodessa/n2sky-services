@@ -22,7 +22,7 @@ export default class ModeDetails extends React.Component {
 					<h1>RAW MODEL in JSON Format</h1>
 				</div>
 				<pre className="raw-model">
-					{JSON.stringify(this.props.model.model, null, 2)}
+					{this.props.model.rawModel}
 				</pre>
 				{console.log(this.props)}
 				<a onClick={this.download.bind(this)} className="button" role="button">
@@ -59,9 +59,9 @@ export default class ModeDetails extends React.Component {
 		return <div className="container-panel pure-u-1-1">
 			<div className="container-nn">
 				<div className="container-header-panel">
-					<h1>Model: {this.props.model.name}</h1>
+					<h1>Model ID: {this.props.model._id}</h1>
 					<div className="button-in-header">
-						<Link to={"/n2sky/network/" + this.props.model.descriptionId + "/test/" + this.props.model._id}
+						<Link to={"/n2sky/network/" + this.props.model.vinnslDescriptionId + "/test/" + this.props.model._id}
 									className="icon-button-container button" role="button">
 							<span>Details and Tests</span>
 							<div className="icon">
@@ -70,24 +70,25 @@ export default class ModeDetails extends React.Component {
 						</Link>
 					</div>
 				</div>
-				{this.getRequestedParameters(this.props.model.modelParameters)}
+				{this.getRequestedParameters(this.props.model.parameters.input)}
 			</div>
 		</div>
 	};
 
 	getRequestedParameters(modelParameters) {
 		let lies = [];
-		for (let [key, value] of Object.entries(modelParameters)) {
-			lies.push(<li key={key}><span>{key}:</span> {value} </li>)
-		}
+		modelParameters.map(p => {
+			lies.push(<li key={p.parameter}><span>{p.parameter}:</span> {p.value} </li>)
+
+		});
 		return <ul>{lies}</ul>;
 	}
 
 
 	download() {
 		let element = document.createElement('a');
-		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.props.model.model, null, 2)));
-		element.setAttribute('download', this.props.model.name + ".txt");
+		element.setAttribute('href', 'data:Application/octet-stream,' + encodeURIComponent(this.props.model.rawModel));
+		element.setAttribute('download', this.props.model._id + ".json");
 
 		element.style.display = 'none';
 		document.body.appendChild(element);

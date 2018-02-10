@@ -4,6 +4,7 @@ import {Link} from 'react-router'
 import Loader from './../../core/loader/loader'
 import {browserHistory} from 'react-router'
 
+import DetailsModelsTable from './../n2sky/components/details-subcomponents/details-models-tabel'
 import CloudCreate from './../../../../res/img/icons/cloud-create.svg'
 import Networkcon from './../../../../res/img/icons/network.svg'
 import ModelsIcon from './../../../../res/img/icons/cube.svg'
@@ -182,6 +183,7 @@ export default class ProjectDashboard extends React.Component {
 
 
 	render() {
+		console.log(this.props);
 		return (
 			<div>
 				{this.props.projects ?
@@ -194,6 +196,13 @@ export default class ProjectDashboard extends React.Component {
 								{this.getNeuralNetworks()}
 							</div>
 							: null}
+						{this.props.projects.nn_models_id ?
+							<div>
+								{this.getNavbar("Saved Models", false)}
+								<DetailsModelsTable projectId={this.props.projects.nn_models_id}/>
+							</div>
+							: null}
+
 						{this.state.showNNModal ?
 							<UploadVinnslPopup projectId={this.props.params.id} showCloseModal={this.showCloseNewNNModal.bind(this)}/> : null}
 					</div> : <Loader/>}
