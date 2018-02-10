@@ -6,7 +6,9 @@ import ModelsTable from './components/models-table'
 import EmptyModelDetails from './components/empty-model-details'
 
 @connect((store) => {
-	return {}
+	return {
+		browser: store.browser
+	}
 })
 export default class ModelsRepository extends React.Component {
 
@@ -34,12 +36,18 @@ export default class ModelsRepository extends React.Component {
 
 
 	render() {
+		let style = "pure-u-1-2";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		}
 		return (
 			<div>
 				{this.getNavbar()}
 				<div className="pure-g">
-					<div className="pure-u-1-2"><ModelsTable setModel={this.setModel}/></div>
-					<div className="pure-u-1-2">
+					<div className={style}><ModelsTable setModel={this.setModel}/></div>
+					<div className={style}>
 						{this.state.model ? <ModeDetails model={this.state.model}/> : <EmptyModelDetails/>}
 					</div>
 					{/*{this.props.done ? this.getDescription() : <Loader/>}*/}

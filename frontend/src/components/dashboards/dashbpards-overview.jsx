@@ -14,7 +14,9 @@ import style from './style.scss'
 @connect((store) => {
 	return {
 		openstackUserConfig: store.openstackUserConfig.config,
-		openstackUserConfigFetched: store.openstackUserConfig.fetched
+		openstackUserConfigFetched: store.openstackUserConfig.fetched,
+		browser: store.browser
+
 	}
 })
 export default class DashboardsOverview extends React.Component {
@@ -52,10 +54,18 @@ export default class DashboardsOverview extends React.Component {
 	};
 
 	getAdminTools() {
+		let style = "pure-u-1-4";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-2";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-3";
+		} else {
+			style = "pure-u-1-4";
+		}
 		return <div>
 
 			<div className="pure-g admin-tools-container">
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<Link to="/openstack">
 						<div>
 							<img className="sibar-icon" src={OpenStackIcon}/>
@@ -63,7 +73,7 @@ export default class DashboardsOverview extends React.Component {
 						<span>OpenStack Dashboard</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<a href="#">
 						<div>
 							<img className="sibar-icon" src={CloudifyIcon}/>
@@ -71,7 +81,7 @@ export default class DashboardsOverview extends React.Component {
 						<span>Cloudify Dashboard</span>
 					</a>
 				</div>
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<Link to="/alert">
 						<div>
 							<img className="sibar-icon" src={AlertIcon}/>
@@ -79,7 +89,7 @@ export default class DashboardsOverview extends React.Component {
 						<span>Alert Management System</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<a onClick={this.showCloseModal.bind(this)} href="#">
 						<div>
 							<img className="sibar-icon" src={SettingsIcon}/>

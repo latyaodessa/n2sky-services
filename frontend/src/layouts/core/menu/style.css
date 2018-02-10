@@ -196,4 +196,78 @@
 .navmenu ul.thumbs-list li:hover {
   opacity: .8; }
 
+.menu-expanded {
+  position: fixed;
+  transition: all .25s;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.85); }
+  .menu-expanded ul {
+    padding: 0;
+    list-style-type: none;
+    transition: all 0s;
+    position: relative;
+    left: 0;
+    z-index: 2; }
+  .menu-expanded a {
+    transition: all .15s;
+    text-decoration: none;
+    font-size: 2em;
+    padding: 5px;
+    color: #FFF;
+    display: block; }
+    .menu-expanded a:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      transition: all .15s;
+      letter-spacing: 2px;
+      color: #333;
+      border: 1px solid rgba(255, 255, 255, 0.15); }
+
+.hamburger {
+  background-color: transparent;
+  border: 0px;
+  outline: 0px;
+  width: 50px;
+  height: 50px;
+  height: auto;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  z-index: 9999; }
+  .hamburger .burger {
+    transition: all 0.3s;
+    border-radius: 5px;
+    height: 5px;
+    width: 100%;
+    display: inline-block;
+    background-color: #4e4d4d; }
+
+.focus .burger {
+  transition: all 0.3s; }
+  .focus .burger:first-of-type {
+    background-color: #C62828;
+    transition-delay: 0.4s;
+    transform: translate3d(0px, 15px, 0px) rotateZ(45deg);
+    width: 40px;
+    transform-origin: left top; }
+  .focus .burger:nth-of-type(2) {
+    opacity: 0; }
+  .focus .burger:last-of-type {
+    background-color: #C62828;
+    transition-delay: 0.4s;
+    transform: translate3d(0px, 0px, 0px) rotateZ(-45deg);
+    width: 40px;
+    transform-origin: left bottom; }
+
+.b-a-expanded {
+  transition: all .25s;
+  top: -0px; }
+
 /*# sourceMappingURL=style.css.map */

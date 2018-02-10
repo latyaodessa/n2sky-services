@@ -9,7 +9,9 @@ import {browserHistory} from 'react-router'
 import DetailsModelsTable from './../../../components/details-subcomponents/details-models-tabel'
 
 @connect((store) => {
-	return {}
+	return {
+		browser: store.browser
+	}
 })
 export default class TrainingForm extends React.Component {
 
@@ -18,9 +20,6 @@ export default class TrainingForm extends React.Component {
 		super(props);
 
 		let initObj = [];
-		// this.props.descriptionById.parameters.input.map(p => {
-		// 	initObj[p.parameter] = p.defaultValue;
-		// });
 
 		this.props.descriptionById.parameters.input.map(p => {
 			let par = {
@@ -33,7 +32,8 @@ export default class TrainingForm extends React.Component {
 		this.state = {inputParams: initObj, isTrain: false};
 
 		this.handleChange = ::this.handleChange;
-
+		this.handleUpload = ::this.handleUpload;
+		this.handleClick = ::this.handleClick;
 	}
 
 
@@ -86,18 +86,58 @@ export default class TrainingForm extends React.Component {
 			</div>
 			<form className="pure-form modal-content-container">
 				<fieldset className="pure-group">
-					<input type="file" name="fileToUpload" className="pure-input-1-1 full-width"/>
-				</fieldset>
+					<form className="pure-form">
+						<fieldset>
+							<input onChange={this.handleUpload} type="file" name="fileToUpload"/>
+							<label>
+								<input onClick={this.handleClick} type="checkbox"/>Use Default Training Data
+							</label>
+						</fieldset>
+					</form>
 
-				<a onClick={this.submitForm} className="button" role="button">
-					<span>Train the neural network</span>
-					<div className="icon">
-						<img src={TrainIcon}/>
+					<textarea id="result"/>
+				</fieldset>
+				{this.props.descriptionById.executionEnvironment.isRunning ?
+					<a onClick={this.submitForm} className="button" role="button">
+						<span>Train the neural network</span>
+						<div className="icon">
+							<img src={TrainIcon}/>
+						</div>
+					</a> :
+					<div className="paradigm-fixed-labels">
+						<h1>Please run the neural network instance first</h1>
 					</div>
-				</a>
+				}
 
 			</form>
 		</div>
+	};
+
+
+	handleClick(event) {
+		if (event.target.checked) {
+			document.getElementById('result').value = this.props.descriptionById.parameters.output;
+		} else {
+			document.getElementById('result').value = null;
+
+		}
+	}
+
+	handleUpload(evt) {
+		this.setState({file: evt.target.files[0]});
+
+
+		let reader = new FileReader();
+
+		reader.onload = function (evt) {
+
+			document.getElementById('result').value = evt.target.result;
+
+		};
+
+		reader.readAsText(evt.target.files[0]);
+
+
 	};
 
 	handleChange(event) {
@@ -108,8 +148,30 @@ export default class TrainingForm extends React.Component {
 
 	submitForm = () => {
 		new Promise((res, rej) => {
+
+			let vinnsl = this.props.descriptionById;
+
+			this.state.inputParams.map(newParam => {
+				vinnsl.parameters.input.map(oldParam => {
+					if (oldParam.parameter === newParam.parameter) {
+						oldParam.defaultValue = newParam.value.toString();
+					}
+				})
+			});
+
+			res(vinnsl)
+		}).then(vinnsl => {
+
 			let obj = {
-				vinnslDescriptionId: this.props.descriptionById._id,
+				vinnsl: vinnsl,
+				file: document.getElementById("result").value,
+
+			};
+
+			return obj;
+		}).then(obj => {
+
+			let metaData = {
 				trainedBy: localStorage.getItem("user"),
 				parameters: {
 					input: this.state.inputParams
@@ -117,24 +179,39 @@ export default class TrainingForm extends React.Component {
 				endpoints: this.props.descriptionById.endpoints
 			};
 
-			console.log(obj);
-			res(obj)
-		}).then(obj => this.props.dispatch(train(obj)).then(() => location.reload()));
+
+			return Object.assign(metaData, obj);
+		})
+			.then(obj => this.props.dispatch(train(obj)).then(() =>
+				location.reload()
+			));
 	};
 
 	getTrainForm = () => {
+		let style = "pure-u-1-2";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		}
 		return <div className="pure-g">
-			<div className="pure-u-1-2 table-details">{this.getForm()}</div>
-			<div className="pure-u-1-2 table-details">{this.getUploadFileForm()}</div>
+			<div className={`${style} table-details`}>{this.getForm()}</div>
+			<div className={`${style} table-details`}>{this.getUploadFileForm()}</div>
 		</div>
 	};
 
 	getInfoForm = () => {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		}
 		return <div className="pure-g">
-			<div className="pure-u-1-3 container-panel">{this.getActionsDetails()}</div>
+			<div className={`${style} container-panel`}>{this.getActionsDetails()}</div>
 			<div className="pure-u-1-3 container-panel"/>
 			{this.props.descriptionById.creator.name === localStorage.getItem('user') ?
-				<div className="pure-u-1-3 container-panel">{this.getSettingsDetails()}</div>
+				<div className={`${style} container-panel`}>{this.getSettingsDetails()}</div>
 				: null}
 		</div>
 	};
@@ -190,7 +267,6 @@ export default class TrainingForm extends React.Component {
 
 		document.body.removeChild(element);
 
-		// console.log(JSON.stringify(JSON.parse(this.props.descriptionById),null,2));
 	};
 
 	getNavbarInstances = () => {

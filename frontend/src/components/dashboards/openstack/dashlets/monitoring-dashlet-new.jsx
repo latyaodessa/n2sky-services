@@ -7,7 +7,8 @@ import MonitoringDashletHeader from './components/monitoring-dashlet-header'
 
 @connect((store) => {
 	return {
-		monitoring: store.monitoring
+		monitoring: store.monitoring,
+		browser: store.browser
 	}
 })
 export default class MonitoringDashlet extends React.Component {
@@ -138,8 +139,16 @@ export default class MonitoringDashlet extends React.Component {
 
 
 	render() {
+		let style = "pure-u-1-2";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		} else {
+			style = "pure-u-1-2";
+		}
 		return (
-			<div className="pure-u-1-2 pure-sm-1-1">
+			<div className={style}>
 				{this.state.metric ? <MonitoringDashletHeader conf={this.props.conf} name={this.state.metric[0].metric.__name__}/> : null}
 				<div className="dashlet-container">
 					{this.state.series.length > 0 && this.graph ? this.getChart() : null}

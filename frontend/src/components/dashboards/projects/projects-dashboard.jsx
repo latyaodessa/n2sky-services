@@ -19,7 +19,8 @@ import RemoveIcon from './../../../../res/img/icons/delete.svg'
 
 @connect((store) => {
 	return {
-		projects: store.projects.projects
+		projects: store.projects.projects,
+		browser: store.browser
 	}
 })
 export default class ProjectDashboard extends React.Component {
@@ -72,10 +73,16 @@ export default class ProjectDashboard extends React.Component {
 
 
 	getToolsLinks() {
+		let style = "pure-u-1-4";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-2";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-4";
+		}
 		return <div>
 
 			<div className="pure-g admin-tools-container">
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<Link to="/n2sky/available">
 						<div>
 							<img className="sibar-icon" src={Networkcon}/>
@@ -83,7 +90,7 @@ export default class ProjectDashboard extends React.Component {
 						<span>Available neural networks</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<Link to="/n2sky/models">
 						<div>
 							<img className="sibar-icon" src={ModelsIcon}/>
@@ -91,7 +98,7 @@ export default class ProjectDashboard extends React.Component {
 						<span>Models repository</span>
 					</Link>
 				</div>
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<Link to={'/n2sky/paradigm/create/' + this.props.params.id}>
 						<div>
 							<img className="sibar-icon" src={CloudFromParadigmIcon}/>
@@ -107,7 +114,7 @@ export default class ProjectDashboard extends React.Component {
 				{/*<span>Add neural network from scratch</span>*/}
 				{/*</a>*/}
 				{/*</div>*/}
-				<div className="pure-u-1-4">
+				<div className={style}>
 					<a onClick={this.showCloseNewNNModal.bind(this)}>
 						<div>
 							<img className="sibar-icon" src={CloudCreate}/>
@@ -136,9 +143,15 @@ export default class ProjectDashboard extends React.Component {
 	};
 
 	getNeuralNetworks = () => {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		}
 		return <div className="pure-g">
 			{this.props.projects.nns.map(d => {
-				return <div key={d._id} className="container-panel pure-u-1-3">
+				return <div key={d._id} className={`container-panel ${style}`}>
 					<div className="container-nn">
 						<div className="container-header-panel">
 							<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import TestModelPopup from './test-model-popup'
-import {getModels} from './../../../../actions/n2sky/vinnsl_models_actions'
+import {getModels, getModelLogs} from './../../../../actions/n2sky/vinnsl_models_actions'
 import Loader from './../../../core/loader/loader'
 import LogoWhite from './../../../../../res/img/logo-white.svg'
 import LogoGrey from './../../../../../res/img/logo-grey.svg'
@@ -11,7 +11,9 @@ import TrainingChart from './training-chart'
 
 @connect((store) => {
 	return {
-		modelsByDescId: store.modelsByDescId.models
+		modelsByDescId: store.modelsByDescId.models,
+		modelLogs: store.modelLogs,
+		browser: store.browser
 	}
 })
 export default class NetworkTestDetails extends React.Component {
@@ -24,7 +26,19 @@ export default class NetworkTestDetails extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.dispatch(getModels({static_filters: {_id: this.props.params.model_id}}, 0, 999))
-			.then(() => this.generateChartData(this.props.modelsByDescId[0].logs));
+			.then(() => {
+
+
+				if(this.props.modelsByDescId[0].isTrainingDone) {
+					this.generateChartData(this.props.modelsByDescId[0].logs);
+				} else {
+					this.props.dispatch(getModelLogs("http://192.168.0.102:5000/", this.props.modelsByDescId[0]._id)).then(() => {
+						this.generateChartData(this.props.modelLogs.logs);
+					});
+				}
+
+			});
+
 
 	}
 
@@ -43,15 +57,21 @@ export default class NetworkTestDetails extends React.Component {
 	};
 
 	getContent = () => {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		}
 		return <div className="pure-g">
-			{this.props.modelsByDescId[0].rawModel ? this.getRawModel() : null}
-			{this.getParamDetails()}
-			{this.getMainDetails()}
+			{this.props.modelsByDescId[0].rawModel ? this.getRawModel(style) : null}
+			{this.getParamDetails(style)}
+			{this.getMainDetails(style)}
 		</div>
 	};
 
-	getMainDetails = () => {
-		return <div className="container-panel pure-u-1-3">
+	getMainDetails = (style) => {
+		return <div className={`${style} container-panel`}>
 			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>Trained Model Details</h1>
@@ -67,8 +87,8 @@ export default class NetworkTestDetails extends React.Component {
 		</div>
 	};
 
-	getParamDetails = () => {
-		return <div className="container-panel pure-u-1-3">
+	getParamDetails = (style) => {
+		return <div className={`${style} container-panel`}>
 			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>Training parameters</h1>
@@ -83,14 +103,14 @@ export default class NetworkTestDetails extends React.Component {
 	};
 
 
-	getRawModel = () => {
-		return <div className="container-panel pure-u-1-3">
+	getRawModel = (style) => {
+		return <div className={`${style} container-panel`}>
 			<div className="container-nn">
 				<div className="container-header-panel">
 					<h1>RAW MODEL in JSON Format</h1>
 				</div>
 				<pre className="raw-model">
-					{JSON.stringify(this.props.modelsByDescId[0].rawModel, null, 2)}
+					{this.props.modelsByDescId[0].rawModel}
 				</pre>
 				<a onClick={this.download.bind(this)} className="button" role="button">
 					<span>Download raw model </span>
@@ -104,8 +124,8 @@ export default class NetworkTestDetails extends React.Component {
 
 	download() {
 		let element = document.createElement('a');
-		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.props.model.model, null, 2)));
-		element.setAttribute('download', this.props.model.name + ".txt");
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.props.modelsByDescId[0].rawModel));
+		element.setAttribute('download', this.props.modelsByDescId[0]._id + ".txt");
 
 		element.style.display = 'none';
 		document.body.appendChild(element);
@@ -178,6 +198,7 @@ export default class NetworkTestDetails extends React.Component {
 
 
 	render() {
+		console.log(this.props.modelsByDescId);
 		return (
 			<div>
 
@@ -189,8 +210,8 @@ export default class NetworkTestDetails extends React.Component {
 						{this.getTestsTable()}
 					</div>
 					: <Loader/>}
-				{this.state.showModal ?
-					<TestModelPopup modelName="Test the model" modelId={this.props.modelsByDescId[0]._id}/> : null}
+				{this.state.showModal && this.props.modelsByDescId[0] ?
+					<TestModelPopup modelName="Test the model" showCloseModal={this.showCloseModal.bind(this)} modelsByDescId={this.props.modelsByDescId[0]}/> : null}
 			</div>
 		)
 	}

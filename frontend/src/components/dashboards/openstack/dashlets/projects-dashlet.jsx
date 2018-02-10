@@ -4,6 +4,11 @@ import {Link} from 'react-router'
 import Enter from './../../../../../res/img/icons/right-arrow.png'
 import style from './style.scss'
 
+@connect((store) => {
+	return {
+		browser: store.browser
+	}
+})
 export default class ProjectsDashlet extends React.Component {
 
 	state = {};
@@ -13,8 +18,16 @@ export default class ProjectsDashlet extends React.Component {
 	}
 
 	render() {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		} else {
+			style = "pure-u-1-3";
+		}
 		return (
-			<div className="container-panel pure-u-1-3 pure-sm-1-1">
+			<div className={`${style} container-panel`}>
 				<div className="container-nn">
 					<div className="container-header-panel">
 						<h1>Project {this.props.project.name}</h1>

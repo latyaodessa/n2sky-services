@@ -4,7 +4,9 @@ import {
 	FETCH_MODEL_BY_ID_REJECTED,
 	FETCH_MODEL_BY_ID_FULFILLED,
 	TEST_NEURAL_NETWROK_FULFILLED,
-	TEST_NEURAL_NETWROK_REJECTED
+	TEST_NEURAL_NETWROK_REJECTED,
+	FETCH_MODELS_LOGS_REJECTED,
+	FETCH_MODELS_LOGS_FULFILLED
 } from "../../constants/n2sky/n2sky-constants"
 
 export function modelsByDescId(state =
@@ -80,6 +82,33 @@ export function trainedModel(state =
 				...state,
 				done: true,
 				model: action.payload
+			}
+		}
+		default: {
+			return {...state}
+		}
+	}
+}
+
+export function modelLogs(state =
+																 {
+																	 logs: null,
+																	 done: false
+																 }
+	, action) {
+	switch (action.type) {
+		case FETCH_MODELS_LOGS_REJECTED: {
+			return {
+				...state,
+				error: action.payload,
+				done: false
+			}
+		}
+		case FETCH_MODELS_LOGS_FULFILLED: {
+			return {
+				...state,
+				done: true,
+				logs: action.payload
 			}
 		}
 		default: {

@@ -6,7 +6,8 @@ import style from './style.scss'
 
 @connect((store) => {
 	return {
-		neutron: store.openstackNeutron
+		neutron: store.openstackNeutron,
+		browser: store.browser
 	}
 })
 export default class NeutronDashboard extends React.Component {
@@ -80,19 +81,27 @@ export default class NeutronDashboard extends React.Component {
 		</div>
 	}
 	render() {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		} else {
+			style = "pure-u-1-3";
+		}
 		return (
 			<div>
-				<div className="container-panel pure-u-1-3">
+				<div className={`container-panel ${style}`}>
 					<div className="container-nn">
 					{this.props.neutron.networks.networks ? this.getNetworks("Openstack Networks") : <Loader/>}
 					</div>
 				</div>
-				<div className="container-panel pure-u-1-3">
+				<div className={`container-panel ${style}`}>
 					<div className="container-nn">
 					{this.props.neutron.subnetpools.subnetpools ? this.getSubnetPools("Openstack Subnet Pools") : <Loader/>}
 					</div>
 				</div>
-				<div className="container-panel pure-u-1-3">
+				<div className={`container-panel ${style}`}>
 					<div className="container-nn">
 					{this.props.neutron.service_providers.service_providers ? this.getServiceProviders("Openstack Service Providers") : <Loader/>}
 					</div>

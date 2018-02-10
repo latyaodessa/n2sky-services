@@ -7,7 +7,8 @@ import DownloadIcon from '../../../../../res/img/icons/download.svg'
 
 @connect((store) => {
 	return {
-		openstackImages: store.openstackImages
+		openstackImages: store.openstackImages,
+		browser: store.browser
 	}
 })
 export default class ImagesDashboard extends React.Component {
@@ -19,8 +20,16 @@ export default class ImagesDashboard extends React.Component {
 
 
 	getImages() {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		} else {
+			style = "pure-u-1-3";
+		}
 		return this.props.openstackImages.images.images.map(img => {
-			return <div key={img.id} className="container-panel pure-u-1-3">
+			return <div key={img.id} className={`container-panel ${style}`}>
 				<div className="container-nn">
 					<h1>{img.name}</h1>
 					<ul>

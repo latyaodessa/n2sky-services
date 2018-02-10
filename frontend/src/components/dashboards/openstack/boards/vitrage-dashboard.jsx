@@ -11,7 +11,8 @@ import style from './style.scss'
 
 @connect((store) => {
 	return {
-		vitrage: store.openstackVitrage
+		vitrage: store.openstackVitrage,
+		browser: store.browser
 	}
 })
 export default class VitrageDashboard extends React.Component {
@@ -76,15 +77,23 @@ export default class VitrageDashboard extends React.Component {
 
 
 	render() {
+		let style = "pure-u-1-2";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		} else {
+			style = "pure-u-1-2";
+		}
 		return (
 			<div>
 				{console.log(this.props)}
-				<div className="container-panel pure-u-1-2">
+				<div className={`container-panel ${style}`}>
 					<div className="container-nn">
 						{this.props.vitrage.templates ? this.getTemplates("Openstack Templates") : <Loader/>}
 					</div>
 				</div>
-				<div className="container-panel pure-u-1-2">
+				<div className={`container-panel ${style}`}>
 					<div className="container-nn">
 						{this.props.vitrage.recources ? this.getRecources("Openstack Resources") : <Loader/>}
 					</div>

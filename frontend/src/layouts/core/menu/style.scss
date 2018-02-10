@@ -1,3 +1,12 @@
+$white: #FFF;
+$brown:#b38f83;
+$color-black: #000;
+$color-red: #C62828;
+$color-dark-grey: #4e4d4d;
+$color-white-grey: #fbfbfb;
+
+$font-main: 'Noto Sans', sans-serif;
+
 .pen-title {
   position: absolute;
   top: 50%;
@@ -196,3 +205,100 @@
 .navmenu ul.thumbs-list li:hover {
   opacity: .8;
 }
+
+
+
+
+/// mobile
+
+
+.menu-expanded {
+  position: fixed;
+  transition: all .25s;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.85);
+  ul {
+    padding: 0;
+    list-style-type: none;
+    transition: all 0s;
+    position: relative;
+    left: 0;
+    z-index: 2;
+  }
+  a {
+    transition: all .15s;
+    text-decoration: none;
+    font-size: 2em;
+    padding: 5px;
+    color: $white;
+    display: block;
+    &:hover {
+      background-color: rgba($white, .8);
+      transition: all .15s;
+      letter-spacing: 2px;
+      color: #333;
+      border: 1px solid rgba(255, 255, 255, .15);
+    }
+  }
+}
+
+.hamburger {
+  background-color: transparent;
+  border: 0px;
+  outline: 0px;
+  width: 50px;
+  height: 50px;
+  height: auto;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  z-index: 9999;
+  .burger {
+    transition: all 0.3s;
+    border-radius: 5px;
+    height: 5px;
+    width: 100%;
+    display: inline-block;
+    background-color: $color-dark-grey;
+  }
+}
+
+.focus {
+  .burger {
+    transition: all 0.3s;
+    &:first-of-type {
+      background-color: $color-red;
+      transition-delay: 0.4s;
+      transform: translate3d(0px, 15px, 0px) rotateZ(45deg);
+      width: 40px;
+      transform-origin: left top;
+    }
+    &:nth-of-type(2) {
+      opacity: 0;
+    }
+    &:last-of-type {
+      background-color: $color-red;
+      transition-delay: 0.4s;
+      transform: translate3d(0px, 0px, 0px) rotateZ(-45deg);
+      width: 40px;
+      transform-origin: left bottom;
+    }
+  }
+}
+
+.b-a-expanded {
+  transition: all .25s;
+  top: -0px;
+}
+
+
+
+

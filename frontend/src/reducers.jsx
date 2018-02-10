@@ -1,4 +1,7 @@
 import {combineReducers} from "redux"
+import {responsiveStateReducer} from 'redux-responsive'
+
+
 import openstackProjectsReducer from './reducers/dashboard/openstack/openstack-projects-reducer'
 import openstackProjectByIdReducer from './reducers/dashboard/openstack/openstack-prokect-by-id-reducer'
 import flavor from './reducers/dashboard/openstack/flavor-reducer'
@@ -15,6 +18,8 @@ import openstackVitrage from './reducers/dashboard/openstack/openstack-templates
 
 import login from './reducers/administration/login-reducer'
 import reg from './reducers/administration/reg-reducer'
+import window from './reducers/administration/window-reducer'
+
 import {getUserByIdentity} from './reducers/administration/user-reducer'
 
 
@@ -23,11 +28,12 @@ import dockerHub from './reducers/n2sky/dockerhub-user-reducer'
 
 import {getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl} from './reducers/n2sky/description-reducer'
 import {getAlerts} from './reducers/alert/alerts-reducer'
-import {modelsByDescId, modelById, trainedModel} from './reducers/n2sky/models-reducer'
+import {modelsByDescId, modelById, trainedModel, modelLogs} from './reducers/n2sky/models-reducer'
 import {vinnslCreate} from './reducers/n2sky/vinnsl-redicers'
 import {projectCreate, projects} from './reducers/n2sky/project-reducers'
 
 export default combineReducers({
+	browser: responsiveStateReducer,
 	openstackProjectsReducer,
 	openstackProjectByIdReducer,
 	flavor,
@@ -41,12 +47,12 @@ export default combineReducers({
 	openstackNeutron,
 	openstackImages,
 	openstackVitrage,
-	login, reg, getUserByIdentity,
+	login, reg, getUserByIdentity, window,
 	neuralNetwork,
 	dockerHub,
 	getDescriptionsReducer, descriptionById, savedDescriptionsByUser, vinnsl,
 	getAlerts,
-	modelsByDescId, modelById, trainedModel,
+	modelsByDescId, modelById, trainedModel, modelLogs,
 	vinnslCreate,
 	projectCreate, projects
 });

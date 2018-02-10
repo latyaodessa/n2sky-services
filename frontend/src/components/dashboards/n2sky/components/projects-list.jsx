@@ -8,7 +8,8 @@ import {Link} from 'react-router';
 
 @connect((store) => {
 	return {
-		projects: store.projects.projects
+		projects: store.projects.projects,
+		browser: store.browser
 	}
 })
 export default class ProjectsList extends React.Component {
@@ -31,7 +32,15 @@ export default class ProjectsList extends React.Component {
 	}
 
 	getFolder = (name, id) => {
-		return <div key={id} className="pure-u-1-4">
+		let style = "pure-u-1-4";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-2";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-3";
+		} else {
+			style = "pure-u-1-4";
+		}
+		return <div key={id} className={style}>
 			<Link to={'/n2sky/project/' + id}>
 				<span className="folder"/>
 				<span className="projectLabel paradigm-fixed-labels"><h1>{name}</h1></span>

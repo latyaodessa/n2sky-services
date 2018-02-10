@@ -101,47 +101,70 @@ export const SCHEMA = {
 				"isConnected": null,
 				"connections": [{
 					"from": null,
-					"to": null
+					"to": null,
+					"isFullConnected": null
 				}]
 			}
 		}
 	},
 	"parameters": {
-		"input": [{
-			"parameter": "learningrate",
-			"defaultValue": 0.4,
-			"possibleValues": ["0.1", "0.2", "0.3", "0.4"]
-		},
+		"input": [
 			{
-				"parameter": "biaInput",
-				"defaultValue": 1,
-				"possibleValues": []
+				"parameter": "learningrate",
+				"defaultValue": "0.01",
+				"possibleValues": [
+					"0.1",
+					"0.2",
+					"0.3",
+					"0.4"
+				]
+			},
+			{
+				"parameter": "biasInput",
+				"defaultValue": "1",
+				"possibleValues": ["1","2","3"]
 			},
 			{
 				"parameter": "biasHidden",
-				"defaultValue": 1,
-				"possibleValues": []
+				"defaultValue": "1",
+				"possibleValues": ["1","2","3"]
 			},
 			{
 				"parameter": "momentum",
-				"defaultValue": 0.1,
-				"possibleValues": []
+				"defaultValue": "0.9",
+				"possibleValues": ["0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"]
 			},
 			{
 				"parameter": "activationFunction",
-				"defaultValue": 0.1,
-				"possibleValues": []
+				"defaultValue": "sigmoid",
+				"possibleValues": ["sigmoid", "relu", "softmax"]
+			},
+			{
+				"parameter": "activationFunctionHidden",
+				"defaultValue": "relu",
+				"possibleValues": ["sigmoid", "relu"]
 			},
 			{
 				"parameter": "threshold",
-				"defaultValue": 0.000001,
+				"defaultValue": "0.000001",
+				"possibleValues": ["0.00001","0.000001"]
+			},
+			{
+				"parameter": "target_data",
+				"defaultValue": "[0],[1],[1],[0]",
+				"possibleValues": []
+			},
+			{
+				"parameter": "epoche",
+				"defaultValue": "100",
 				"possibleValues": []
 			}
-		]
+		],
+		"output": "[[0,0],[0,1],[1,0],[1,1]]"
 	},
-	data: {
-		description: "CSV, comma separated",
-		tableDescription: ",",
-		fileDescription: "CSV"
+	"data": {
+		"description": "[X] for each output",
+		"tableDescription": "[X],[X]",
+		"fileDescription": "TXT"
 	}
 };

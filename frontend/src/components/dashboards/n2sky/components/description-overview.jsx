@@ -20,7 +20,8 @@ const offsetSize = 3;
 @connect((store) => {
 	return {
 		descriptions: store.getDescriptionsReducer.descriptions,
-		done: store.getDescriptionsReducer.done
+		done: store.getDescriptionsReducer.done,
+		browser: store.browser
 	}
 })
 export default class DescriptionsOverview extends React.Component {
@@ -89,32 +90,14 @@ export default class DescriptionsOverview extends React.Component {
 
 
 	getDescription = () => {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			 style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		}
 		return this.props.descriptions.map(d => {
-			console.log(d);
-			// return <div onClick={this.getDescriptionIds.bind(this, d._id)} key={d._id}
-			// 						className="container-panel pure-u-1-3">
-			// 	<div className="container-nn">
-			// 		<div className="container-header-panel">
-			// 			<img className="header-panel-icon" src={d.isPublic ? UnlockedIcon : LockedIcon}/>
-			// 			<h1>{d.name}</h1>
-			// 			{this.getRunningStatus(d.isRunning)}
-			// 		</div>
-			// 		<ul>
-			// 			<li>Owner: {d.createdBy}</li>
-			// 			<li>Created On: {d.createdOn}</li>
-			// 			<li>Domain: {d.domain}</li>
-			// 			<li>Input Dimentions: {d.inputDimensions}</li>
-			// 			<li>Input Type: {d.inputType}</li>
-			// 		</ul>
-			// 		<Link to={"/n2sky/network/" + d._id} className="button" role="button">
-			// 			<span>Details and actions</span>
-			// 			<div className="icon">
-			// 				<img src={Enter}/>
-			// 			</div>
-			// 		</Link>
-			// 	</div>
-			// </div>
-			return <div key={d._id} className="container-panel pure-u-1-3">
+			return <div key={d._id} className={`container-panel ${style}`}>
 				<div className="container-nn">
 					<div className="container-header-panel">
 						<img className="header-panel-icon" src={d.executionEnvironment.isPublic ? UnlockedIcon : LockedIcon}/>
@@ -162,6 +145,7 @@ export default class DescriptionsOverview extends React.Component {
 
 
 	render() {
+		console.log(this.props.browser);
 		return (
 			<div>
 				{this.props.done && this.props.descriptions.length === 0 ? this.getNoOwnNN() :

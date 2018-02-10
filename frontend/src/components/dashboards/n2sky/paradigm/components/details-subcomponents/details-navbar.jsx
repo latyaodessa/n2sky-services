@@ -10,7 +10,9 @@ import PublicIcon from './../../../../../../../res/img/icons/unlocked.svg'
 import RunInstancePopup from './run-instance-popup'
 
 @connect((store) => {
-	return {}
+	return {
+		browser: store.browser
+	}
 })
 export default class DetailsNavbar extends React.Component {
 
@@ -38,10 +40,15 @@ export default class DetailsNavbar extends React.Component {
 
 
 	getIsRunningNavBarStatus = () => {
+		let style = {};
+		if (this.props.browser.is.extraSmall) {
+			style = {width: window.innerWidth};
+		}
 		return <li className="left-float">
 			<div className="standard-nav-item">
 				{this.props.descriptionById.executionEnvironment.isRunning ?
-					<span onClick={this.stopInstance.bind(this)} style={{backgroundColor: "#6b0202"}} className="button"
+					<span onClick={this.stopInstance.bind(this)} style={Object.assign({backgroundColor: "#6b0202"}, style)}
+								className="button"
 								role="button">
 						<span>STOP INSTANCE</span>
 						<div className="icon">
@@ -49,7 +56,8 @@ export default class DetailsNavbar extends React.Component {
 						</div>
 					</span>
 					:
-					<span onClick={this.showCloseModal.bind(this)} style={{backgroundColor: "#3d887a"}} className="button"
+					<span onClick={this.showCloseModal.bind(this)} style={Object.assign({backgroundColor: "#3d887a"}, style)}
+								className="button"
 								role="button">
 						<span>RUN INSTANCE</span>
 						<div className="icon">
@@ -62,17 +70,21 @@ export default class DetailsNavbar extends React.Component {
 	};
 
 	getIsPublishNavBarStatus = () => {
+		let style = {};
+		// if (this.props.browser.is.extraSmall) {
+		// 	style = {width: window.innerWidth};
+		// }
 		return <li className="right-float">
 			<div className="standard-nav-item">
-				{this.props.descriptionById.executionEnvironment.isPublic?
-					<span onClick={this.changePublishStatus.bind(this)} className="button" role="button">
+				{this.props.descriptionById.executionEnvironment.isPublic ?
+					<span onClick={this.changePublishStatus.bind(this)} style={style} className="button" role="button">
 						<span>Make Private</span>
 						<div className="icon">
 							<img src={PrivateIcon}/>
 						</div>
 					</span>
 					:
-					<span onClick={this.changePublishStatus.bind(this)} className="button" role="button">
+					<span onClick={this.changePublishStatus.bind(this)} style={style} className="button" role="button">
 						<span>Publish</span>
 						<div className="icon">
 							<img src={PublicIcon}/>
@@ -98,7 +110,8 @@ export default class DetailsNavbar extends React.Component {
 				{this.props.descriptionById.creator.name === localStorage.getItem('user') ? this.getIsRunningNavBarStatus() : null}
 				<li>
 					<span className="no-action">
-						{this.props.descriptionById.metadata.name} / {this.props.descriptionById.executionEnvironment.isRunning ? "Running" : "Stopped"}
+						{this.props.descriptionById.metadata.name}
+						/ {this.props.descriptionById.executionEnvironment.isRunning ? "Running" : "Stopped"}
 						/ {this.props.descriptionById.executionEnvironment.isPublic ? "Published" : "Private"}
 				</span>
 				</li>

@@ -29,7 +29,9 @@ const WAIT_INTERVAL = 1000;
 	return {
 		descriptions: store.getDescriptionsReducer.descriptions,
 		done: store.getDescriptionsReducer.done,
-		projects: store.projects.projects
+		projects: store.projects.projects,
+		browser: store.browser
+
 	}
 })
 export default class AvailableNetworksOverview extends React.Component {
@@ -138,8 +140,16 @@ export default class AvailableNetworksOverview extends React.Component {
 	};
 
 	getDescription = () => {
+		let style = "pure-u-1-3";
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = "pure-u-1-1";
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-2";
+		} else {
+			style = "pure-u-1-3";
+		}
 		return this.props.descriptions.map(d => {
-			return <div key={d._id} className="container-panel pure-u-1-3">
+			return <div key={d._id} className={`${style} container-panel`}>
 				<div className="container-nn">
 					<div className="container-header-panel">
 						{this.getSaveButton(d)}
@@ -206,13 +216,21 @@ export default class AvailableNetworksOverview extends React.Component {
 	};
 
 	getTableFilter = () => {
+		let style = {};
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = {width: '90%'};
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		} else {
+			style = {};
+		}
 		return <div className="table-filter">
 			<form className="pure-form">
 				<fieldset>
-					<input onChange={this.handleChange} name="name" type="text" placeholder="Name"/>
-					<input onChange={this.handleChange} name="domain" type="text" placeholder="Domain"/>
+					<input onChange={this.handleChange} style={style} name="name" type="text" placeholder="Name"/>
+					<input onChange={this.handleChange} style={style} name="domain" type="text" placeholder="Domain"/>
 					{/*<input onChange={this.handleChange} name="inputDimensions" type="text" placeholder="Input Dimensions"/>*/}
-					<input onChange={this.handleChange} name="description" type="text" placeholder="Description"/>
+					<input onChange={this.handleChange} style={style} name="description" type="text" placeholder="Description"/>
 				</fieldset>
 			</form>
 		</div>

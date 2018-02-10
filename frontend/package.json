@@ -34,6 +34,7 @@
     "react-moment": "^0.6.5",
     "react-shapes": "^0.1.0",
     "react-timeseries-charts": "^0.12.8",
+    "redux-responsive": "^4.3.5",
     "rickshaw": "^1.6.3",
     "sass-loader": "^6.0.2"
   },

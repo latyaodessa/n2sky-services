@@ -30,6 +30,9 @@
   width: 100%;
   padding: 0;
   transition: background 400ms; }
+  .head-nav li p {
+    font-size: 18px;
+    padding-left: 15px; }
   .head-nav li a, .head-nav li .sidebar-link {
     cursor: pointer;
     display: flex;

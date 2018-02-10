@@ -21,8 +21,7 @@ const label_all_networks = "All Networks";
 @connect((store) => {
 	return {
 		savedDescriptionsByUser: store.savedDescriptionsByUser,
-		modelsByDescId: store.modelsByDescId.models
-	}
+		modelsByDescId: store.modelsByDescId.models}
 })
 export default class N2SkyDashboard extends React.Component {
 

@@ -9,23 +9,26 @@ const WAIT_INTERVAL = 1000;
 
 @connect((store) => {
 	return {
-		modelsByDescId: store.modelsByDescId.models
+		modelsByDescId: store.modelsByDescId.models,
+		browser: store.browser
+
 	}
 })
 export default class DetailsModelsTable extends React.Component {
 
 
-	state = {
-		name: null,
-		trainedBy: null,
-		accuracy: null,
-		isCopy: false,
-		showAll: false
-	};
+
 
 	constructor(props) {
 		super(props);
-		this.getModelsByDescId()
+		this.state = {
+			name: null,
+			trainedBy: null,
+			accuracy: null,
+			isCopy: false,
+			showAll: false
+		};
+		this.getModelsByDescId();
 		this.handleChange = ::this.handleChange;
 	}
 
@@ -61,16 +64,17 @@ export default class DetailsModelsTable extends React.Component {
 				name: this.state.name,
 				trainedBy: this.state.trainedBy,
 				accuracy: this.state.accuracy,
-				isCopy: this.state.isCopy
+				isCopy: this.state.isCopy,
+				vinnslDescriptionId: this.props.descripIds
 			};
 
 			let reqParams = {
 				static_filters: static_filters,
-				vinnslDescriptionId: this.props.descripIds,
 				filters: filters
 			};
 			res(reqParams);
 		}).then(reqParams => {
+			console.log(this.props);
 			this.props.dispatch(getModels(reqParams, 0, 999)).then(() => {
 				console.log(this.props);
 			});
@@ -115,12 +119,18 @@ export default class DetailsModelsTable extends React.Component {
 
 
 	getTableFilter = () => {
+		let style = {};
+		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+			style = {width: '90%'};
+		} else if (this.props.browser.is.medium || this.props.browser.large) {
+			style = "pure-u-1-1";
+		}
 		return <div className="table-filter">
 			<form className="pure-form">
 				<fieldset>
-					<input onChange={this.handleChange} name="name" type="text" placeholder="Model Name"/>
-					<input onChange={this.handleChange} name="trainedBy" type="text" placeholder="Trained By"/>
-					<input onChange={this.handleChange} name="accuracy" type="text" placeholder="Accuracy"/>
+					<input onChange={this.handleChange} style={style} name="name" type="text" placeholder="Model Name"/>
+					<input onChange={this.handleChange} style={style} name="trainedBy" type="text" placeholder="Trained By"/>
+					<input onChange={this.handleChange} style={style} name="accuracy" type="text" placeholder="Accuracy"/>
 					<label>
 						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Only Copy
 					</label>

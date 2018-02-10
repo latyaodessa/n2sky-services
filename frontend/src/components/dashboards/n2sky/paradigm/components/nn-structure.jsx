@@ -41,8 +41,6 @@ export default class NNStructure extends React.Component {
 
 	componentWillMount() {
 		if (this.props.description) {
-			console.log(this.state);
-			console.log(this.props);
 			this.setReadData();
 		}
 
@@ -86,7 +84,6 @@ export default class NNStructure extends React.Component {
 			resolve(this.state);
 		}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}
 		);
 
@@ -94,13 +91,16 @@ export default class NNStructure extends React.Component {
 	}
 
 	rerenderLayouts() {
-		let nodes = [];
-		nodes.push(...this.state.input);
-		nodes.push(...this.state.output);
-		this.state.hidden.map(dim => {
-			nodes.push(...dim.nodes);
-		});
-		this.setState({elements: {nodes: nodes, edges: this.state.edges}});
+		return new Promise(resolve => {
+			console.log("rerender");
+			let nodes = [];
+			nodes.push(...this.state.input);
+			nodes.push(...this.state.output);
+			this.state.hidden.map(dim => {
+				nodes.push(...dim.nodes);
+			});
+			this.setState({elements: {nodes: nodes, edges: this.state.edges}}, () => resolve(this.state));
+		})
 
 	}
 
@@ -120,8 +120,6 @@ export default class NNStructure extends React.Component {
 
 			array.push(dem)
 		}
-
-		console.log(array);
 
 		this.setState({hidden: array});
 
@@ -149,7 +147,6 @@ export default class NNStructure extends React.Component {
 			resolve(this.state);
 		}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}
 		);
 	}
@@ -188,15 +185,14 @@ export default class NNStructure extends React.Component {
 	};
 
 	removeAllEdges = (edgeNodeId) => {
-		console.log(edgeNodeId);
 		return new Promise((resolve, reject) => {
+			console.log("remove");
 			let edges = this.state.edges.filter(edge => edge.data.source !== edgeNodeId);
-			this.setState({edges: edges})
-			resolve(this.state);
-		}).then(r => {
-			this.rerenderLayouts();
-			console.log(this.state)
+			this.setState({edges: edges}, () => resolve(this.state))
 		})
+		// .then(r => {
+		// this.rerenderLayouts();
+		// })
 	};
 
 	execFullyConnected() {
@@ -255,7 +251,6 @@ export default class NNStructure extends React.Component {
 			resolve(this.state);
 		}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}
 		).then(r => {
 			this.setState({
@@ -414,7 +409,13 @@ export default class NNStructure extends React.Component {
 			</div>
 			<div className="pure-u-1-2 grid-table">
 				<a onClick={this.executeAddShortCut.bind(this)} className="button" role="button">
-					<span>Add shortcut</span>
+					<span>Add and replace with shortcut</span>
+					<div className="icon">
+						<img src={AddShortcutIcon}/>
+					</div>
+				</a>
+				<a onClick={this.executeAddOnlyShortcut.bind(this)} className="button" role="button">
+					<span>Add only shortcut</span>
 					<div className="icon">
 						<img src={AddShortcutIcon}/>
 					</div>
@@ -424,52 +425,113 @@ export default class NNStructure extends React.Component {
 	};
 
 	handleShortcutsInput(event) {
-		console.log(event.target.value);
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	executeAddShortCut = () => {
+	async executeAddOnlyShortcut() {
+
 		if (this.state.selectedInput && this.state.selectedShortcut) {
-			this.removeAllEdges(this.state.selectedInput).then(r => {
 
-				let toBlockNodes = [];
+			await this.addProcess();
+			await this.rerenderLayouts();
+			await this.setShortCutState(true);
 
-				if (this.state.selectedShortcut === 'output') {
-					toBlockNodes = this.state.output;
-				} else {
-					toBlockNodes = this.state.hidden.filter(h => h.id === this.state.selectedShortcut)[0].nodes;
-				}
-
-				console.log(toBlockNodes);
-
-
-				let edges = this.state.edges;
-
-				console.log(this.state.selectedInput.match(/\d+/g).map(Number));
-				console.log(this.state.selectedInput);
-
-				let edgeStyle = this.state.input.length / 2 > this.state.selectedInput.match(/\d+/g).map(Number)[0] ? "unbundled-bezier-up" : "unbundled-bezier-down";
-
-				toBlockNodes.map(toNode => {
-					edges.push({
-						data: {
-							id: this.state.selectedInput + toNode.data.id,
-							source: this.state.selectedInput,
-							target: toNode.data.id
-						},
-						classes: edgeStyle
-					})
-				});
-
-			}).then(r => {
-				this.rerenderLayouts();
-			}).then(r => {
-				let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
-				shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut});
-				this.setState({shortcuts: shortcuts})
-			})
+			// return Promise.all([this.addProcess(), this.rerenderLayouts(), this.setShortCutState(true)])
+			// console.log("aaa");
+			// return this.addProcess().then(r => {
+			// 	this.rerenderLayouts();
+			// }).then(r => {
+			// 	console.log("bbb");
+			// 	let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
+			// 	shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut, isFullConnected: true});
+			// 	this.setState({shortcuts: shortcuts})
+			// });
 		}
 	};
+
+	async executeAddShortCut() {
+		if (this.state.selectedInput && this.state.selectedShortcut) {
+
+			await this.removeAllEdges(this.state.selectedInput);
+			await this.rerenderLayouts();
+			await this.addProcess();
+			await this.rerenderLayouts();
+			await this.setShortCutState(false);
+
+
+			// await Promise.all([this.removeAllEdges(this.state.selectedInput), this.rerenderLayouts(), this.addProcess(), this.rerenderLayouts(), this.setShortCutState(false)]);
+			// return this.removeAllEdges(this.state.selectedInput).then(r => {
+			// 	this.addProcess();
+			// }).then(r => {
+			// 	this.rerenderLayouts();
+			// }).then(r => {
+			// 	let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
+			// 	shortcuts.push({from: this.state.selectedInput, to: this.state.selectedShortcut, isFullConnected: false});
+			// 	this.setState({shortcuts: shortcuts})
+			// })
+		}
+	};
+
+
+	setShortCutState = (isFullConnected) => {
+		return new Promise(resolve => {
+			console.log("shortcut state");
+			let shortcuts = this.state.shortcuts.filter(sc => sc.from !== this.state.selectedInput);
+			shortcuts.push({
+				from: this.state.selectedInput,
+				to: this.state.selectedShortcut,
+				isFullConnected: isFullConnected
+			});
+			this.setState({shortcuts: shortcuts}, () => {
+				resolve(this.state);
+			});
+		})
+	};
+
+	addProcess () {
+		return new Promise(resolve => {
+			console.log("process");
+			console.log(this.state);
+
+			let toBlockNodes = [];
+
+			if (this.state.selectedShortcut === 'output') {
+				toBlockNodes = this.state.output;
+			} else {
+				toBlockNodes = this.state.hidden.filter(h => h.id === this.state.selectedShortcut)[0].nodes;
+			}
+
+
+			let edges = this.state.edges;
+
+			// console.log(this.state.selectedInput.match(/\d+/g).map(Number));
+			// console.log(this.state.selectedInput);
+
+			let edgeStyle = this.state.input.length / 2 > this.state.selectedInput.match(/\d+/g).map(Number)[0] ? "unbundled-bezier-up" : "unbundled-bezier-down";
+
+
+			toBlockNodes.map(async toNode => {
+				console.log(toNode);
+				edges.push({
+					data: {
+						id: this.state.selectedInput + toNode.data.id,
+						source: this.state.selectedInput,
+						target: toNode.data.id
+					},
+					classes: edgeStyle
+				})
+			});
+
+			this.setState({edges: edges}, () => {
+				console.log("from map");
+				resolve(this.state)
+			});
+
+
+
+		})
+	};
+
 
 	changeShortcut() {
 		this.setState({isShortcut: !this.state.isShortcut})
@@ -492,12 +554,10 @@ export default class NNStructure extends React.Component {
 
 
 		return new Promise((resolve, reject) => {
-			console.log(type);
 			this.setState({[type]: array});
 			resolve(this.state);
 		}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}
 		);
 	};
@@ -508,7 +568,7 @@ export default class NNStructure extends React.Component {
 		let array = [];
 		for (let i = 1; i <= this.props.description.structure.hiddenLayer.length; i++) {
 			let nodes = [];
-			console.log(this.props.description.structure.hiddenLayer[i - 1].nodesId);
+			// console.log(this.props.description.structure.hiddenLayer[i - 1].nodesId);
 			for (let k = 1; k <= this.props.description.structure.hiddenLayer[i - 1].nodesId.length; k++) {
 				let id = k + "-node-" + this.props.description.structure.hiddenLayer[i - 1].id;
 				nodes.push({data: {id: id}, position: {x: layoutPosition + i * 100, y: initYPost + k * 20}});
@@ -532,17 +592,31 @@ export default class NNStructure extends React.Component {
 			resolve(this.state);
 		}).then(r => {
 				this.rerenderLayouts();
-				console.log(this.state)
 			}
 		).then(r => this.execFullyConnected())
 			.then(r => {
-				this.props.description.connections.shortcuts.connections.map(c => {
-					new Promise((r, rej)=> {
-						this.setState({selectedInput : c.from, selectedShortcut: c.to});
-						r(this.state);
-					}).then(r => {
-						this.executeAddShortCut();
-					})
+				this.props.description.connections.shortcuts.connections.map(async (c) => {
+					console.log(c);
+
+					await new Promise(resolve => {
+						this.setState({selectedInput: c.from, selectedShortcut: c.to}, () => {
+							resolve(this.state)
+						})
+					});
+
+					if (c.isFullConnected) {
+						await this.addProcess();
+						await this.rerenderLayouts();
+						await this.setShortCutState(true);
+
+					} else {
+						await this.removeAllEdges(this.state.selectedInput);
+						await this.rerenderLayouts();
+						await this.addProcess();
+						await this.rerenderLayouts();
+						await this.setShortCutState(false);
+					}
+
 				})
 
 			});

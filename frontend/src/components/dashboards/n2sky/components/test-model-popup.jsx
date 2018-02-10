@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Loader from './../../../core/loader/loader'
 import AbstractAlertPopUp from './../../../core/popup/abstract-alert-popup'
 import OpenStackMonitoringModal from './../../../../components/dashboards/core/modal/openstack-new-dashlet-modal'
-import {test} from './../../../../actions/n2sky/neural-network-actions'
+import {test} from './../../../../actions/n2sky/vinnsl_models_actions'
 import TestIcong from './../../../../../res/img/icons/coding.svg'
 
 
@@ -19,13 +19,14 @@ export default class TestModelPopup extends React.Component {
 
 		this.state = {
 			showCreateOpenstackDashlet: false,
-			testing_data: null
+			testing_data: ""
 		};
 
 		console.log(this.props);
 
 		this.handleReqChange = ::this.handleReqChange;
 		this.submitForm = ::this.submitForm;
+		this.handleClick = ::this.handleClick;
 	}
 
 
@@ -62,7 +63,7 @@ export default class TestModelPopup extends React.Component {
 		return new Promise((resolve, reject) => {
 
 			let request = {
-				modelId: this.props.modelId,
+				modelId: this.props.modelsByDescId._id,
 				testing_data: this.state.testing_data,
 				user: localStorage.getItem("user")
 			};
@@ -79,8 +80,12 @@ export default class TestModelPopup extends React.Component {
 					<h1>Model: {this.props.modelName}</h1>
 				</div>
 				<fieldset className="pure-group">
+
 					<input type="text" name="testing_data" onChange={this.handleReqChange} className="pure-input-1-1 full-width"
-								 placeholder="Testing Data"/>
+								 placeholder="Testing Data" value={this.state.testing_data}/>
+					<label>
+						<input onClick={this.handleClick} type="checkbox"/>Use Default Evaluation Data
+					</label>
 				</fieldset>
 				<a onClick={this.submitForm} className="button" role="button">
 					<span>Perform Testing</span>
@@ -92,6 +97,14 @@ export default class TestModelPopup extends React.Component {
 			</form>
 		);
 	};
+
+	handleClick(event) {
+		if (event.target.checked) {
+			this.setState({testing_data: this.props.modelsByDescId.training_data})
+		} else {
+			this.setState({testing_data: null})
+		}
+	}
 
 
 	render() {
