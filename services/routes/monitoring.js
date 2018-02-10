@@ -4,7 +4,7 @@ module.exports = function (router) {
         request = require('request');
 
     // const PROD_HOST = "131.130.37.20";
-    const PROD_HOST = "192.168.0.79";
+    const PROD_HOST = "192.168.0.105";
 
 
     router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {
