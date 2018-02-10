@@ -28,7 +28,7 @@ export default class DashboardsOverview extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), 'overview'));
+		this.props.dispatch(getOpenStackUserConfigData(localStorage.getItem("user"), 'overview')).then(() => console.log(this.props));
 	}
 
 

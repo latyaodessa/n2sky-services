@@ -7,7 +7,7 @@ module.exports = function (router) {
 
     let Dashboard = require('./../models/Dashboard');
 
-    const PROD_HOST = "192.168.0.79";
+    const OPENSTACK_HOST = "192.168.0.105";
 
 
     mongoose.connect(config.database);
@@ -43,7 +43,7 @@ module.exports = function (router) {
             delaytype: req.body.delaytype,
             step: req.body.step,
             steptype: req.body.steptype,
-            server: req.body.server === "openstack" ? PROD_HOST : req.body.server,
+            server: req.body.server === "openstack" ? OPENSTACK_HOST : req.body.server,
             show: ["all", req.body.show],
             selectedServerId : req.body.selectedServerId,
             selectedServerName : req.body.selectedServerName

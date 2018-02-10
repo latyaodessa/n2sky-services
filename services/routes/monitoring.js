@@ -4,7 +4,7 @@ module.exports = function (router) {
         request = require('request');
 
     // const PROD_HOST = "131.130.37.20";
-    const PROD_HOST = "192.168.0.105";
+    const OPENSTACK_HOST = "192.168.0.105";
 
 
     router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {
@@ -29,7 +29,7 @@ module.exports = function (router) {
     });
 
     router.get('/monitoring/metrics/:host', function (req, res) {
-        let host = req.params.host === "openstack" ? PROD_HOST : req.params.host;
+        let host = req.params.host === "openstack" ? OPENSTACK_HOST : req.params.host;
         let endpoint = "http://" + host + ':9090/api/v1/label/__name__/values'
         let options = {
             url: endpoint,
