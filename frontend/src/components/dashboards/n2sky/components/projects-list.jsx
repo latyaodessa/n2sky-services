@@ -33,7 +33,7 @@ export default class ProjectsList extends React.Component {
 
 	getFolder = (name, id) => {
 		let style = "pure-u-1-4";
-		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+		if (this.props.browser.is.small || this.props.browser.is.extraSmall) {
 			style = "pure-u-1-2";
 		} else if (this.props.browser.is.medium || this.props.browser.large) {
 			style = "pure-u-1-3";
@@ -42,7 +42,9 @@ export default class ProjectsList extends React.Component {
 		}
 		return <div key={id} className={style}>
 			<Link to={'/n2sky/project/' + id}>
-				<span className="folder"/>
+				{/*<span className="folder"/>*/}
+
+				<div className="folder"></div>
 				<span className="projectLabel paradigm-fixed-labels"><h1>{name}</h1></span>
 			</Link>
 		</div>
