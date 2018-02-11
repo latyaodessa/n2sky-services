@@ -17,8 +17,6 @@ const WAIT_INTERVAL = 1000;
 export default class DetailsModelsTable extends React.Component {
 
 
-
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -26,10 +24,12 @@ export default class DetailsModelsTable extends React.Component {
 			trainedBy: null,
 			accuracy: null,
 			isCopy: false,
+			isTrainingDone: false,
 			showAll: false
 		};
 		this.getModelsByDescId();
 		this.handleChange = ::this.handleChange;
+		this.handleClick = ::this.handleClick;
 	}
 
 	handleChange(event) {
@@ -40,9 +40,16 @@ export default class DetailsModelsTable extends React.Component {
 		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
 	}
 
-	handleClick() {
+	handleClick(event) {
 		clearTimeout(this.timer);
-		this.setState({isCopy: !this.state.isCopy});
+		if (event.target.name === 'isCopy') {
+			this.setState({isCopy: !this.state.isCopy});
+		}
+
+		if (event.target.name === 'isTrainingDone') {
+			this.setState({isTrainingDone: !this.state.isTrainingDone});
+		}
+
 		this.timer = setTimeout(::this.getModelsByDescId, WAIT_INTERVAL);
 
 	}
@@ -52,20 +59,21 @@ export default class DetailsModelsTable extends React.Component {
 
 		new Promise((res, rej) => {
 
-
+			console.log(this.state);
 			let static_filters = {};
 
 
 			let filters = {};
-			if(this.props.projectId) {
-				 filters = {
+			if (this.props.projectId) {
+				filters = {
 					name: this.state.name,
 					trainedBy: this.state.trainedBy,
 					accuracy: this.state.accuracy,
 					isCopy: this.state.isCopy,
+					isTrainingDone: this.state.isTrainingDone ? true : null,
 					_id: this.props.projectId
 				};
-			} else if(this.props.descripIds) {
+			} else if (this.props.descripIds) {
 				if (!this.state.showAll) {
 					static_filters.trainedBy = localStorage.getItem("user");
 				}
@@ -74,9 +82,10 @@ export default class DetailsModelsTable extends React.Component {
 					trainedBy: this.state.trainedBy,
 					accuracy: this.state.accuracy,
 					isCopy: this.state.isCopy,
+					isTrainingDone: this.state.isTrainingDone ? true : null,
 					vinnslDescriptionId: this.props.descripIds
 				};
-			} else if(this.props.setModel) {
+			} else if (this.props.setModel) {
 				filters = {
 					name: this.state.name,
 					trainedBy: this.state.trainedBy,
@@ -119,19 +128,20 @@ export default class DetailsModelsTable extends React.Component {
 		</table>
 	};
 
-	setModelListener(m){
-		if(this.props.setModel){
+	setModelListener(m) {
+		if (this.props.setModel) {
 			this.props.setModel(m);
 		}
 	}
+
 	getRow = () => {
 		return this.props.modelsByDescId.map(m => {
-			return <tr onClick={this.setModelListener.bind(this,m)} key={m._id} className="pure-table">
-				<td>{m.trainedOn}</td>
+			return <tr onClick={this.setModelListener.bind(this, m)} key={m._id} className="pure-table">
+				<td>{new Date(m.trainedOn).toUTCString()}</td>
 				<td>{m.trainedBy}</td>
 				<td>{m.tests.length}</td>
 				<td>{m.isCopy ? "Yes" : "No"}</td>
-				<td>{m.isTrainingDone? "Trained" : "Processing"}</td>
+				<td>{m.isTrainingDone ? "Trained" : "Processing"}</td>
 				<td>
 					<Link to={"/n2sky/network/" + m.vinnslDescriptionId + "/test/" + m._id} className="icon-button-container"><img
 						src={TrainIconGrey}/></Link>
@@ -143,7 +153,7 @@ export default class DetailsModelsTable extends React.Component {
 
 	getTableFilter = () => {
 		let style = {};
-		if(this.props.browser.is.small || this.props.browser.is.extraSmall) {
+		if (this.props.browser.is.small || this.props.browser.is.extraSmall) {
 			style = {width: '90%'};
 		} else if (this.props.browser.is.medium || this.props.browser.large) {
 			style = "pure-u-1-1";
@@ -151,12 +161,16 @@ export default class DetailsModelsTable extends React.Component {
 		return <div className="table-filter">
 			<form className="pure-form">
 				<fieldset>
-					<input onChange={this.handleChange} style={style} name="name" type="text" placeholder="Model Name"/>
+					{/*<input onChange={this.handleChange} style={style} name="name" type="text" placeholder="Model Name"/>*/}
 					<input onChange={this.handleChange} style={style} name="trainedBy" type="text" placeholder="Trained By"/>
-					<input onChange={this.handleChange} style={style} name="accuracy" type="text" placeholder="Accuracy"/>
+					{/*<input onChange={this.handleChange} style={style} name="accuracy" type="text" placeholder="Accuracy"/>*/}
 					<label>
-						<input onClick={this.handleClick.bind(this)} type="checkbox"/> Only Copy
+						<input name="isCopy" onClick={this.handleClick} type="checkbox"/> Only Copy
 					</label>
+					{!this.props.setModel ?
+						<label>
+							<input name="isTrainingDone" onClick={this.handleClick} type="checkbox"/> Only Trained
+						</label> : null}
 					{(this.props.descriptionById && this.props.descriptionById.createdBy === localStorage.getItem('user')) || localStorage.getItem('type') === 'admin' ?
 						<label>
 							<input onClick={this.handleShowAllModels.bind(this)} type="checkbox"/> Show others models

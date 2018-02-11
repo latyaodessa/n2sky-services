@@ -91,7 +91,7 @@ export default class NetworkTestDetails extends React.Component {
 				</div>
 				<ul>
 					<li>Trained By: {this.props.modelsByDescId[0].trainedBy}</li>
-					<li>Trained On: {this.props.modelsByDescId[0].trainedOn}</li>
+					<li>Trained On: {new Date(this.props.modelsByDescId[0].trainedOn).toUTCString()}</li>
 					<li>Tests Count: {this.props.modelsByDescId[0].tests.length}</li>
 					<li>Is Copy: {this.props.modelsByDescId[0].isCopy ? "Yes" : "No"}</li>
 					<li>Is training Finished: {this.props.modelsByDescId[0].isTrainingDone ? "Trained" : "Processing"}</li>
@@ -172,7 +172,7 @@ export default class NetworkTestDetails extends React.Component {
 				<td>{m.user}</td>
 				<td>{m.testing_data}</td>
 				<td>{m.result}</td>
-				<td>{m.createdOn}</td>
+				<td>{new Date(m.createdOn).toUTCString()}</td>
 			</tr>
 		})
 	};

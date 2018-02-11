@@ -43,6 +43,8 @@ export default class AvailableNetworksOverview extends React.Component {
 		description: null,
 		isCopyPopUp: false,
 		selectedDescId: null,
+		networktype: null,
+		problemtype: null,
 		projectsId: []
 	};
 
@@ -79,7 +81,8 @@ export default class AvailableNetworksOverview extends React.Component {
 				reqParams.filters = {
 					"metadata.name": this.state.name,
 					"metadata.description": this.state.description,
-					"problemDomain.problemType": this.state.domain,
+					"problemDomain.networkType": this.state.networktype,
+					"problemDomain.problemType":this.state.problemtype
 					// "parameters.input.parameter" : this.state.inputDimensions
 				};
 
@@ -228,9 +231,9 @@ export default class AvailableNetworksOverview extends React.Component {
 			<form className="pure-form">
 				<fieldset>
 					<input onChange={this.handleChange} style={style} name="name" type="text" placeholder="Name"/>
-					<input onChange={this.handleChange} style={style} name="domain" type="text" placeholder="Domain"/>
-					{/*<input onChange={this.handleChange} name="inputDimensions" type="text" placeholder="Input Dimensions"/>*/}
 					<input onChange={this.handleChange} style={style} name="description" type="text" placeholder="Description"/>
+					<input onChange={this.handleChange} style={style} name="networktype" type="text" placeholder="Network Type"/>
+					<input onChange={this.handleChange} style={style} name="problemtype" type="text" placeholder="Problem Type"/>
 				</fieldset>
 			</form>
 		</div>
