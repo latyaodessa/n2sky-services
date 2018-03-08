@@ -1,3 +1,5 @@
+const host = require('./../HOST.json');
+
 module.exports = function (router) {
 
     let usersDir = __dirname + '/../data/users',
@@ -7,7 +9,7 @@ module.exports = function (router) {
 
     let Dashboard = require('./../models/Dashboard');
 
-    const OPENSTACK_HOST = "192.168.0.105";
+    const OPENSTACK_HOST = host.openstack;
 
 
     mongoose.connect(config.database);

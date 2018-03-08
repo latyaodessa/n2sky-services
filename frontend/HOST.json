@@ -1,0 +1,6 @@
+{
+ "openstack" : "http://192.168.0.102:9595/api/",
+ "user_service" : "http://192.168.0.102:9091/",
+ "model_repo" : "http://192.168.0.102:9092/",
+ "backprop_host": "http://192.168.0.102:5000/"
+}

@@ -1,10 +1,12 @@
+const config = require('./../HOST.json');
+
 module.exports = function (router) {
 
     let monitoring = require('./../monitoring/monitoring'),
         request = require('request');
 
     // const PROD_HOST = "131.130.37.20";
-    const OPENSTACK_HOST = "192.168.0.105";
+    const OPENSTACK_HOST = config.openstack;
 
 
     router.get('/monitoring/:server/:query/:minus/:type/:step', function (req, res) {

@@ -10,6 +10,7 @@ import CopyIcon from './../../../../../res/img/icons/copy.svg'
 import TestIcon from './../../../../../res/img/icons/flask_white.svg'
 import TrainingChart from './training-chart'
 import CopyModelToProjectPopup from './copy-model-to-project-popup'
+import host from './../../../../../HOST.json';
 
 @connect((store) => {
 	return {
@@ -35,7 +36,7 @@ export default class NetworkTestDetails extends React.Component {
 				if(this.props.modelsByDescId[0].isTrainingDone) {
 					this.generateChartData(this.props.modelsByDescId[0].logs);
 				} else {
-					this.props.dispatch(getModelLogs("http://192.168.0.102:5000/", this.props.modelsByDescId[0]._id)).then(() => {
+					this.props.dispatch(getModelLogs(host.backprop_host, this.props.modelsByDescId[0]._id)).then(() => {
 						this.generateChartData(this.props.modelLogs.logs);
 					});
 				}
