@@ -24,7 +24,7 @@ export default class ServerDashlet extends React.Component {
 	}
 
 	getIpAdresses() {
-		return this.props.server.addresses.private.map(ip => {
+		return this.props.server.addresses.public.map(ip => {
 			return <div key={ip.addr} className="info-header-item"> IP Address: {ip.addr}, type: {ip["OS-EXT-IPS:type"]}</div>
 		});
 	}
