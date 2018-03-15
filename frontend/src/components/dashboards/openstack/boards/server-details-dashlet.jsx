@@ -48,7 +48,7 @@ export default class ServerDetailsDashboard extends React.Component {
 
 	addIpAddresses() {
 		if (!this.props.server) return <Loader/>;
-		let bodyList = this.props.server.server.addresses.private.map(ip => {
+		let bodyList = this.props.server.server.addresses.public.map(ip => {
 			return <li key={ip.addr}> IP Address: {ip.addr}, type: {ip["OS-EXT-IPS:type"]}</li>
 		});
 		return this.createDashlet("Allocated Ip Adresses", bodyList);
